@@ -1,0 +1,26 @@
+﻿@model string
+
+@if (Model == "Open")
+{
+    <span class="badge bg-warning">
+
+        Open
+
+    </span>
+}
+else if (Model == "Resolved")
+{
+    <span class="badge bg-success">
+
+        Resolved
+
+    </span>
+}
+else
+{
+    <span class="badge bg-primary">
+
+        @Model
+
+    </span>
+}

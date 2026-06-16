@@ -1,0 +1,61 @@
+﻿@model ComplaintTicketSystem.Models.ComplaintStatusModel
+
+@{
+    ViewData["Title"] = "Update Complaint Status";
+}
+
+<style>
+    .card {
+        max-width: 450px;
+        margin: auto;
+        margin-top: 60px;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .btn-custom {
+        width: 100%;
+        background: #4CAF50;
+        color: white;
+        border-radius: 8px;
+        padding: 10px;
+    }
+
+    .btn-custom:hover {
+        background: #45a049;
+    }
+</style>
+
+<div class="card">
+    <h3 class="text-center">Update Status</h3>
+
+    <form asp-action="Status" method="post">
+
+        <input type="hidden" asp-for="ComplaintId" />
+
+        <div class="form-group mt-3">
+            <label>Status</label>
+            <select asp-for="Status" class="form-control" required>
+                <option value="">-- Select Status --</option>
+                <option>In Progress</option>
+                <option>Resolved</option>
+                <option>Rejected</option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-custom mt-4">
+            Update Status
+        </button>
+
+        <div class="text-danger mt-2">
+            @Html.ValidationSummary()
+        </div>
+    </form>
+</div>

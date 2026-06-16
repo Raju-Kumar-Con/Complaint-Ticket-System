@@ -1,0 +1,53 @@
+﻿@model AssignComplaintModel
+
+@{
+    ViewData["Title"] = "Assign Complaint";
+}
+
+<div class="container">
+    <div class="card shadow">
+        <div class="card-header">
+            <h4>Assign Complaint</h4>
+        </div>
+
+        <div class="card-body">
+
+            <form asp-action="Assign" method="post">
+                @Html.AntiForgeryToken()
+
+                <input asp-for="ComplaintId" type="hidden" />
+
+                <div class="mb-3">
+                    <label class="form-label">Assign To</label>
+
+                    <select asp-for="AssignedTo"
+                            class="form-select"
+                            required>
+
+                        <option value="">Select User</option>
+
+                        @foreach (var user in ViewBag.Users)
+                        {
+                            <option value="@user.UserId">
+                                @user.UserName (@user.Role)
+                            </option>
+                        }
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-person-check"></i>
+                    Assign Complaint
+                </button>
+
+                <a asp-controller="Complaint"
+                       asp-action="Index"
+                       class="btn btn-secondary">
+                    Back
+                </a>
+
+            </form>
+
+        </div>
+    </div>
+</div>

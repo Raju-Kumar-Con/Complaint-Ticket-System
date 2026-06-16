@@ -1,0 +1,37 @@
+﻿@model ComplaintTicketSystem.Models.ComplaintModel
+
+<h2>Complaint Details</h2>
+
+<table class="table">
+
+    <tr>
+        <th>ID</th>
+        <td>@Model.ComplaintId</td>
+    </tr>
+
+    <tr>
+        <th>User</th>
+        <td>@Model.UserName</td>
+    </tr>
+
+    <tr>
+        <th>Category</th>
+        <td>@Model.CategoryName</td>
+    </tr>
+
+    <tr>
+        <th>Subject</th>
+        <td>@Model.Subject</td>
+    </tr>
+
+    <tr>
+        <th>Description</th>
+        <td>@Model.Description</td>
+    </tr>
+
+    <tr>
+        <th>Status</th>
+        <td>@Model.Status</td>
+    </tr>
+
+</table>

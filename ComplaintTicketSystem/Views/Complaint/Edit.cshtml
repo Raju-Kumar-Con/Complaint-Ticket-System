@@ -1,0 +1,66 @@
+﻿@model ComplaintTicketSystem.Models.ComplaintModel
+
+<h2>Edit Complaint</h2>
+
+<form asp-action="Edit" method="post">
+
+    <input asp-for="ComplaintId" type="hidden" />
+
+    <div class="mb-3">
+
+        <label>Category</label>
+
+        <select asp-for="CategoryId"
+                asp-items="ViewBag.CategoryList"
+                class="form-control">
+        </select>
+
+        <span asp-validation-for="CategoryId"
+              class="text-danger"></span>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label>Subject</label>
+
+        <input asp-for="Subject"
+               class="form-control" />
+
+        <span asp-validation-for="Subject"
+              class="text-danger"></span>
+
+    </div>
+
+    <div class="mb-3">
+
+        <label>Description</label>
+
+        <textarea asp-for="Description"
+                      class="form-control">
+    </textarea>
+
+            <span asp-validation-for="Description"
+                  class="text-danger"></span>
+
+        </div>
+
+        <button type="submit"
+                class="btn btn-primary">
+            Update
+        </button>
+
+        <a asp-action="Index"
+               class="btn btn-secondary">
+            Cancel
+        </a>
+  
+
+    </form>
+
+    @section Scripts
+    {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }

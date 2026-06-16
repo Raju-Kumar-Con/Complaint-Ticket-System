@@ -1,0 +1,40 @@
+﻿@model List<ComplaintTicketSystem.Models.ReportModel>
+
+@{
+    ViewData["Title"] = "Reports";
+}
+
+<div class="card shadow">
+
+    <div class="card-header">
+        <h3>Complaint Reports</h3>
+    </div>
+
+    <div class="card-body">
+
+        <table class="table table-bordered table-striped">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Complaint Count</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.CategoryName</td>
+                        <td>@item.Status</td>
+                        <td>@item.ComplaintCount</td>
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>

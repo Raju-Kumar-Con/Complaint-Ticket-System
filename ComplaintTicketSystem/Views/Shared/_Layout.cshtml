@@ -1,0 +1,232 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var userName = HttpContextAccessor.HttpContext?.Session.GetString("UserName");
+    var role = HttpContextAccessor.HttpContext?.Session.GetString("Role");
+
+    var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>@ViewData["Title"] - Complaint Ticket System</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    <!-- AG Grid CSS -->
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ag-grid-community/styles/ag-theme-alpine.css" />
+
+    <!-- AG Grid JS -->
+    <script src="https://cdn.jsdelivr.net/npm/ag-grid-community/dist/ag-grid-community.min.js"></script>
+
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+
+        <div class="sidebar-brand">
+            <a asp-controller="Complaint"
+                   asp-action="Dashboard"
+                   class="text-decoration-none text-white d-flex align-items-center">
+
+                <img src="~/image/image.jpg"
+                     alt="Logo"
+                     class="sidebar-logo me-2" />
+
+                <span class="brand-text">Complaint System</span>
+
+            </a>
+        </div>
+
+        <div class="sidebar-menu">
+
+            <a asp-controller="Complaint"
+                   asp-action="Dashboard"
+                   class="@(currentAction == "Dashboard" ? "active" : "")">
+
+                <i class="bi bi-speedometer2"></i>
+                <span class="menu-text">Dashboard</span>
+            </a>
+
+            <a asp-controller="Complaint"
+                   asp-action="Index"
+                   class="@(currentAction == "Index" ? "active" : "")">
+
+                <i class="bi bi-card-list"></i>
+                <span class="menu-text">Complaints</span>
+            </a>
+
+            <a asp-controller="Complaint"
+                   asp-action="Create"
+                   class="@(currentAction == "Create" ? "active" : "")">
+
+                <i class="bi bi-plus-circle"></i>
+                <span class="menu-text">Raise Complaint</span>
+            </a>
+
+            @if (role == "Admin")
+            {
+                <hr class="text-secondary" />
+                <a asp-controller="Admin"
+                       asp-action="Reports"
+                       class="@(currentAction == "Reports" ? "active" : "")">
+
+                    <i class="bi bi-bar-chart"></i>
+                    <span class="menu-text">Reports</span>
+                </a>
+                <a asp-controller="Admin"
+                       asp-action="SupportTeam"
+                       class="@(currentAction == "SupportTeam" ? "active" : "")">
+
+                    <i class="bi bi-people"></i>
+                    <span class="menu-text">Add Support Employee</span>
+                </a>
+            }
+
+            <hr class="text-secondary" />
+
+            <div class="p-3 border-top">
+                <a asp-controller="Account"
+                       asp-action="Logout"
+                       class="text-danger">
+
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span class="menu-text">Logout</span>
+
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content" id="mainContent">
+
+        <!-- HEADER -->
+        <div class="topbar">
+
+            <div class="topbar-content">
+
+                <div>
+                    <button class="btn btn-outline-primary" id="toggleBtn">
+                        <i class="bi bi-list"></i>
+                    </button>
+                </div>
+
+                <h4 class="mb-0">
+                    @ViewData["Title"]
+                </h4>
+
+                <div class="dropdown">
+
+                    <a href="#"
+                           class="d-flex align-items-center text-decoration-none"
+                           data-bs-toggle="dropdown">
+
+                        <div class="profile-circle">
+                            @(string.IsNullOrEmpty(userName)
+                                ? "G"
+                                : userName.Substring(0, 1).ToUpper())
+                        </div>
+
+                        <div class="ms-2">
+                            <div class="fw-bold">
+                                @(userName ?? "Guest")
+                            </div>
+
+                            <small class="text-muted">
+                                @(role ?? "User")
+                            </small>
+                        </div>
+
+                    </a>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+
+                        <li>
+                            <a class="dropdown-item"
+                                   asp-controller="Account"
+                                   asp-action="Logout">
+
+                                <i class="bi bi-box-arrow-right"></i>
+                                Logout
+
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- SEARCH -->
+        @if (ViewBag.ShowSearch != null)
+        {
+            <div class="p-3">
+                <partial name="_ComplaintSearch" />
+            </div>
+        }
+
+        <!-- BODY -->
+        <div class="content-wrapper">
+
+            <div class="card main-card">
+
+                <div class="card-body">
+                    @RenderBody()
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="bg-white border-top py-3">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+
+                    <div class="col-md-6 text-md-start text-center">
+                        © 2026 Complaint Ticket System
+                    </div>
+
+                    <div class="col-md-6 text-md-end text-center">
+                        Powered by ASP.NET Core MVC
+                    </div>
+
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Chart JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Custom JS -->
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
