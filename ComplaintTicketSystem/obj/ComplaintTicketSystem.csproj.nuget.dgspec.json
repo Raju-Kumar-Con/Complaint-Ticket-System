@@ -1,25 +1,31 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Cogniscient\\Visual Studio\\ComplaintTicketSystem\\ComplaintTicketSystem\\ComplaintTicketSystem.csproj": {}
+    "D:\\Cogniscient\\Visual Studio\\Complaint-Ticket-System\\ComplaintTicketSystem\\ComplaintTicketSystem.csproj": {}
   },
   "projects": {
-    "D:\\Cogniscient\\Visual Studio\\ComplaintTicketSystem\\ComplaintTicketSystem\\ComplaintTicketSystem.csproj": {
+    "D:\\Cogniscient\\Visual Studio\\Complaint-Ticket-System\\ComplaintTicketSystem\\ComplaintTicketSystem.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Cogniscient\\Visual Studio\\ComplaintTicketSystem\\ComplaintTicketSystem\\ComplaintTicketSystem.csproj",
+        "projectUniqueName": "D:\\Cogniscient\\Visual Studio\\Complaint-Ticket-System\\ComplaintTicketSystem\\ComplaintTicketSystem.csproj",
         "projectName": "ComplaintTicketSystem",
-        "projectPath": "D:\\Cogniscient\\Visual Studio\\ComplaintTicketSystem\\ComplaintTicketSystem\\ComplaintTicketSystem.csproj",
+        "projectPath": "D:\\Cogniscient\\Visual Studio\\Complaint-Ticket-System\\ComplaintTicketSystem\\ComplaintTicketSystem.csproj",
         "packagesPath": "C:\\Users\\Raju Kumar\\.nuget\\packages\\",
-        "outputPath": "D:\\Cogniscient\\Visual Studio\\ComplaintTicketSystem\\ComplaintTicketSystem\\obj\\",
+        "outputPath": "D:\\Cogniscient\\Visual Studio\\Complaint-Ticket-System\\ComplaintTicketSystem\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Raju Kumar\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Raju Kumar\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

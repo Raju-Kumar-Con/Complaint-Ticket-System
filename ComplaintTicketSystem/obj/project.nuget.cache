@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "hdrr+epqZWI=",
+  "dgSpecHash": "dDKJmUeUaSU=",
   "success": true,
-  "projectFilePath": "D:\\Cogniscient\\Visual Studio\\ComplaintTicketSystem\\ComplaintTicketSystem\\ComplaintTicketSystem.csproj",
+  "projectFilePath": "D:\\Cogniscient\\Visual Studio\\Complaint-Ticket-System\\ComplaintTicketSystem\\ComplaintTicketSystem.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Raju Kumar\\.nuget\\packages\\microsoft.bcl.cryptography\\9.0.13\\microsoft.bcl.cryptography.9.0.13.nupkg.sha512",
     "C:\\Users\\Raju Kumar\\.nuget\\packages\\microsoft.data.sqlclient\\7.0.1\\microsoft.data.sqlclient.7.0.1.nupkg.sha512",

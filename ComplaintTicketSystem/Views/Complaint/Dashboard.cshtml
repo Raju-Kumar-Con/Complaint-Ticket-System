@@ -8,11 +8,14 @@
 
     var userName = HttpContextAccessor.HttpContext?.Session.GetString("UserName");
     var role = HttpContextAccessor.HttpContext?.Session.GetString("Role");
+    
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    
-    <h2 class="mb-0">Dashboard</h2>
+    <div>
+        <h2 class="mb-0">Welcome, @userName</h2>
+        <small class="text-muted">Complaint Management Dashboard</small>
+    </div>
 
     <div class="d-flex justify-content-between align-items-center mb-4">
 
@@ -33,16 +36,6 @@
 
 <!-- INFO CARDS -->
 <div class="row mb-4">
-
-    <div class="col-md-3">
-        <div class="card bg-primary text-white">
-            <div class="card-body">
-                <h6>Welcome</h6>
-                <h4>@userName</h4>
-            </div>
-        </div>
-    </div>
-
     @if (role == "Admin")
     {
         <div class="col-md-3">
@@ -68,6 +61,14 @@
                 <div class="card-body">
                     <h6>Resolved Count</h6>
                     <h3>@Model.ResolvedCount</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body">
+                    <h6>Rejected Count</h6>
+                    <h3>@Model.RejectedCount</h3>
                 </div>
             </div>
         </div>
@@ -100,6 +101,14 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-3">
+            <div class="card bg-danger text-white">
+                <div class="card-body">
+                    <h6>Rejected Count</h6>
+                    <h3>@Model.RejectedCount</h3>
+                </div>
+            </div>
+        </div>
     }
 
 </div>
@@ -109,8 +118,8 @@
 @section Scripts
 {
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/ag-charts-community@latest/dist/umd/ag-charts-community.js"></script>
-
+@* 
+    <script src="https://cdn.jsdelivr.net/npm/ag-charts-community@latest/dist/umd/ag-charts-community.js"></script> *@
+    <script src="https://cdn.jsdelivr.net/npm/ag-charts-community@9.3.0/dist/umd/ag-charts-community.js"></script>
     <script src="~/js/dashboard.js"></script>
 }

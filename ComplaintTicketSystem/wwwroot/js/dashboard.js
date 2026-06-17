@@ -1,15 +1,10 @@
 ﻿$(document).ready(function () {
-
     loadComplaintChart("user");
-
     $("#chartFilter").on("change", function () {
         loadComplaintChart($(this).val());
     });
-
 });
-
 function loadComplaintChart(filterType) {
-
     $.ajax({
         url: "/Complaint/GetComplaintChartData",
         type: "GET",
@@ -23,9 +18,7 @@ function loadComplaintChart(filterType) {
             console.error("Chart Load Error:", error);
         }
     });
-
 }
-
 function renderComplaintChart(data, filterType) {
 
     let grouped = {};
@@ -43,34 +36,24 @@ function renderComplaintChart(data, filterType) {
             };
 
         }
-
         grouped[item.name][item.status] = item.count;
-
     });
-
     const chartData = Object.values(grouped);
-
     const chartContainer = document.getElementById("myChart");
-
     if (!chartContainer) {
         console.error("myChart container not found");
         return;
     }
-
     chartContainer.innerHTML = "";
-
-    agCharts.AgCharts.create({
-
-        container: chartContainer,
-
+    agCharts.AgCharts.create(
+        {
+            container: chartContainer,
         title: {
             text: filterType === "user"
                 ? "User Wise Complaints"
                 : "Category Wise Complaints"
         },
-
         data: chartData,
-
         series: [
             {
                 type: "bar",
@@ -100,24 +83,15 @@ function renderComplaintChart(data, filterType) {
 
     listeners: {
         seriesNodeClick: function (event) {
-
         const status = event.yKey;
         const name = event.datum.name;
-
-        if (filterType === "user") {
-
-            window.location.href =
-                "/Complaint/Index?status=" +
-                encodeURIComponent(status);
-        }
-        else {
-
-            window.location.href =
-                "/Complaint/Index?category=" +
-                encodeURIComponent(name);
-        }
+            if (filterType === "user") {
+                window.location.href ="/Complaint/Index?status=" +encodeURIComponent(status) + "&userName=" +encodeURIComponent(name);
+            }
+            else {
+                window.location.href = "/Complaint/Index?status=" + encodeURIComponent(status) + "&category=" +encodeURIComponent(name);
+            }
         }
     }
     });
-
 }

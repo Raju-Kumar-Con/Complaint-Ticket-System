@@ -1,8 +1,6 @@
 ﻿let gridApi;
 let userRole = "";
-
 document.addEventListener('DOMContentLoaded', function () {
-
     const columnDefs = [
         { field: "complaintId", headerName: "ID", width: 90 },
         { field: "userName", headerName: "User" },
@@ -13,7 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
         { field: "assignedToName", headerName: "Assigned To" },
         { field: "createdDate", headerName: "Created Date" },
         { field: "resolvedDate", headerName: "Resolved Date" },
-
         {
             headerName: "Actions",
             field: "actions",
@@ -24,7 +21,6 @@ document.addEventListener('DOMContentLoaded', function () {
             cellRenderer: actionRenderer
         }
     ];
-
     const gridOptions = {
         columnDefs: columnDefs,
         rowData: [],
@@ -37,10 +33,8 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         pagination: true
     };
-
     const gridDiv = document.querySelector('#myGrid');
     gridApi = agGrid.createGrid(gridDiv, gridOptions);
-
     loadComplaints();
 });
 
@@ -49,19 +43,37 @@ function loadComplaints() {
         url: "/Complaint/GetComplaints",
         type: "GET",
         success: function (response) {
-    console.log(response);
-    userRole = response.role;
-    let data = response.data;
-    const statusFilter =document.getElementById("statusFilter")?.value;
-    const categoryFilter =document.getElementById("categoryFilter")?.value;
-    if (statusFilter) {
-        data = data.filter(x => x.status === statusFilter);
-    }
-    if (categoryFilter) {
-        data = data.filter(x => x.categoryName === categoryFilter);
-    }
-    gridApi.setGridOption("rowData", data);
-},
+            console.log(response);
+            userRole = response.role;
+            let data = response.data;
+            const statusFilter =document.getElementById("statusFilter")?.value;
+            const categoryFilter =document.getElementById("categoryFilter")?.value;
+            const userFilter =document.getElementById("userFilter")?.value;     
+            gridApi.setGridOption("rowData", data);
+            const filterModel = {};
+            if (statusFilter) {
+                filterModel.status = {
+                    filterType: "text",
+                    type: "equals",
+                    filter: statusFilter
+                };
+            }
+            if (categoryFilter) {
+                filterModel.categoryName = {
+                    filterType: "text",
+                    type: "equals",
+                    filter: categoryFilter
+                };
+            }
+            if (userFilter) {
+                filterModel.userName = {
+                    filterType: "text",
+                    type: "equals",
+                    filter: userFilter
+                };
+            }
+            gridApi.setFilterModel(filterModel);
+        },
         error: function (err) {
             console.log("Error loading complaints", err);
         }
@@ -69,10 +81,8 @@ function loadComplaints() {
 }
 
 function actionRenderer(params) {
-
     let row = params.data;
     let html = "";
-
     // USER
     if (userRole === "User") {
 
@@ -98,7 +108,6 @@ function actionRenderer(params) {
             `;
         }
     }
-
     // SUPPORT
     else if (userRole === "Support") {
 
@@ -114,7 +123,6 @@ function actionRenderer(params) {
             </button>
         `;
     }
-
     // ADMIN
     else if (userRole === "Admin") {
 
@@ -151,21 +159,16 @@ function actionRenderer(params) {
 function viewDetails(id) {
     window.location.href = `/Complaint/Details?id=${id}`;
 }
-
 function editComplaint(id) {
     window.location.href = `/Complaint/Edit?id=${id}`;
 }
-
 function updateStatus(id) {
     window.location.href = `/Admin/Status/${id}`;
 }
-
 function assignComplaint(id) {
     window.location.href = `/Admin/Assign/${id}`;
 }
-
 function deleteComplaint(id) {
-
     if (!confirm("Are you sure you want to delete this complaint?"))
         return;
 
@@ -175,16 +178,12 @@ function deleteComplaint(id) {
         data: {
             id: id
         },
-
         success: function (response) {
-
             alert(response.message);
-
             if (response.success) {
                 loadComplaints();
             }
         },
-
         error: function () {
             alert("Delete failed.");
         }

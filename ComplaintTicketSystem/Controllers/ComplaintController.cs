@@ -58,41 +58,29 @@ namespace ComplaintTicketSystem.Controllers
         }
 
         [HttpGet]
-public IActionResult Index(string status = "", string category = "")
-{
-    ViewBag.StatusFilter = status;
-    ViewBag.CategoryFilter = category;
-
-    return View();
-}
-       [HttpGet]
-public IActionResult GetComplaints()
-{
-    try
-    {
-        int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
-        string role = HttpContext.Session.GetString("Role") ?? "";
-
-        var complaints = _complaintRepo.GetComplaints(userId, role);
-
-        return Json(new
+        public IActionResult Index(string status = "",string category = "",string userName = "")
         {
-            success = true,
-            role = role,
-            data = complaints
-        });
-    }
-    catch (Exception ex)
-    {
-        return Json(new
-        {
-            success = false,
-            message = ex.Message,
-            data = new List<ComplaintModel>()
-        });
-    }
-}
+            ViewBag.StatusFilter = status;
+            ViewBag.CategoryFilter = category;
+            ViewBag.UserFilter = userName;
 
+            return View();
+        }
+        [HttpGet]
+        public IActionResult GetComplaints()
+        {
+            try
+            {
+                int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+                string role = HttpContext.Session.GetString("Role") ?? "";
+                var complaints = _complaintRepo.GetComplaints(userId, role);
+                return Json(new{success = true,role = role,data = complaints});
+            }
+            catch (Exception ex)
+            {
+                return Json(new{success = false,message = ex.Message,data = new List<ComplaintModel>()});
+            }
+        }
         // CREATE - GET
         [HttpGet]
         public IActionResult Create()
