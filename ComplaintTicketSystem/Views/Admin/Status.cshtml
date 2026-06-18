@@ -21,16 +21,20 @@
     }
 
     .btn-custom {
-        width: 100%;
+        flex: 1;
         background: #4CAF50;
         color: white;
         border-radius: 8px;
         padding: 10px;
+        border: none;
+        text-decoration: none;
+        text-align: center;
     }
 
-    .btn-custom:hover {
-        background: #45a049;
-    }
+        .btn-custom:hover {
+            background: #45a049;
+            color: white;
+        }
 </style>
 
 <div class="card">
@@ -50,9 +54,19 @@
             </select>
         </div>
 
-        <button type="submit" class="btn btn-custom mt-4">
-            Update Status
-        </button>
+        <div class="mt-4 d-flex gap-2">
+
+            <button type="submit" class="btn btn-custom">
+                Update Status
+            </button>
+
+            <a asp-controller="Complaint"
+               asp-action="Index"
+               class="btn btn-custom">
+                Back
+            </a>
+
+        </div>
 
         <div class="text-danger mt-2">
             @Html.ValidationSummary()

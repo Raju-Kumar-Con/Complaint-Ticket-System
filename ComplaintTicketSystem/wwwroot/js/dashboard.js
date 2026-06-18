@@ -45,14 +45,22 @@ function renderComplaintChart(data, filterType) {
         return;
     }
     chartContainer.innerHTML = "";
-    agCharts.AgCharts.create(
-        {
-            container: chartContainer,
+    agCharts.AgCharts.create({
+        container: chartContainer,
+
+        theme: {
+            palette: {
+                fills: ["#2196F3", "#FF9800", "#4CAF50", "#F44336"],
+                strokes: ["#2196F3", "#FF9800", "#4CAF50", "#F44336"]
+            }
+        },
+
         title: {
             text: filterType === "user"
                 ? "User Wise Complaints"
                 : "Category Wise Complaints"
         },
+
         data: chartData,
         series: [
             {

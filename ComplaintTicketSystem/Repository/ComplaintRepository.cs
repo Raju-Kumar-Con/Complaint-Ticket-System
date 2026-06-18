@@ -8,36 +8,26 @@ namespace ComplaintTicketSystem.Repositories
     public class ComplaintRepository : IComplaintRepository
     {
         private readonly DBHelper _db;
-
         public ComplaintRepository(DBHelper db)
         {
             _db = db;
         }
-
-        // Helper method for safe string conversion
         private static string SafeString(object value)
         {
             return Convert.ToString(value) ?? string.Empty;
         }
-
-        // Helper method for safe int conversion
         private static int SafeInt(object value)
         {
             return value == DBNull.Value ? 0 : Convert.ToInt32(value);
         }
-
-        // Helper method for nullable int
         private static int? SafeNullableInt(object value)
         {
             return value == DBNull.Value ? null : Convert.ToInt32(value);
         }
-
-        // Helper method for nullable DateTime
         private static DateTime? SafeNullableDate(object value)
         {
             return value == DBNull.Value ? null : Convert.ToDateTime(value);
         }
-
         // ---------------- GET COMPLAINTS ----------------
         public List<ComplaintModel> GetComplaints(int userId, string role)
         {
@@ -240,22 +230,16 @@ namespace ComplaintTicketSystem.Repositories
         public List<ComplaintModel> SearchComplaints(string? subject, string? status, int? categoryId)
         {
             List<ComplaintModel> list = new();
-
             using SqlConnection con = _db.GetConnection();
-
             SqlCommand cmd = new SqlCommand("USP_SearchComplaints", con)
             {
                 CommandType = CommandType.StoredProcedure
             };
-
             cmd.Parameters.AddWithValue("@Subject", (object?)subject ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@Status", (object?)status ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@CategoryId", (object?)categoryId ?? DBNull.Value);
-
             con.Open();
-
             using SqlDataReader dr = cmd.ExecuteReader();
-
             while (dr.Read())
             {
                 list.Add(new ComplaintModel
@@ -266,7 +250,6 @@ namespace ComplaintTicketSystem.Repositories
                     Status = SafeString(dr["Status"])
                 });
             }
-
             return list;
         }
 
@@ -281,11 +264,8 @@ namespace ComplaintTicketSystem.Repositories
             {
                 CommandType = CommandType.StoredProcedure
             };
-
             con.Open();
-
             using SqlDataReader dr = cmd.ExecuteReader();
-
             while (dr.Read())
             {
                 list.Add(new ReportModel
@@ -295,30 +275,19 @@ namespace ComplaintTicketSystem.Repositories
                     ComplaintCount = SafeInt(dr["ComplaintCount"])
                 });
             }
-
             return list;
         }
         public List<object> GetComplaintChartData(int userId,string role,string filterType)
         {
             List<object> list = new();
-
             using SqlConnection con = _db.GetConnection();
-
-            SqlCommand cmd =
-                new SqlCommand("USP_GetComplaintChartData",con);
-
+            SqlCommand cmd = new SqlCommand("USP_GetComplaintChartData",con);
             cmd.CommandType =CommandType.StoredProcedure;
-
             cmd.Parameters.AddWithValue("@UserId",userId);
-
             cmd.Parameters.AddWithValue( "@Role",role);
-
             cmd.Parameters.AddWithValue("@FilterType",filterType);
-
             con.Open();
-
             using SqlDataReader dr =cmd.ExecuteReader();
-
             while (dr.Read())
             {
                 list.Add(new
@@ -328,7 +297,6 @@ namespace ComplaintTicketSystem.Repositories
                     count = Convert.ToInt32(dr["Count"])
                 });
             }
-
             return list;
         }
     }

@@ -1,6 +1,7 @@
 ﻿using ComplaintTicketSystem.Data;
 using ComplaintTicketSystem.Models;
 using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace ComplaintTicketSystem.Repositories
 {
@@ -12,28 +13,25 @@ namespace ComplaintTicketSystem.Repositories
         {
             _db = db;
         }
-
         public List<ComplaintCategoryModel> GetCategories()
         {
             List<ComplaintCategoryModel> list = new();
+
             using (SqlConnection con = _db.GetConnection())
             {
-                SqlCommand cmd =new SqlCommand( "SELECT * FROM ComplaintCategories WHERE IsActive=1", con);
+                SqlCommand cmd = new SqlCommand("USP_GetCategories", con);
+                cmd.CommandType = CommandType.StoredProcedure;
                 con.Open();
                 SqlDataReader dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
                     list.Add(new ComplaintCategoryModel
                     {
-                        CategoryId =
-                        Convert.ToInt32(dr["CategoryId"]),
-
-                        CategoryName =
-                        dr["CategoryName"].ToString()
+                        CategoryId = Convert.ToInt32(dr["CategoryId"]),
+                        CategoryName = dr["CategoryName"].ToString()
                     });
                 }
             }
-
             return list;
         }
     }

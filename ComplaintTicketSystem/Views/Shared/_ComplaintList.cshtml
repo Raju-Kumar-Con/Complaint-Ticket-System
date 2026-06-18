@@ -1,0 +1,22 @@
+﻿@model List<ComplaintTicketSystem.Models.ComplaintModel>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Status</th>
+            <th>Category</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Subject</td>
+                <td>@item.Status</td>
+                <td>@item.CategoryId</td>
+            </tr>
+        }
+    </tbody>
+</table>

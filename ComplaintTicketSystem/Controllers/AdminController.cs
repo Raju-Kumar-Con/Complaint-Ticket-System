@@ -1,8 +1,7 @@
-﻿using ComplaintTicketSystem.Filters;
-using ComplaintTicketSystem.Repositories;
+﻿using ComplaintTicketSystem.Repositories;
 using ComplaintTicketSystem.Models;
 using Microsoft.AspNetCore.Mvc;
-
+using ComplaintTicketSystem.Filters;
 namespace ComplaintTicketSystem.Controllers
 {
     [RoleAuthorize("Admin", "Support")]

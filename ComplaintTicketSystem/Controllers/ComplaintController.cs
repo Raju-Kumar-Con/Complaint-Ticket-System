@@ -2,9 +2,11 @@
 using ComplaintTicketSystem.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ComplaintTicketSystem.Filters;
 
 namespace ComplaintTicketSystem.Controllers
 {
+    [RoleAuthorize("Admin", "Support", "User")]
     public class ComplaintController : Controller
     {
         private readonly IComplaintRepository _complaintRepo;
@@ -12,7 +14,11 @@ namespace ComplaintTicketSystem.Controllers
         private readonly IUserRepository _userRepo;
         private readonly ErrorRepository _errorRepo;
 
-        public ComplaintController(IComplaintRepository complaintRepo,ICategoryRepository categoryRepo,IUserRepository userRepo,ErrorRepository errorRepo)
+        public ComplaintController(
+            IComplaintRepository complaintRepo,
+            ICategoryRepository categoryRepo,
+            IUserRepository userRepo,
+            ErrorRepository errorRepo)
         {
             _complaintRepo = complaintRepo;
             _categoryRepo = categoryRepo;
@@ -21,23 +27,23 @@ namespace ComplaintTicketSystem.Controllers
         }
 
         // DASHBOARD
-        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public IActionResult Dashboard()
         {
             try
             {
                 var userId = HttpContext.Session.GetInt32("UserId");
-                var role = HttpContext.Session.GetString("Role");
+                var role = HttpContext.Session.GetString("Role") ?? "";
+
                 if (userId == null || string.IsNullOrEmpty(role))
                 {
                     return RedirectToAction("Login", "Account");
                 }
-                if (role != "Admin" && role != "Support" && role != "User")
-                {
-                    return RedirectToAction("AccessDenied", "Account");
-                }
-                DashboardModel model = _complaintRepo.GetDashboardData(userId.Value, role);
-                model.Complaints = _complaintRepo.GetComplaints(userId.Value, role);
+
+                DashboardModel model =
+                    _complaintRepo.GetDashboardData(userId.Value, role);
+
+                model.Complaints =
+                    _complaintRepo.GetComplaints(userId.Value, role);
 
                 ViewBag.Role = role;
 
@@ -48,17 +54,22 @@ namespace ComplaintTicketSystem.Controllers
                 return RedirectToAction("Index", "Error");
             }
         }
+
+        // CHART DATA
         [HttpGet]
         public JsonResult GetComplaintChartData(string filterType = "user")
         {
-            int userId =HttpContext.Session.GetInt32("UserId") ?? 0;
-            string role =HttpContext.Session.GetString("Role") ?? "";
-            var data =_complaintRepo.GetComplaintChartData(userId,role,filterType);
+            int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
+            string role = HttpContext.Session.GetString("Role") ?? "";
+
+            var data = _complaintRepo.GetComplaintChartData(userId, role, filterType);
+
             return Json(data);
         }
 
+        // INDEX
         [HttpGet]
-        public IActionResult Index(string status = "",string category = "",string userName = "")
+        public IActionResult Index(string status = "", string category = "", string userName = "")
         {
             ViewBag.StatusFilter = status;
             ViewBag.CategoryFilter = category;
@@ -66,6 +77,8 @@ namespace ComplaintTicketSystem.Controllers
 
             return View();
         }
+
+        // GET COMPLAINTS (JSON)
         [HttpGet]
         public IActionResult GetComplaints()
         {
@@ -73,14 +86,17 @@ namespace ComplaintTicketSystem.Controllers
             {
                 int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
                 string role = HttpContext.Session.GetString("Role") ?? "";
+
                 var complaints = _complaintRepo.GetComplaints(userId, role);
-                return Json(new{success = true,role = role,data = complaints});
+
+                return Json(new { success = true, role = role, data = complaints });
             }
             catch (Exception ex)
             {
-                return Json(new{success = false,message = ex.Message,data = new List<ComplaintModel>()});
+                return Json(new { success = false, message = ex.Message, data = new List<ComplaintModel>() });
             }
         }
+
         // CREATE - GET
         [HttpGet]
         public IActionResult Create()
@@ -89,14 +105,12 @@ namespace ComplaintTicketSystem.Controllers
             {
                 LoadCategories();
 
-                var model = new ComplaintModel
+                return View(new ComplaintModel
                 {
                     CreatedDate = DateTime.Now
-                };
-
-                return View(model);
+                });
             }
-            catch (Exception)
+            catch
             {
                 return RedirectToAction("Error", "Error");
             }
@@ -104,6 +118,7 @@ namespace ComplaintTicketSystem.Controllers
 
         // CREATE - POST
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(ComplaintModel model)
         {
             try
@@ -122,15 +137,13 @@ namespace ComplaintTicketSystem.Controllers
                 }
 
                 LoadCategories();
-
                 return View(model);
             }
             catch (Exception ex)
             {
                 _errorRepo.LogError(ex.Message);
 
-                TempData["Error"] ="Unable to create complaint.";
-
+                TempData["Error"] = "Unable to create complaint.";
                 return View(model);
             }
         }
@@ -153,7 +166,7 @@ namespace ComplaintTicketSystem.Controllers
 
                 return View(complaint);
             }
-            catch (Exception)
+            catch
             {
                 TempData["Error"] = "Unable to load complaint.";
                 return RedirectToAction("Index");
@@ -162,6 +175,7 @@ namespace ComplaintTicketSystem.Controllers
 
         // EDIT - POST
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit(ComplaintModel model)
         {
             try
@@ -171,20 +185,16 @@ namespace ComplaintTicketSystem.Controllers
                     _complaintRepo.UpdateComplaint(model);
 
                     TempData["Success"] = "Complaint updated successfully.";
-
                     return RedirectToAction("Index");
                 }
 
                 LoadCategories();
-
                 return View(model);
             }
-            catch (Exception)
+            catch
             {
                 LoadCategories();
-
                 TempData["Error"] = "Unable to update complaint.";
-
                 return View(model);
             }
         }
@@ -201,7 +211,7 @@ namespace ComplaintTicketSystem.Controllers
 
                 return View(complaint);
             }
-            catch (Exception)
+            catch
             {
                 TempData["Error"] = "Unable to load complaint details.";
                 return RedirectToAction("Index");
@@ -210,6 +220,7 @@ namespace ComplaintTicketSystem.Controllers
 
         // DELETE - POST
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
             try
@@ -243,13 +254,15 @@ namespace ComplaintTicketSystem.Controllers
             {
                 var result = _complaintRepo.SearchComplaints(subject, status, categoryId);
 
-                return PartialView("_ComplaintSearch", result);
+                return PartialView("_ComplaintList", result);
             }
-            catch (Exception)
+            catch
             {
-                return PartialView("_ComplaintSearch", new List<ComplaintModel>());
+                return PartialView("_ComplaintList", new List<ComplaintModel>());
             }
         }
+
+        // GET ALL COMPLAINTS
         [HttpGet]
         public IActionResult GetAllComplaints(string filterType)
         {
@@ -260,6 +273,7 @@ namespace ComplaintTicketSystem.Controllers
 
             return Json(data);
         }
+
         // LOAD DROPDOWN
         private void LoadCategories()
         {

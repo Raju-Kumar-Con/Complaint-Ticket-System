@@ -1,5 +1,52 @@
-﻿<input type="text"
-       id="txtSearch"
-       class="form-control" />
+﻿@model List<ComplaintTicketSystem.Models.ComplaintModel>
 
-<div id="searchResult"></div>
+<div class="mb-3">
+    <input type="text" id="subject" class="form-control" placeholder="Search by subject..." />
+</div>
+
+<div class="mb-3">
+    <select id="status" class="form-control">
+        <option value="">All Status</option>
+        <option>Open</option>
+        <option>Closed</option>
+    </select>
+</div>
+
+<div class="mb-3">
+    <input type="number" id="categoryId" class="form-control" placeholder="Category ID" />
+</div>
+
+<button class="btn btn-primary" onclick="searchComplaints()">Search</button>
+
+<hr />
+
+<div id="searchResults">
+    <partial name="_ComplaintList" model="Model" />
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    function searchComplaints() {
+
+    var subject = $('#subject').val();
+    var status = $('#status').val();
+    var categoryId = $('#categoryId').val();
+
+    $.ajax({
+    url: '/Complaint/Search',
+    type: 'GET',
+    data: {
+    subject: subject,
+    status: status,
+    categoryId: categoryId
+    },
+    success: function (result) {
+    $('#searchResults').html(result);
+    },
+    error: function () {
+    alert("Error loading search results");
+    }
+    });
+    }
+</script>
