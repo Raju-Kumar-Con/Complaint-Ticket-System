@@ -1,19 +1,24 @@
 ﻿@{
-    ViewData["Title"] = "Complaint Page";  
+    ViewData["Title"] = "Complaint Page";
 }
 
-<h2>Complaint List</h2>
-<input type="hidden"
-       id="userFilter"
-       value="@ViewBag.UserFilter" />
+<style>
+    .ag-header-group-cell {
+    background-color: #2244cc66; /* bluest */
+}
+.ag-header-cell {
+    background-color: #2244cc44; /* bluer */
+}
+.ag-floating-filter {
+    background-color: #2244cc22; /* blue */
+}
+</style>
 
-<input type="hidden"
-       id="statusFilter"
-       value="@ViewBag.StatusFilter" />
+<h2 class="complaint-title">Complaint List</h2>
 
-<input type="hidden"
-       id="categoryFilter"
-       value="@ViewBag.CategoryFilter" />
+<input type="hidden" id="userFilter" value="@ViewBag.UserFilter" />
+<input type="hidden" id="statusFilter" value="@ViewBag.StatusFilter" />
+<input type="hidden" id="categoryFilter" value="@ViewBag.CategoryFilter" />
 
 <div id="myGrid"
      class="ag-theme-alpine"

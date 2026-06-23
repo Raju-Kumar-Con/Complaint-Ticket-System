@@ -136,14 +136,30 @@ namespace ComplaintTicketSystem.Controllers
             try
             {
                 var reportData = _repo.GetComplaintReport();
-
                 return View(reportData);
             }
             catch (Exception)
             {
                 TempData["Error"] = "Unable to load reports.";
-
                 return RedirectToAction("Dashboard");
+            }
+        }
+
+        [HttpGet]
+        public IActionResult GetReportsData()
+        {
+            try
+            {
+                var reportData = _repo.GetComplaintReport();
+                return Json(reportData);
+            }
+            catch (Exception ex)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = ex.Message
+                });
             }
         }
 

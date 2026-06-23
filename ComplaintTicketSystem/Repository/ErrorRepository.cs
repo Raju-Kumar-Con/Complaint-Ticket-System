@@ -1,25 +1,31 @@
 ﻿using ComplaintTicketSystem.Data;
-using Microsoft.Data.SqlClient;
-using System.Data;
+using System.Collections;
 
 namespace ComplaintTicketSystem.Repositories
 {
     public class ErrorRepository
     {
         private readonly DBHelper _db;
+
         public ErrorRepository(DBHelper db)
         {
             _db = db;
         }
+
         public void LogError(string message)
         {
-            using (SqlConnection con = _db.GetConnection())
+            try
             {
-                SqlCommand cmd = new SqlCommand("USP_LogError", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                cmd.Parameters.AddWithValue("@Message", message);
-                con.Open();
-                cmd.ExecuteNonQuery();
+                Hashtable ht = new Hashtable();
+
+                ht.Add("@Message", message);
+
+                _db.ExecuteQuery("USP_LogError", ht);
+            }
+            catch
+            {
+                // Logging failure ko ignore kar rahe hain
+                // taaki application crash na ho.
             }
         }
     }

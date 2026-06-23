@@ -9,12 +9,13 @@ document.addEventListener('DOMContentLoaded', function () {
         { field: "description", headerName: "Description" },
         { field: "status", headerName: "Status" },
         { field: "assignedToName", headerName: "Assigned To" },
-        { field: "createdDate", headerName: "Created Date" },
-        { field: "resolvedDate", headerName: "Resolved Date" },
+        { field: "createdDate",headerName: "Created Date",
+            valueFormatter: params => formatDate(params.value)},
+        {field: "resolvedDate",headerName: "Resolved Date",
+            valueFormatter: params => formatDate(params.value)},
         {
             headerName: "Actions",
             field: "actions",
-            width: 450,
             pinned: "right",
             sortable: false,
             filter: false,
@@ -81,8 +82,10 @@ function loadComplaints() {
 }
 
 function actionRenderer(params) {
+
     let row = params.data;
     let html = "";
+
     // USER
     if (userRole === "User") {
 
@@ -108,6 +111,7 @@ function actionRenderer(params) {
             `;
         }
     }
+
     // SUPPORT
     else if (userRole === "Support") {
 
@@ -116,13 +120,20 @@ function actionRenderer(params) {
                 onclick="viewDetails(${row.complaintId})">
                 <i class="bi bi-eye"></i> Details
             </button>
-
-            <button class="btn btn-success btn-sm"
-                onclick="updateStatus(${row.complaintId})">
-                <i class="bi bi-arrow-repeat"></i> Update Status
-            </button>
         `;
+
+        // Hide Update Status if complaint is resolved
+        if (row.status !== "Resolved") {
+
+            html += `
+                <button class="btn btn-success btn-sm"
+                    onclick="updateStatus(${row.complaintId})">
+                    <i class="bi bi-arrow-repeat"></i> Update Status
+                </button>
+            `;
+        }
     }
+
     // ADMIN
     else if (userRole === "Admin") {
 
@@ -131,14 +142,20 @@ function actionRenderer(params) {
                 onclick="viewDetails(${row.complaintId})">
                 <i class="bi bi-eye"></i> Details
             </button>
-
-            <button class="btn btn-success btn-sm me-1"
-                onclick="updateStatus(${row.complaintId})">
-                <i class="bi bi-arrow-repeat"></i> Update Status
-            </button>
         `;
 
-        // Assign button only if not assigned and not resolved
+        // Hide Update Status if complaint is resolved
+        if (row.status !== "Resolved") {
+
+            html += `
+                <button class="btn btn-success btn-sm me-1"
+                    onclick="updateStatus(${row.complaintId})">
+                    <i class="bi bi-arrow-repeat"></i> Update Status
+                </button>
+            `;
+        }
+
+        // Show Assign button only if complaint is not assigned and not resolved
         if (
             (row.assignedTo == null || row.assignedTo === 0) &&
             row.status !== "Resolved"
@@ -155,7 +172,6 @@ function actionRenderer(params) {
 
     return html;
 }
-
 function viewDetails(id) {
     window.location.href = `/Complaint/Details?id=${id}`;
 }
@@ -188,4 +204,20 @@ function deleteComplaint(id) {
             alert("Delete failed.");
         }
     });
+}
+function formatDate(dateString) {
+
+    if (!dateString)
+        return "";
+
+    let date = new Date(dateString);
+
+    let day = String(date.getDate()).padStart(2, '0');
+    let month = String(date.getMonth() + 1).padStart(2, '0');
+    let year = date.getFullYear();
+
+    let hours = String(date.getHours()).padStart(2, '0');
+    let minutes = String(date.getMinutes()).padStart(2, '0');
+
+    return `${day}-${month}-${year} ${hours}:${minutes}`;
 }

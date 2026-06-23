@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 // MVC
 builder.Services.AddControllersWithViews();
 
-//  SESSION
+// Session
 builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSession(options =>
@@ -17,7 +17,7 @@ builder.Services.AddSession(options =>
     options.Cookie.SameSite = SameSiteMode.Lax;
 });
 
-// DEPENDENCY INJECTION 
+// Dependency Injection
 builder.Services.AddScoped<DBHelper>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IComplaintRepository, ComplaintRepository>();
@@ -26,24 +26,40 @@ builder.Services.AddScoped<ErrorRepository>();
 
 var app = builder.Build();
 
-//  ERROR HANDLING 
+// Error Handling
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error/Index");
     app.UseHsts();
 }
 
-// MIDDLEWARE 
+// Middleware
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
 
 app.UseSession();
 
+// Disable Browser Cache
+app.Use(async (context, next) =>
+{
+    context.Response.Headers["Cache-Control"] =
+        "no-cache, no-store, must-revalidate";
+
+    context.Response.Headers["Pragma"] = "no-cache";
+
+    context.Response.Headers["Expires"] = "0";
+
+    await next();
+});
+
 app.UseAuthorization();
 
-//  ROUTING 
-app.MapControllerRoute(name: "default",pattern: "{controller=Account}/{action=Login}/{id?}");
+// Routing
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Account}/{action=Login}/{id?}");
 
 app.Run();

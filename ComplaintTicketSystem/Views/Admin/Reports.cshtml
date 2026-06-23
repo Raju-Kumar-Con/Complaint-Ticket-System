@@ -1,40 +1,84 @@
-﻿@model List<ComplaintTicketSystem.Models.ReportModel>
-
-@{
+﻿@{
     ViewData["Title"] = "Reports";
 }
 
 <div class="card shadow">
-
     <div class="card-header">
         <h3>Complaint Reports</h3>
     </div>
 
     <div class="card-body">
-
-        <table class="table table-bordered table-striped">
-
-            <thead class="table-dark">
-                <tr>
-                    <th>Category</th>
-                    <th>Status</th>
-                    <th>Complaint Count</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td>@item.CategoryName</td>
-                        <td>@item.Status</td>
-                        <td>@item.ComplaintCount</td>
-                    </tr>
-                }
-            </tbody>
-
-        </table>
-
+        <div id="reportGrid"
+             class="ag-theme-alpine"
+             style="height:500px;width:100%;">
+        </div>
     </div>
-
 </div>
+<style>
+    .ag-header-group-cell {
+    background-color: #2244cc66; /* bluest */
+}
+.ag-header-cell {
+    background-color: #2244cc44; /* bluer */
+}
+.ag-floating-filter {
+    background-color: #2244cc22; /* blue */
+}
+</style>
+
+@section Scripts
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const columnDefs = [
+                {
+                    headerName: "Category",
+                    field: "categoryName"
+                },
+                {
+                    headerName: "Status",
+                    field: "status"
+                },
+                {
+                    headerName: "Complaint Count",
+                    field: "complaintCount"
+                }
+            ];
+
+            const gridOptions = {
+                columnDefs: columnDefs,
+                rowData: [],
+                defaultColDef: {
+                    sortable: true,
+                    filter: true,
+                    resizable: true,
+                    flex: 1,
+                    floatingFilter: true
+                },
+                
+            };
+
+            const gridDiv = document.querySelector("#reportGrid");
+
+            // Latest AG Grid
+            const gridApi = agGrid.createGrid(gridDiv, gridOptions);
+
+            $.ajax({
+                url: '/Admin/GetReportsData',
+                type: 'GET',
+                success: function (response) {
+
+                    console.log(response);
+
+                    gridApi.setGridOption('rowData', response);
+                },
+                error: function (xhr) {
+                    console.log(xhr);
+                    alert("Failed to load reports.");
+                }
+            });
+
+        });
+    </script>
+}

@@ -67,15 +67,12 @@ namespace ComplaintTicketSystem.Controllers
         [HttpGet]
         public IActionResult Login()
         {
-            try
+            if (HttpContext.Session.GetInt32("UserId") != null)
             {
-                return View();
+                return RedirectToAction("Dashboard", "Complaint");
             }
-            catch (Exception)
-            {
-                ViewBag.Error = "Unable to load login page.";
-                return View();
-            }
+
+            return View();
         }
 
         // LOGIN - POST
@@ -133,18 +130,11 @@ namespace ComplaintTicketSystem.Controllers
         // LOGOUT
         public IActionResult Logout()
         {
-            try
-            {
-                HttpContext.Session.Clear();
+            HttpContext.Session.Clear();
 
-                TempData["Success"] = "Logged out successfully.";
+            Response.Cookies.Delete(".AspNetCore.Session");
 
-                return RedirectToAction("Login", "Account");
-            }
-            catch (Exception)
-            {
-                return RedirectToAction("Login", "Account");
-            }
+            return RedirectToAction("Login", "Account");
         }
     }
 }

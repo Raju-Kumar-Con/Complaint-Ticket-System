@@ -1,7 +1,7 @@
 ﻿using ComplaintTicketSystem.Data;
 using ComplaintTicketSystem.Models;
 using Microsoft.Data.SqlClient;
-using System.Data;
+using System.Collections;
 
 namespace ComplaintTicketSystem.Repositories
 {
@@ -32,34 +32,28 @@ namespace ComplaintTicketSystem.Repositories
         public List<ComplaintModel> GetComplaints(int userId, string role)
         {
             List<ComplaintModel> list = new();
-            using (SqlConnection con = _db.GetConnection())
+
+            Hashtable ht = new Hashtable();
+            ht.Add("@UserId", userId);
+            ht.Add("@Role", role);
+
+            using SqlDataReader dr = _db.GetData("USP_GetComplaints", ht);
+
+            while (dr.Read())
             {
-                SqlCommand cmd = new SqlCommand("USP_GetComplaints", con)
+                list.Add(new ComplaintModel
                 {
-                    CommandType = CommandType.StoredProcedure
-                };
-                cmd.Parameters.AddWithValue("@UserId", userId);
-                cmd.Parameters.AddWithValue("@Role", role);
-                con.Open();
-                using SqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
-                {
-                    list.Add(new ComplaintModel
-                    {
-                        ComplaintId = SafeInt(dr["ComplaintId"]),
-                        UserName = SafeString(dr["UserName"]),
-                        CategoryName = SafeString(dr["CategoryName"]),
-                        Subject = SafeString(dr["Subject"]),
-                        Description = SafeString(dr["Description"]),
-                        Status = SafeString(dr["Status"]),
-
-                        AssignedTo = SafeNullableInt(dr["AssignedTo"]),
-                        AssignedToName = SafeString(dr["AssignedToName"]),
-
-                        CreatedDate = Convert.ToDateTime(dr["CreatedDate"]),
-                        ResolvedDate = SafeNullableDate(dr["ResolvedDate"])
-                    });
-                }
+                    ComplaintId = SafeInt(dr["ComplaintId"]),
+                    UserName = SafeString(dr["UserName"]),
+                    CategoryName = SafeString(dr["CategoryName"]),
+                    Subject = SafeString(dr["Subject"]),
+                    Description = SafeString(dr["Description"]),
+                    Status = SafeString(dr["Status"]),
+                    AssignedTo = SafeNullableInt(dr["AssignedTo"]),
+                    AssignedToName = SafeString(dr["AssignedToName"]),
+                    CreatedDate = Convert.ToDateTime(dr["CreatedDate"]),
+                    ResolvedDate = SafeNullableDate(dr["ResolvedDate"])
+                });
             }
 
             return list;
@@ -70,44 +64,36 @@ namespace ComplaintTicketSystem.Repositories
         {
             DashboardModel model = new();
 
-            using (SqlConnection con = _db.GetConnection())
+            Hashtable ht = new Hashtable();
+
+            ht.Add("@Role", role);
+            ht.Add("@UserId", userId);
+
+            using SqlDataReader dr =_db.GetData("USP_GetComplaintDashboard", ht);
+
+            if (dr.Read())
             {
-                SqlCommand cmd = new SqlCommand("USP_GetComplaintDashboard", con)
+                if (role == "Admin")
                 {
-                    CommandType = CommandType.StoredProcedure
-                };
-
-                cmd.Parameters.AddWithValue("@Role", role);
-                cmd.Parameters.AddWithValue("@UserId", userId);
-
-                con.Open();
-
-                using SqlDataReader dr = cmd.ExecuteReader();
-
-                if (dr.Read())
+                    model.OpenCount = SafeInt(dr["OpenCount"]);
+                    model.AssignedCount = SafeInt(dr["AssignedCount"]);
+                    model.ResolvedCount = SafeInt(dr["ResolvedCount"]);
+                    model.RejectedCount = SafeInt(dr["RejectedCount"]);
+                }
+                else if (role == "Support")
                 {
-                    if (role == "Admin")
-                    {
-                        model.OpenCount = SafeInt(dr["OpenCount"]);
-                        model.AssignedCount = SafeInt(dr["AssignedCount"]);
-                        model.ResolvedCount = SafeInt(dr["ResolvedCount"]);
-                        model.RejectedCount = SafeInt(dr["RejectedCount"]);
-                    }
-                    else if (role == "Support")
-                    {
-                        model.TotalComplaints = SafeInt(dr["TotalComplaints"]);
-                        model.OpenCount = SafeInt(dr["OpenCount"]);
-                        model.AssignedCount = SafeInt(dr["AssignedCount"]);
-                        model.ResolvedCount = SafeInt(dr["ResolvedCount"]);
-                        model.RejectedCount = SafeInt(dr["RejectedCount"]);
-                    }
-                    else // User
-                    {
-                        model.TotalComplaints = SafeInt(dr["TotalComplaints"]);
-                        model.OpenCount = SafeInt(dr["OpenCount"]);
-                        model.ResolvedCount = SafeInt(dr["ResolvedCount"]);
-                        model.RejectedCount = SafeInt(dr["RejectedCount"]);
-                    }
+                    model.TotalComplaints = SafeInt(dr["TotalComplaints"]);
+                    model.OpenCount = SafeInt(dr["OpenCount"]);
+                    model.AssignedCount = SafeInt(dr["AssignedCount"]);
+                    model.ResolvedCount = SafeInt(dr["ResolvedCount"]);
+                    model.RejectedCount = SafeInt(dr["RejectedCount"]);
+                }
+                else // User
+                {
+                    model.TotalComplaints = SafeInt(dr["TotalComplaints"]);
+                    model.OpenCount = SafeInt(dr["OpenCount"]);
+                    model.ResolvedCount = SafeInt(dr["ResolvedCount"]);
+                    model.RejectedCount = SafeInt(dr["RejectedCount"]);
                 }
             }
 
@@ -118,16 +104,11 @@ namespace ComplaintTicketSystem.Repositories
         {
             ComplaintModel? model = null;
 
-            using SqlConnection con = _db.GetConnection();
+            Hashtable ht = new Hashtable();
+            ht.Add("@ComplaintId", id);
 
-            SqlCommand cmd = new SqlCommand("USP_GetComplaintById", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-
-            cmd.Parameters.AddWithValue("@ComplaintId", id);
-
-            con.Open();
-
-            using SqlDataReader dr = cmd.ExecuteReader();
+            using SqlDataReader dr =
+                _db.GetData("USP_GetComplaintById", ht);
 
             if (dr.Read())
             {
@@ -150,96 +131,73 @@ namespace ComplaintTicketSystem.Repositories
         // ---------------- INSERT ----------------
         public void InsertComplaint(ComplaintModel model)
         {
-            using SqlConnection con = _db.GetConnection();
+            Hashtable ht = new Hashtable();
 
-            SqlCommand cmd = new SqlCommand("USP_InsertComplaint", con)
-            {
-                CommandType = CommandType.StoredProcedure
-            };
-            cmd.Parameters.AddWithValue("@UserId", model.UserId);
-            cmd.Parameters.AddWithValue("@CategoryId", model.CategoryId);
-            cmd.Parameters.AddWithValue("@Subject", model.Subject);
-            cmd.Parameters.AddWithValue("@Description", model.Description);
-            con.Open();
-            cmd.ExecuteNonQuery();
+            ht.Add("@UserId", model.UserId);
+            ht.Add("@CategoryId", model.CategoryId);
+            ht.Add("@Subject", model.Subject);
+            ht.Add("@Description", model.Description);
+
+            _db.ExecuteQuery("USP_InsertComplaint", ht);
         }
 
         // ---------------- UPDATE ----------------
         public void UpdateComplaint(ComplaintModel model)
         {
-            using SqlConnection con = _db.GetConnection();
-            SqlCommand cmd = new SqlCommand("USP_UpdateComplaint", con)
-            {
-                CommandType = CommandType.StoredProcedure
-            };
+            Hashtable ht = new Hashtable();
 
-            cmd.Parameters.AddWithValue("@ComplaintId", model.ComplaintId);
-            cmd.Parameters.AddWithValue("@CategoryId", model.CategoryId);
-            cmd.Parameters.AddWithValue("@Subject", model.Subject);
-            cmd.Parameters.AddWithValue("@Description", model.Description);
+            ht.Add("@ComplaintId", model.ComplaintId);
+            ht.Add("@CategoryId", model.CategoryId);
+            ht.Add("@Subject", model.Subject);
+            ht.Add("@Description", model.Description);
 
-            con.Open();
-            cmd.ExecuteNonQuery();
+            _db.ExecuteQuery("USP_UpdateComplaint", ht);
         }
 
         // ---------------- DELETE ----------------
         public void DeleteComplaint(int complaintId)
         {
-            using SqlConnection con = _db.GetConnection();
+            Hashtable ht = new Hashtable();
 
-            SqlCommand cmd = new SqlCommand("USP_DeleteComplaint", con)
-            {
-                CommandType = CommandType.StoredProcedure
-            };
-            cmd.Parameters.AddWithValue("@ComplaintId", complaintId);
-            con.Open();
-            cmd.ExecuteNonQuery();
+            ht.Add("@ComplaintId", complaintId);
+
+            _db.ExecuteQuery("USP_DeleteComplaint", ht);
         }
 
         // ---------------- ASSIGN ----------------
         public void AssignComplaint(int complaintId, int assignedTo)
         {
-            using SqlConnection con = _db.GetConnection();
+            Hashtable ht = new Hashtable();
 
-            SqlCommand cmd = new SqlCommand("USP_AssignComplaint", con)
-            {
-                CommandType = CommandType.StoredProcedure
-            };
-            cmd.Parameters.AddWithValue("@ComplaintId", complaintId);
-            cmd.Parameters.AddWithValue("@AssignedTo", assignedTo);
-            con.Open();
-            cmd.ExecuteNonQuery();
+            ht.Add("@ComplaintId", complaintId);
+            ht.Add("@AssignedTo", assignedTo);
+
+            _db.ExecuteQuery("USP_AssignComplaint", ht);
         }
 
         // ---------------- STATUS UPDATE ----------------
         public void UpdateStatus(int complaintId, string status)
         {
-            using SqlConnection con = _db.GetConnection();
+            Hashtable ht = new Hashtable();
 
-            SqlCommand cmd = new SqlCommand("USP_UpdateComplaintStatus", con)
-            {
-                CommandType = CommandType.StoredProcedure
-            };
-            cmd.Parameters.AddWithValue("@ComplaintId", complaintId);
-            cmd.Parameters.AddWithValue("@Status", status);
-            con.Open();
-            cmd.ExecuteNonQuery();
+            ht.Add("@ComplaintId", complaintId);
+            ht.Add("@Status", status);
+
+            _db.ExecuteQuery("USP_UpdateComplaintStatus", ht);
         }
 
         // ---------------- SEARCH ----------------
         public List<ComplaintModel> SearchComplaints(string? subject, string? status, int? categoryId)
         {
             List<ComplaintModel> list = new();
-            using SqlConnection con = _db.GetConnection();
-            SqlCommand cmd = new SqlCommand("USP_SearchComplaints", con)
-            {
-                CommandType = CommandType.StoredProcedure
-            };
-            cmd.Parameters.AddWithValue("@Subject", (object?)subject ?? DBNull.Value);
-            cmd.Parameters.AddWithValue("@Status", (object?)status ?? DBNull.Value);
-            cmd.Parameters.AddWithValue("@CategoryId", (object?)categoryId ?? DBNull.Value);
-            con.Open();
-            using SqlDataReader dr = cmd.ExecuteReader();
+
+            Hashtable ht = new Hashtable();
+            ht.Add("@Subject", subject);
+            ht.Add("@Status", status);
+            ht.Add("@CategoryId", categoryId);
+
+            using SqlDataReader dr =_db.GetData("USP_SearchComplaints", ht);
+
             while (dr.Read())
             {
                 list.Add(new ComplaintModel
@@ -250,6 +208,7 @@ namespace ComplaintTicketSystem.Repositories
                     Status = SafeString(dr["Status"])
                 });
             }
+
             return list;
         }
 
@@ -258,14 +217,11 @@ namespace ComplaintTicketSystem.Repositories
         {
             List<ReportModel> list = new();
 
-            using SqlConnection con = _db.GetConnection();
+            Hashtable ht = new Hashtable();
 
-            SqlCommand cmd = new SqlCommand("USP_GetComplaintReport", con)
-            {
-                CommandType = CommandType.StoredProcedure
-            };
-            con.Open();
-            using SqlDataReader dr = cmd.ExecuteReader();
+            using SqlDataReader dr =
+                _db.GetData("USP_GetComplaintReport", ht);
+
             while (dr.Read())
             {
                 list.Add(new ReportModel
@@ -275,19 +231,21 @@ namespace ComplaintTicketSystem.Repositories
                     ComplaintCount = SafeInt(dr["ComplaintCount"])
                 });
             }
+
             return list;
         }
-        public List<object> GetComplaintChartData(int userId,string role,string filterType)
+        // ---------------- CHART DATA ----------------
+        public List<object> GetComplaintChartData(int userId, string role, string filterType)
         {
             List<object> list = new();
-            using SqlConnection con = _db.GetConnection();
-            SqlCommand cmd = new SqlCommand("USP_GetComplaintChartData",con);
-            cmd.CommandType =CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@UserId",userId);
-            cmd.Parameters.AddWithValue( "@Role",role);
-            cmd.Parameters.AddWithValue("@FilterType",filterType);
-            con.Open();
-            using SqlDataReader dr =cmd.ExecuteReader();
+
+            Hashtable ht = new Hashtable();
+            ht.Add("@UserId", userId);
+            ht.Add("@Role", role);
+            ht.Add("@FilterType", filterType);
+
+            using SqlDataReader dr =_db.GetData("USP_GetComplaintChartData", ht);
+
             while (dr.Read())
             {
                 list.Add(new
@@ -297,6 +255,7 @@ namespace ComplaintTicketSystem.Repositories
                     count = Convert.ToInt32(dr["Count"])
                 });
             }
+
             return list;
         }
     }

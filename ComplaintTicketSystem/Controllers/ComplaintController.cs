@@ -7,6 +7,7 @@ using ComplaintTicketSystem.Filters;
 namespace ComplaintTicketSystem.Controllers
 {
     [RoleAuthorize("Admin", "Support", "User")]
+    [ResponseCache(Duration = 0,Location = ResponseCacheLocation.None,NoStore = true)]
     public class ComplaintController : Controller
     {
         private readonly IComplaintRepository _complaintRepo;
@@ -39,11 +40,9 @@ namespace ComplaintTicketSystem.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
-                DashboardModel model =
-                    _complaintRepo.GetDashboardData(userId.Value, role);
+                DashboardModel model =_complaintRepo.GetDashboardData(userId.Value, role);
 
-                model.Complaints =
-                    _complaintRepo.GetComplaints(userId.Value, role);
+                model.Complaints =_complaintRepo.GetComplaints(userId.Value, role);
 
                 ViewBag.Role = role;
 
@@ -99,7 +98,7 @@ namespace ComplaintTicketSystem.Controllers
 
         // CREATE - GET
         [HttpGet]
-        public IActionResult Create()
+        public IActionResult Raise()
         {
             try
             {
@@ -119,7 +118,7 @@ namespace ComplaintTicketSystem.Controllers
         // CREATE - POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ComplaintModel model)
+        public IActionResult Raise(ComplaintModel model)
         {
             try
             {

@@ -1,7 +1,7 @@
 ﻿using ComplaintTicketSystem.Data;
 using ComplaintTicketSystem.Models;
 using Microsoft.Data.SqlClient;
-using System.Data;
+using System.Collections;
 
 namespace ComplaintTicketSystem.Repositories
 {
@@ -13,25 +13,34 @@ namespace ComplaintTicketSystem.Repositories
         {
             _db = db;
         }
+
+        private static string SafeString(object value)
+        {
+            return Convert.ToString(value) ?? string.Empty;
+        }
+
+        private static int SafeInt(object value)
+        {
+            return value == DBNull.Value ? 0 : Convert.ToInt32(value);
+        }
+
         public List<ComplaintCategoryModel> GetCategories()
         {
             List<ComplaintCategoryModel> list = new();
 
-            using (SqlConnection con = _db.GetConnection())
+            Hashtable ht = new Hashtable();
+
+            using SqlDataReader dr = _db.GetData("USP_GetCategories", ht);
+
+            while (dr.Read())
             {
-                SqlCommand cmd = new SqlCommand("USP_GetCategories", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-                con.Open();
-                SqlDataReader dr = cmd.ExecuteReader();
-                while (dr.Read())
+                list.Add(new ComplaintCategoryModel
                 {
-                    list.Add(new ComplaintCategoryModel
-                    {
-                        CategoryId = Convert.ToInt32(dr["CategoryId"]),
-                        CategoryName = dr["CategoryName"].ToString()
-                    });
-                }
+                    CategoryId = SafeInt(dr["CategoryId"]),
+                    CategoryName = SafeString(dr["CategoryName"])
+                });
             }
+
             return list;
         }
     }

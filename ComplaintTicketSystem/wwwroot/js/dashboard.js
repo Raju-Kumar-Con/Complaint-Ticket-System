@@ -1,7 +1,18 @@
 ﻿$(document).ready(function () {
-    loadComplaintChart("user");
+
+    let selectedFilter =localStorage.getItem("chartFilter") || "user";
+
+    $("#chartFilter").val(selectedFilter);
+
+    loadComplaintChart(selectedFilter);
+
     $("#chartFilter").on("change", function () {
-        loadComplaintChart($(this).val());
+
+        let filter = $(this).val();
+
+        localStorage.setItem("chartFilter", filter);
+
+        loadComplaintChart(filter);
     });
 });
 function loadComplaintChart(filterType) {
