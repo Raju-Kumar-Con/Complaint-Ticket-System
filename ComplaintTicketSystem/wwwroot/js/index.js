@@ -2,7 +2,7 @@
 let userRole = "";
 document.addEventListener('DOMContentLoaded', function () {
     const columnDefs = [
-        { field: "complaintId", headerName: "ID", width: 90 },
+        { field: "complaintId", headerName: "ID" },
         { field: "userName", headerName: "User" },
         { field: "categoryName", headerName: "Category" },
         { field: "subject", headerName: "Subject" },
@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
         rowData: [],
         defaultColDef: {
             sortable: true,
+            flex:1,
             filter: true,
             resizable: true,
             floatingFilter: true
