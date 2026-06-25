@@ -3,8 +3,8 @@
   "WorkspaceRootPath": "D:\\Cogniscient\\Visual Studio\\Complaint-Ticket-System\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{104EF198-A2EF-5E10-B747-7D74B1C63B00}|ComplaintTicketSystem\\ComplaintTicketSystem.csproj|d:\\cogniscient\\visual studio\\complaint-ticket-system\\complaintticketsystem\\views\\admin\\supportteam.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{104EF198-A2EF-5E10-B747-7D74B1C63B00}|ComplaintTicketSystem\\ComplaintTicketSystem.csproj|solutionrelative:complaintticketsystem\\views\\admin\\supportteam.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{104EF198-A2EF-5E10-B747-7D74B1C63B00}|ComplaintTicketSystem\\ComplaintTicketSystem.csproj|d:\\cogniscient\\visual studio\\complaint-ticket-system\\complaintticketsystem\\views\\complaint\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{104EF198-A2EF-5E10-B747-7D74B1C63B00}|ComplaintTicketSystem\\ComplaintTicketSystem.csproj|solutionrelative:complaintticketsystem\\views\\complaint\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{104EF198-A2EF-5E10-B747-7D74B1C63B00}|ComplaintTicketSystem\\ComplaintTicketSystem.csproj|d:\\cogniscient\\visual studio\\complaint-ticket-system\\complaintticketsystem\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
@@ -23,15 +23,14 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "SupportTeam.cshtml",
-              "DocumentMoniker": "D:\\Cogniscient\\Visual Studio\\Complaint-Ticket-System\\ComplaintTicketSystem\\Views\\Admin\\SupportTeam.cshtml",
-              "RelativeDocumentMoniker": "ComplaintTicketSystem\\Views\\Admin\\SupportTeam.cshtml",
-              "ToolTip": "D:\\Cogniscient\\Visual Studio\\Complaint-Ticket-System\\ComplaintTicketSystem\\Views\\Admin\\SupportTeam.cshtml",
-              "RelativeToolTip": "ComplaintTicketSystem\\Views\\Admin\\SupportTeam.cshtml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAABVAAAAAAAAAA==",
+              "Title": "Dashboard.cshtml",
+              "DocumentMoniker": "D:\\Cogniscient\\Visual Studio\\Complaint-Ticket-System\\ComplaintTicketSystem\\Views\\Complaint\\Dashboard.cshtml",
+              "RelativeDocumentMoniker": "ComplaintTicketSystem\\Views\\Complaint\\Dashboard.cshtml",
+              "ToolTip": "D:\\Cogniscient\\Visual Studio\\Complaint-Ticket-System\\ComplaintTicketSystem\\Views\\Complaint\\Dashboard.cshtml",
+              "RelativeToolTip": "ComplaintTicketSystem\\Views\\Complaint\\Dashboard.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAUAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2026-06-25T07:21:38.602Z",
-              "IsPinned": true,
+              "WhenOpened": "2026-06-25T08:26:59.907Z",
               "EditorCaption": ""
             },
             {
@@ -42,7 +41,7 @@
               "RelativeDocumentMoniker": "ComplaintTicketSystem\\wwwroot\\css\\site.css",
               "ToolTip": "D:\\Cogniscient\\Visual Studio\\Complaint-Ticket-System\\ComplaintTicketSystem\\wwwroot\\css\\site.css",
               "RelativeToolTip": "ComplaintTicketSystem\\wwwroot\\css\\site.css",
-              "ViewState": "AgIAABUAAAAAaGZmZmYkwCgAAABYAAAAAAAAAA==",
+              "ViewState": "AgIAAG8BAAAAAAAAAAAkwIYBAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
               "WhenOpened": "2026-06-25T07:19:30.821Z",
               "EditorCaption": ""
