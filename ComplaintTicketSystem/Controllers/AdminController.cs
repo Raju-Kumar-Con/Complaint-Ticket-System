@@ -383,5 +383,36 @@ namespace ComplaintTicketSystem.Controllers
 
             return RedirectToAction(nameof(AddCategory));
         }
+
+        // SUPPORT TEAM - POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ModifyEmployee(SupportEmployeeModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    bool result = _userRepo.AddSupportEmployee(model);
+
+                    if (result)
+                    {
+                        TempData["Success"] = "Support Employee Added Successfully";
+
+                        return RedirectToAction("Dashboard", "Complaint");
+                    }
+
+                    TempData["Error"] = "Unable to add support employee.";
+                }
+
+                return View(model);
+            }
+            catch (Exception)
+            {
+                TempData["Error"] = "An unexpected error occurred.";
+
+                return View(model);
+            }
+        }
     }
 }

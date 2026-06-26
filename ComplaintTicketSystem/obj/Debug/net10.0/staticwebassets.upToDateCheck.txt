@@ -122,11 +122,11 @@ D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwro
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\jquery\dist\jquery.min.map
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\jquery\dist\jquery.slim.js
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\jquery\dist\jquery.slim.min.js
-D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\jquery\dist\jquery.slim.min.map
-D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\jquery\LICENSE.txt
+D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\favicon.ico
+D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\js\site.js
+D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\jquery\LICENSE.txt
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\css\site.css
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\js\dashboard.js
-D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\css\auth.css
-D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\favicon.ico
+D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\jquery\dist\jquery.slim.min.map

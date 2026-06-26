@@ -1,62 +1,203 @@
-﻿@model ComplaintTicketSystem.Models.SupportEmployeeModel
+﻿
+@model ComplaintTicketSystem.Models.SupportEmployeeModel
 
 @{
     ViewData["Title"] = "Add Support Employee";
 }
 
-<div class="container mt-4">
+<style>
+    .employee-card {
+        border: none;
+        border-radius: 15px;
+        overflow: hidden;
+    }
 
-    <div class="card shadow">
-        <div class="card-header bg-primary text-white">
-            <h4>Add Support Employee</h4>
+    .employee-header {
+        background: linear-gradient(135deg, #0d6efd, #4f46e5);
+        padding: 20px;
+    }
+
+    .employee-header h3 {
+        margin: 0;
+        color: #fff;
+        font-weight: 600;
+    }
+
+    .employee-header p {
+        margin: 5px 0 0;
+        color: rgba(255,255,255,.8);
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #495057;
+    }
+
+    .form-control,
+    .form-select {
+        height: 48px;
+        border-radius: 10px;
+    }
+
+    .input-group-text {
+        border-radius: 10px 0 0 10px;
+        background: #f8f9fa;
+    }
+
+    .btn-save {
+        height: 50px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #0d6efd, #4f46e5);
+        font-weight: 600;
+        color: white;
+    }
+
+    .btn-save:hover {
+        opacity: .95;
+        color: white;
+    }
+
+    .btn-modify {
+        height: 50px;
+        border: none;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #fd7e14, #f59e0b);
+        font-weight: 600;
+        color: white;
+        text-decoration: none;
+    }
+
+    .btn-modify:hover {
+        opacity: .95;
+        color: white;
+    }
+</style>
+
+<div>
+    <div class="card employee-card shadow">
+
+        <div class="employee-header">
+            <h3>
+                <i class="bi bi-person-plus-fill"></i>
+                Add Admin Or Support Employee
+            </h3>
+            <p>Create a new support team member account</p>
         </div>
 
-        <div class="card-body">
+        <div class="card-body p-4">
 
             <form asp-action="SupportTeam" method="post">
 
-                <div class="mb-3">
-                    <label asp-for="UserName" class="form-label"></label>
-                    <input asp-for="UserName" class="form-control" />
-                    <span asp-validation-for="UserName" class="text-danger"></span>
-                </div>
+                <div class="row">
 
-                <div class="mb-3">
-                    <label asp-for="Email" class="form-label"></label>
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="UserName" class="form-label"></label>
 
-                <div class="mb-3">
-                    <label asp-for="Password" class="form-label"></label>
-                    <input asp-for="Password" type="password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-person"></i>
+                            </span>
 
-                <div class="mb-3">
-                    <label asp-for="ConfirmPassword" class="form-label"></label>
-                    <input asp-for="ConfirmPassword" type="password" class="form-control" />
-                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                </div>
+                            <input asp-for="UserName"
+                                   class="form-control"
+                                   placeholder="Enter username" />
+                        </div>
 
-                <div class="mb-3">
-                    <label asp-for="Role" class="form-label"></label>
-                    <select asp-for="Role" class="form-control">
-                        <option value="">Select Role</option>
-                        <option value="Support">Support</option>
-                    </select>
-                    <span asp-validation-for="Role" class="text-danger"></span>
-                </div>
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
 
-                <button type="submit" class="btn btn-success">
-                    Add Employee
-                </button>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-envelope"></i>
+                            </span>
+
+                            <input asp-for="Email"
+                                   class="form-control"
+                                   placeholder="Enter email address" />
+                        </div>
+
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Password" class="form-label"></label>
+
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-lock"></i>
+                            </span>
+
+                            <input asp-for="Password"
+                                   type="password"
+                                   class="form-control"
+                                   placeholder="Enter password" />
+                        </div>
+
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="ConfirmPassword" class="form-label"></label>
+
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-shield-lock"></i>
+                            </span>
+
+                            <input asp-for="ConfirmPassword"
+                                   type="password"
+                                   class="form-control"
+                                   placeholder="Confirm password" />
+                        </div>
+
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-12 mb-4">
+                        <label asp-for="Role" class="form-label"></label>
+
+                        <div class="input-group">
+                            <span class="input-group-text">
+                                <i class="bi bi-person-badge"></i>
+                            </span>
+
+                            <select asp-for="Role" class="form-select">
+                                <option value="">Select Role</option>
+                                <option value="Support">Support</option>
+                                <option value="Admin">Admin</option>
+                            </select>
+                        </div>
+
+                        <span asp-validation-for="Role" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="d-flex gap-2">
+
+                            <button type="submit" class="btn btn-save flex-fill">
+                                <i class="bi bi-check-circle-fill me-2"></i>
+                                Add Employee
+                            </button>
+
+                            <button id="btnModify" formaction="/Admin/ModifyEmployee" class="btn btn-modify flex-fill d-flex align-items-center justify-content-center" type="submit">
+                                <i class="bi bi-pencil-square me-2"></i>
+                                Modify Employee
+                            </button>
+
+                        </div>
+                    </div>
+
+                </div>
 
             </form>
 
         </div>
-    </div>
 
+    </div>
 </div>
 
 @section Scripts {
@@ -64,3 +205,4 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+
