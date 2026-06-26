@@ -35,8 +35,16 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/Cogniscient/Visual Studio/Complaint-Ticket-System/ComplaintTicketSystem/Views/Admin/AddCategory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQWRkQ2F0ZWdvcnkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/Cogniscient/Visual Studio/Complaint-Ticket-System/ComplaintTicketSystem/Views/Admin/Assign.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cQXNzaWduLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Cogniscient/Visual Studio/Complaint-Ticket-System/ComplaintTicketSystem/Views/Admin/EditCategory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cRWRpdENhdGVnb3J5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Cogniscient/Visual Studio/Complaint-Ticket-System/ComplaintTicketSystem/Views/Admin/Reports.cshtml]

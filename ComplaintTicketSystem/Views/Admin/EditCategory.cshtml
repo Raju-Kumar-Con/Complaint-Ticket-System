@@ -1,0 +1,49 @@
+﻿@model ComplaintTicketSystem.Models.ComplaintCategoryModel
+
+@{
+    ViewData["Title"] = "Edit Category";
+}
+
+<h2>Edit Category</h2>
+
+<form asp-action="EditCategory" method="post">
+
+    @Html.AntiForgeryToken()
+
+    <input asp-for="CategoryId" type="hidden" />
+
+    <div class="mb-3">
+        <label asp-for="CategoryName" class="form-label"></label>
+
+        <input asp-for="CategoryName" class="form-control" />
+
+        <span asp-validation-for="CategoryName"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+
+        <label class="form-label">Status</label>
+
+        <select asp-for="IsActive" class="form-select">
+            <option value="true">Active</option>
+            <option value="false">Inactive</option>
+        </select>
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Update
+    </button>
+
+    <a asp-action="AddCategory"
+       class="btn btn-secondary">
+        Cancel
+    </a>
+
+</form>
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

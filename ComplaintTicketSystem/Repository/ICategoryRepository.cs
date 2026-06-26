@@ -1,9 +1,16 @@
 ﻿using ComplaintTicketSystem.Models;
 
-namespace ComplaintTicketSystem.Repositories
+public interface ICategoryRepository
 {
-    public interface ICategoryRepository
-    {
-        List<ComplaintCategoryModel> GetCategories();
-    }
+    List<ComplaintCategoryModel> GetCategories();
+
+    List<ComplaintCategoryModel> GetAllCategories();
+
+    ComplaintCategoryModel? GetCategoryById(int id);
+
+    bool InsertCategory(ComplaintCategoryModel model);
+
+    bool UpdateCategory(ComplaintCategoryModel model);
+
+    bool DeleteCategory(int id);
 }

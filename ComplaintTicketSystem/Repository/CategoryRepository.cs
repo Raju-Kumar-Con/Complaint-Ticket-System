@@ -24,6 +24,7 @@ namespace ComplaintTicketSystem.Repositories
             return value == DBNull.Value ? 0 : Convert.ToInt32(value);
         }
 
+        // Existing Method (Complaint Dropdown)
         public List<ComplaintCategoryModel> GetCategories()
         {
             List<ComplaintCategoryModel> list = new();
@@ -42,6 +43,88 @@ namespace ComplaintTicketSystem.Repositories
             }
 
             return list;
+        }
+
+        // Get All Categories (Admin)
+        public List<ComplaintCategoryModel> GetAllCategories()
+        {
+            List<ComplaintCategoryModel> list = new();
+
+            Hashtable ht = new Hashtable();
+
+            using SqlDataReader dr = _db.GetData("USP_GetAllCategories", ht);
+
+            while (dr.Read())
+            {
+                list.Add(new ComplaintCategoryModel
+                {
+                    CategoryId = SafeInt(dr["CategoryId"]),
+                    CategoryName = SafeString(dr["CategoryName"]),
+                    IsActive = Convert.ToBoolean(dr["IsActive"])
+                });
+            }
+
+            return list;
+        }
+
+        // Get Category By Id
+        public ComplaintCategoryModel? GetCategoryById(int id)
+        {
+            Hashtable ht = new Hashtable();
+
+            ht.Add("@CategoryId", id);
+
+            using SqlDataReader dr = _db.GetData("USP_GetCategoryById", ht);
+
+            if (dr.Read())
+            {
+                return new ComplaintCategoryModel
+                {
+                    CategoryId = SafeInt(dr["CategoryId"]),
+                    CategoryName = SafeString(dr["CategoryName"]),
+                    IsActive = Convert.ToBoolean(dr["IsActive"])
+                };
+            }
+
+            return null;
+        }
+
+        // Insert Category
+        public bool InsertCategory(ComplaintCategoryModel model)
+        {
+            Hashtable ht = new Hashtable();
+
+            ht.Add("@CategoryName", model.CategoryName);
+
+            int result = _db.ExecuteQuery("USP_InsertCategory", ht);
+
+            return result > 0;
+        }
+
+        // Update Category
+        public bool UpdateCategory(ComplaintCategoryModel model)
+        {
+            Hashtable ht = new Hashtable();
+
+            ht.Add("@CategoryId", model.CategoryId);
+            ht.Add("@CategoryName", model.CategoryName);
+            ht.Add("@IsActive", model.IsActive);
+
+            int result = _db.ExecuteQuery("USP_UpdateCategory", ht);
+
+            return result > 0;
+        }
+
+        // Delete Category (Soft Delete)
+        public bool DeleteCategory(int id)
+        {
+            Hashtable ht = new Hashtable();
+
+            ht.Add("@CategoryId", id);
+
+            int result = _db.ExecuteQuery("USP_DeleteCategory", ht);
+
+            return result > 0;
         }
     }
 }
