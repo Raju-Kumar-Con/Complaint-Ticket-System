@@ -95,6 +95,13 @@
                     <i class="bi bi-people"></i>
                     <span class="menu-text">Add Employee</span>
                 </a>
+                <a asp-controller="Admin"
+                   asp-action="Category"
+                   class="@(currentAction == "Category" ? "active" : "")">
+
+                    <i class="bi bi-folder"></i>
+                    <span class="menu-text">Add Category</span>
+                </a>
             }
 
             <hr class="text-secondary" />
