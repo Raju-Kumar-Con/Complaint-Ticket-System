@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Category Master";
+}
+<style>
+    .ag-header-group-cell {
+        background-color: #2244cc66;
+    }
+
+    .ag-header-cell {
+        background-color: #2244cc44;
+    }
+
+    .ag-floating-filter {
+        background-color: #2244cc22;
+    }
+</style>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h2 class="mb-0">Category Master</h2>
+
+    <a asp-action="AddCategory" class="btn btn-primary">
+        <i class="bi bi-plus-circle me-2"></i>
+        Add Category
+    </a>
+
+</div>
+
+<div id="myGrid"
+     class="ag-theme-alpine"
+     style="height:calc(100vh - 270px);width:100%;">
+</div>
+
+@section Scripts
+{ 
+    <script src="~/js/category.js"></script>
+}

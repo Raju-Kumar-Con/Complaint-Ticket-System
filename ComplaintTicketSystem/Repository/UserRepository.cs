@@ -85,5 +85,16 @@ namespace ComplaintTicketSystem.Repositories
 
             return _db.ExecuteQuery("USP_RegisterUser", ht) > 0;
         }
+
+        public bool ModifyEmployee(SupportEmployeeModel model)
+        {
+            Hashtable ht = new Hashtable();
+
+            ht.Add("@Email", model.Email);
+            ht.Add("@Password", model.Password);
+            ht.Add("@Role", model.Role);
+
+            return _db.ExecuteQuery("USP_ModifyEmployee", ht) > 0;
+        }
     }
 }

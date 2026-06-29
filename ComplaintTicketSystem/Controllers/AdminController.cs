@@ -215,88 +215,122 @@ namespace ComplaintTicketSystem.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid)
+                    return View(model);
+
+                bool result = _userRepo.AddSupportEmployee(model);
+
+                if (result)
                 {
-                    bool result = _userRepo.AddSupportEmployee(model);
-
-                    if (result)
-                    {
-                        TempData["Success"] = "Support Employee Added Successfully";
-                        return RedirectToAction("Dashboard", "Complaint");
-                    }
-
-                    TempData["Error"] = "Unable to add support employee.";
+                    TempData["Success"] = "Support Employee Added Successfully";
+                }
+                else
+                {
+                    TempData["Error"] = "Employee already exists. Click Modify Employee.";
                 }
 
-                return View(model);
+                return RedirectToAction(nameof(SupportTeam));
             }
-            catch (Exception)
+            catch
             {
-                TempData["Error"] = "An unexpected error occurred.";
-                return View(model);
+                TempData["Error"] = "Something went wrong.";
+                return RedirectToAction(nameof(SupportTeam));
+            }
+        }
+        // SUPPORT TEAM - POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ModifyEmployee(SupportEmployeeModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return View("SupportTeam", model);
+
+                bool result = _userRepo.ModifyEmployee(model);
+
+                if (result)
+                {
+                    TempData["Success"] = "Employee Updated Successfully";
+                    return RedirectToAction(nameof(SupportTeam));
+                }
+
+                TempData["Error"] = "Employee not found.";
+                return View("SupportTeam", model);
+            }
+            catch
+            {
+                TempData["Error"] = "Something went wrong.";
+                return View("SupportTeam", model);
             }
         }
 
+        // CATEGORY LIST
+        [HttpGet]
+        public IActionResult Category()
+        {
+            return View();
+        }
+
+        // AG GRID DATA
+        [HttpGet]
+        public IActionResult GetCategoryData()
+        {
+            try
+            {
+                var data = _categoryRepo.GetAllCategories();
+                return Json(data);
+            }
+            catch
+            {
+                return Json(new List<ComplaintCategoryModel>());
+            }
+        }
         // =========================
-        // CATEGORY - LIST
+        // ADD CATEGORY - GET
         // =========================
 
         [HttpGet]
         public IActionResult AddCategory()
         {
-            try
-            {
-                CategoryViewModel model = new CategoryViewModel
-                {
-                    Categories = _categoryRepo.GetAllCategories()
-                };
-
-                return View(model);
-            }
-            catch
-            {
-                TempData["Error"] = "Unable to load categories.";
-
-                return RedirectToAction(nameof(Dashboard));
-            }
+            return View(new ComplaintCategoryModel());
         }
 
         // =========================
-        // CATEGORY - ADD
+        // ADD CATEGORY - POST
         // =========================
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddCategory(CategoryViewModel model)
+        public IActionResult AddCategory(ComplaintCategoryModel model)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
-                    model.Categories = _categoryRepo.GetAllCategories();
-
                     return View(model);
                 }
 
-                bool result = _categoryRepo.InsertCategory(model.Category);
+                bool result = _categoryRepo.InsertCategory(model);
 
                 if (result)
+                {
                     TempData["Success"] = "Category Added Successfully.";
-                else
-                    TempData["Error"] = "Unable to add category.";
+                    return RedirectToAction(nameof(Category));
+                }
 
-                return RedirectToAction(nameof(AddCategory));
+                TempData["Error"] = "Unable to add category.";
+                return View(model);
             }
             catch
             {
                 TempData["Error"] = "Something went wrong.";
-
-                return RedirectToAction(nameof(AddCategory));
+                return View(model);
             }
         }
 
         // =========================
-        // CATEGORY - EDIT GET
+        // EDIT CATEGORY - GET
         // =========================
 
         [HttpGet]
@@ -309,20 +343,20 @@ namespace ComplaintTicketSystem.Controllers
                 if (category == null)
                 {
                     TempData["Error"] = "Category not found.";
-                    return RedirectToAction(nameof(AddCategory));
+                    return RedirectToAction(nameof(Category));
                 }
 
                 return View(category);
             }
-            catch (Exception)
+            catch
             {
                 TempData["Error"] = "Unable to load category.";
-                return RedirectToAction(nameof(AddCategory));
+                return RedirectToAction(nameof(Category));
             }
         }
 
         // =========================
-        // CATEGORY - EDIT POST
+        // EDIT CATEGORY - POST
         // =========================
 
         [HttpPost]
@@ -332,24 +366,18 @@ namespace ComplaintTicketSystem.Controllers
             try
             {
                 if (!ModelState.IsValid)
-                {
                     return View(model);
-                }
 
                 bool result = _categoryRepo.UpdateCategory(model);
 
                 if (result)
-                {
                     TempData["Success"] = "Category Updated Successfully.";
-                }
                 else
-                {
                     TempData["Error"] = "Unable to update category.";
-                }
 
-                return RedirectToAction(nameof(AddCategory));
+                return RedirectToAction(nameof(Category));
             }
-            catch (Exception)
+            catch
             {
                 TempData["Error"] = "Something went wrong.";
                 return View(model);
@@ -357,7 +385,7 @@ namespace ComplaintTicketSystem.Controllers
         }
 
         // =========================
-        // CATEGORY - DELETE
+        // DELETE CATEGORY
         // =========================
 
         [HttpGet]
@@ -368,51 +396,16 @@ namespace ComplaintTicketSystem.Controllers
                 bool result = _categoryRepo.DeleteCategory(id);
 
                 if (result)
-                {
                     TempData["Success"] = "Category Deleted Successfully.";
-                }
                 else
-                {
                     TempData["Error"] = "Unable to delete category.";
-                }
             }
-            catch (Exception)
+            catch
             {
                 TempData["Error"] = "Something went wrong.";
             }
 
-            return RedirectToAction(nameof(AddCategory));
-        }
-
-        // SUPPORT TEAM - POST
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult ModifyEmployee(SupportEmployeeModel model)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    bool result = _userRepo.AddSupportEmployee(model);
-
-                    if (result)
-                    {
-                        TempData["Success"] = "Support Employee Added Successfully";
-
-                        return RedirectToAction("Dashboard", "Complaint");
-                    }
-
-                    TempData["Error"] = "Unable to add support employee.";
-                }
-
-                return View(model);
-            }
-            catch (Exception)
-            {
-                TempData["Error"] = "An unexpected error occurred.";
-
-                return View(model);
-            }
+            return RedirectToAction(nameof(Category));
         }
     }
 }

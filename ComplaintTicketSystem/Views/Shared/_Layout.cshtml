@@ -10,7 +10,7 @@
 }
 
 <!DOCTYPE html>
-<html style="overflow:hidden">
+<html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -96,11 +96,11 @@
                     <span class="menu-text">Add Employee</span>
                 </a>
                 <a asp-controller="Admin"
-                   asp-action="AddCategory"
-                   class="@(currentAction == "AddCategory" ? "active" : "")">
+                   asp-action="Category"
+                   class="@(currentAction == "Category" ? "active" : "")">
 
                     <i class="bi bi-tags"></i>
-                    <span class="menu-text">Add Category</span>
+                    <span class="menu-text">Category</span>
 
                 </a>
             }
