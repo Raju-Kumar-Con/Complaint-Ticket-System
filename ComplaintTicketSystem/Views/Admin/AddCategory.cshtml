@@ -1,38 +1,52 @@
-﻿@model ComplaintTicketSystem.Models.CategoryViewModel
+﻿@model ComplaintTicketSystem.Models.ComplaintCategoryModel
 
 @{
-    ViewData["Title"] = "Category Master";
+    ViewData["Title"] = "Add Category";
 }
 
-<h2 class="mb-4">Category Master</h2>
-<div class="card mb-4">
+<div class="card shadow">
 
-    <div class="card-header">
-        Add Category
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">
+            <i class="bi bi-plus-circle"></i>
+            Add Category
+        </h4>
     </div>
 
     <div class="card-body">
 
-        <form asp-action="AddCategory" method="post">
+        <form asp-action="Category" method="post">
 
             @Html.AntiForgeryToken()
 
             <div class="mb-3">
 
-                <label asp-for="Category.CategoryName" class="form-label"></label>
+                <label asp-for="CategoryName" class="form-label"></label>
 
-                <input asp-for="Category.CategoryName"
-                       class="form-control" />
+                <input asp-for="CategoryName"
+                       class="form-control"
+                       placeholder="Enter Category Name" />
 
-                <span asp-validation-for="Category.CategoryName"
+                <span asp-validation-for="CategoryName"
                       class="text-danger"></span>
 
             </div>
 
             <button type="submit"
                     class="btn btn-primary">
+
+                <i class="bi bi-check-circle me-1"></i>
+
                 Save
+
             </button>
+
+            <a asp-action="Category"
+               class="btn btn-secondary">
+
+                Back
+
+            </a>
 
         </form>
 
@@ -40,81 +54,7 @@
 
 </div>
 
-<table class="table table-bordered table-striped">
-
-    <thead class="table-dark">
-
-        <tr>
-
-            <th>ID</th>
-
-            <th>Category Name</th>
-
-            <th>Status</th>
-
-            <th>Action</th>
-
-        </tr>
-
-    </thead>
-
-    <tbody>
-
-@foreach(var item in Model.Categories)
+@section Scripts
 {
-        <tr>
-
-            <td>@item.CategoryId</td>
-
-            <td>@item.CategoryName</td>
-
-            <td>
-
-                @if(item.IsActive)
-                {
-                    <span class="badge bg-success">
-                        Active
-                    </span>
-                }
-                else
-                {
-                    <span class="badge bg-danger">
-                        Inactive
-                    </span>
-                }
-
-            </td>
-
-            <td>
-
-                <a asp-action="EditCategory"
-                   asp-route-id="@item.CategoryId"
-                   class="btn btn-warning btn-sm">
-
-                    Edit
-
-                </a>
-
-                <a asp-action="DeleteCategory"
-                   asp-route-id="@item.CategoryId"
-                   class="btn btn-danger btn-sm"
-                   onclick="return confirm('Delete this category?')">
-
-                    Delete
-
-                </a>
-
-            </td>
-
-        </tr>
-}
-
-    </tbody>
-
-</table>
-
-@section Scripts{
-
-    <partial name="_ValidationScriptsPartial"/>
-
+    <partial name="_ValidationScriptsPartial" />
 }

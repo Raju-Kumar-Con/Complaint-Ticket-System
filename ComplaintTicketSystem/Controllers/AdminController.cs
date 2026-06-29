@@ -238,65 +238,80 @@ namespace ComplaintTicketSystem.Controllers
         }
 
         // =========================
-        // CATEGORY - LIST
+        // CATEGORY LIST
+        // =========================
+
+        [HttpGet]
+        // =========================
+        // CATEGORY LIST
+        // =========================
+
+        // CATEGORY LIST
+        [HttpGet]
+        public IActionResult Category()
+        {
+            return View();
+        }
+
+        // AG GRID DATA
+        [HttpGet]
+        public IActionResult GetCategoryData()
+        {
+            try
+            {
+                var data = _categoryRepo.GetAllCategories();
+                return Json(data);
+            }
+            catch
+            {
+                return Json(new List<ComplaintCategoryModel>());
+            }
+        }
+        // =========================
+        // ADD CATEGORY - GET
         // =========================
 
         [HttpGet]
         public IActionResult AddCategory()
         {
-            try
-            {
-                CategoryViewModel model = new CategoryViewModel
-                {
-                    Categories = _categoryRepo.GetAllCategories()
-                };
-
-                return View(model);
-            }
-            catch
-            {
-                TempData["Error"] = "Unable to load categories.";
-
-                return RedirectToAction(nameof(Dashboard));
-            }
+            return View(new ComplaintCategoryModel());
         }
 
         // =========================
-        // CATEGORY - ADD
+        // ADD CATEGORY - POST
         // =========================
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddCategory(CategoryViewModel model)
+        public IActionResult AddCategory(ComplaintCategoryModel model)
         {
             try
             {
                 if (!ModelState.IsValid)
                 {
-                    model.Categories = _categoryRepo.GetAllCategories();
-
                     return View(model);
                 }
 
-                bool result = _categoryRepo.InsertCategory(model.Category);
+                bool result = _categoryRepo.InsertCategory(model);
 
                 if (result)
+                {
                     TempData["Success"] = "Category Added Successfully.";
-                else
-                    TempData["Error"] = "Unable to add category.";
+                    return RedirectToAction(nameof(Category));
+                }
 
-                return RedirectToAction(nameof(AddCategory));
+                TempData["Error"] = "Unable to add category.";
+                return View(model);
             }
             catch
             {
                 TempData["Error"] = "Something went wrong.";
-
-                return RedirectToAction(nameof(AddCategory));
+                return View(model);
             }
         }
 
         // =========================
-        // CATEGORY - EDIT GET
+        // EDIT CATEGORY - GET
         // =========================
 
         [HttpGet]
@@ -309,20 +324,20 @@ namespace ComplaintTicketSystem.Controllers
                 if (category == null)
                 {
                     TempData["Error"] = "Category not found.";
-                    return RedirectToAction(nameof(AddCategory));
+                    return RedirectToAction(nameof(Category));
                 }
 
                 return View(category);
             }
-            catch (Exception)
+            catch
             {
                 TempData["Error"] = "Unable to load category.";
-                return RedirectToAction(nameof(AddCategory));
+                return RedirectToAction(nameof(Category));
             }
         }
 
         // =========================
-        // CATEGORY - EDIT POST
+        // EDIT CATEGORY - POST
         // =========================
 
         [HttpPost]
@@ -332,24 +347,18 @@ namespace ComplaintTicketSystem.Controllers
             try
             {
                 if (!ModelState.IsValid)
-                {
                     return View(model);
-                }
 
                 bool result = _categoryRepo.UpdateCategory(model);
 
                 if (result)
-                {
                     TempData["Success"] = "Category Updated Successfully.";
-                }
                 else
-                {
                     TempData["Error"] = "Unable to update category.";
-                }
 
-                return RedirectToAction(nameof(AddCategory));
+                return RedirectToAction(nameof(Category));
             }
-            catch (Exception)
+            catch
             {
                 TempData["Error"] = "Something went wrong.";
                 return View(model);
@@ -357,7 +366,7 @@ namespace ComplaintTicketSystem.Controllers
         }
 
         // =========================
-        // CATEGORY - DELETE
+        // DELETE CATEGORY
         // =========================
 
         [HttpGet]
@@ -368,20 +377,16 @@ namespace ComplaintTicketSystem.Controllers
                 bool result = _categoryRepo.DeleteCategory(id);
 
                 if (result)
-                {
                     TempData["Success"] = "Category Deleted Successfully.";
-                }
                 else
-                {
                     TempData["Error"] = "Unable to delete category.";
-                }
             }
-            catch (Exception)
+            catch
             {
                 TempData["Error"] = "Something went wrong.";
             }
 
-            return RedirectToAction(nameof(AddCategory));
+            return RedirectToAction(nameof(Category));
         }
 
         // SUPPORT TEAM - POST
