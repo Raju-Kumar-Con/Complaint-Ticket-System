@@ -215,36 +215,28 @@ namespace ComplaintTicketSystem.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid)
+                    return View(model);
+
+                bool result = _userRepo.AddSupportEmployee(model);
+
+                if (result)
                 {
-                    bool result = _userRepo.AddSupportEmployee(model);
-
-                    if (result)
-                    {
-                        TempData["Success"] = "Support Employee Added Successfully";
-                        return RedirectToAction("Dashboard", "Complaint");
-                    }
-
-                    TempData["Error"] = "Unable to add support employee.";
+                    TempData["Success"] = "Support Employee Added Successfully";
+                }
+                else
+                {
+                    TempData["Error"] = "Employee already exists. Click Modify Employee.";
                 }
 
-                return View(model);
+                return RedirectToAction(nameof(SupportTeam));
             }
-            catch (Exception)
+            catch
             {
-                TempData["Error"] = "An unexpected error occurred.";
-                return View(model);
+                TempData["Error"] = "Something went wrong.";
+                return RedirectToAction(nameof(SupportTeam));
             }
         }
-
-        // =========================
-        // CATEGORY LIST
-        // =========================
-
-        [HttpGet]
-        // =========================
-        // CATEGORY LIST
-        // =========================
 
         // CATEGORY LIST
         [HttpGet]
@@ -396,27 +388,24 @@ namespace ComplaintTicketSystem.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                if (!ModelState.IsValid)
+                    return View("SupportTeam", model);
+
+                bool result = _userRepo.ModifyEmployee(model);
+
+                if (result)
                 {
-                    bool result = _userRepo.AddSupportEmployee(model);
-
-                    if (result)
-                    {
-                        TempData["Success"] = "Support Employee Added Successfully";
-
-                        return RedirectToAction("Dashboard", "Complaint");
-                    }
-
-                    TempData["Error"] = "Unable to add support employee.";
+                    TempData["Success"] = "Employee Updated Successfully";
+                    return RedirectToAction(nameof(SupportTeam));
                 }
 
-                return View(model);
+                TempData["Error"] = "Employee not found.";
+                return View("SupportTeam", model);
             }
-            catch (Exception)
+            catch
             {
-                TempData["Error"] = "An unexpected error occurred.";
-
-                return View(model);
+                TempData["Error"] = "Something went wrong.";
+                return View("SupportTeam", model);
             }
         }
     }

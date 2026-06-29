@@ -10,5 +10,7 @@ namespace ComplaintTicketSystem.Repositories
 
         List<UserModel> GetUsersForAssignment();
         bool AddSupportEmployee(SupportEmployeeModel model);
+        bool ModifyEmployee(SupportEmployeeModel model);
+
     }
 }

@@ -206,8 +206,37 @@
 </div>
 
 @section Scripts {
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (TempData["Success"] != null)
+    {
+        <text>
+            <script>
+                Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: '@TempData["Success"]'
+                });
+            </script>
+        </text>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <text>
+            <script>
+                Swal.fire({
+                icon: 'warning',
+                title: 'Warning',
+                text: '@TempData["Error"]'
+                });
+            </script>
+        </text>
     }
 }
 
