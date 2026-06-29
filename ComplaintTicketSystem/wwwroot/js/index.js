@@ -1,18 +1,40 @@
 ﻿let gridApi;
 let userRole = "";
+
 document.addEventListener('DOMContentLoaded', function () {
+
     const columnDefs = [
+
         { field: "complaintId", headerName: "ID" },
+
         { field: "userName", headerName: "User" },
+
         { field: "categoryName", headerName: "Category" },
+
         { field: "subject", headerName: "Subject" },
+
         { field: "description", headerName: "Description" },
+
         { field: "status", headerName: "Status" },
+
         { field: "assignedToName", headerName: "Assigned To" },
-        { field: "createdDate",headerName: "Created Date",
-            valueFormatter: params => formatDate(params.value)},
-        {field: "resolvedDate",headerName: "Resolved Date",
-            valueFormatter: params => formatDate(params.value)},
+
+        {
+            field: "createdDate",
+            headerName: "Created Date",
+            filter: "agDateColumnFilter",
+            floatingFilter: true,
+            valueFormatter: params => formatDate(params.value)
+        },
+
+        {
+            field: "resolvedDate",
+            headerName: "Resolved Date",
+            filter: "agDateColumnFilter",
+            floatingFilter: true,
+            valueFormatter: params => formatDate(params.value)
+        },
+
         {
             headerName: "Actions",
             field: "actions",
@@ -22,62 +44,107 @@ document.addEventListener('DOMContentLoaded', function () {
             cellRenderer: actionRenderer
         }
     ];
+
     const gridOptions = {
+
         columnDefs: columnDefs,
+
         rowData: [],
+
         defaultColDef: {
             sortable: true,
-            flex:1,
+            flex: 1,
             filter: true,
             resizable: true,
             floatingFilter: true
-            
         },
-        pagination: true
+        rowClassRules: {
+
+            'row-open': params =>
+                params.data?.status === 'Open',
+
+            'row-progress': params =>
+                params.data?.status === 'In Progress',
+
+            'row-resolved': params =>
+                params.data?.status === 'Resolved',
+
+            'row-rejected': params =>
+                params.data?.status === 'Rejected'
+        },
+
+        onFilterChanged: () => {
+
+            const filterModel =
+                gridApi.getFilterModel();
+
+            if (
+                !filterModel ||
+                Object.keys(filterModel).length === 0
+            ) {
+                localStorage.removeItem(
+                    "complaintFilter"
+                );
+            }
+            else {
+
+                localStorage.setItem(
+                    "complaintFilter",
+                    JSON.stringify(filterModel)
+                );
+            }
+        }
     };
-    const gridDiv = document.querySelector('#myGrid');
-    gridApi = agGrid.createGrid(gridDiv, gridOptions);
+
+    const gridDiv =
+        document.querySelector('#myGrid');
+
+    gridApi =
+        agGrid.createGrid(gridDiv, gridOptions);
+
     loadComplaints();
 });
 
 function loadComplaints() {
+
     $.ajax({
+
         url: "/Complaint/GetComplaints",
+
         type: "GET",
+
         success: function (response) {
+
             console.log(response);
+
             userRole = response.role;
+
             let data = response.data;
-            const statusFilter =document.getElementById("statusFilter")?.value;
-            const categoryFilter =document.getElementById("categoryFilter")?.value;
-            const userFilter =document.getElementById("userFilter")?.value;     
-            gridApi.setGridOption("rowData", data);
-            const filterModel = {};
-            if (statusFilter) {
-                filterModel.status = {
-                    filterType: "text",
-                    type: "equals",
-                    filter: statusFilter
-                };
+
+            gridApi.setGridOption(
+                "rowData",
+                data
+            );
+
+            let savedFilter =
+                localStorage.getItem(
+                    "complaintFilter"
+                );
+
+            if (savedFilter) {
+
+                gridApi.setFilterModel(
+                    JSON.parse(savedFilter)
+                );
             }
-            if (categoryFilter) {
-                filterModel.categoryName = {
-                    filterType: "text",
-                    type: "equals",
-                    filter: categoryFilter
-                };
-            }
-            if (userFilter) {
-                filterModel.userName = {
-                    filterType: "text",
-                    type: "equals",
-                    filter: userFilter
-                };
-            }
-            gridApi.setFilterModel(filterModel);
         },
+
         error: function (err) {
-            console.log("Error loading complaints", err);
+
+            console.log(
+                "Error loading complaints",
+                err
+            );
         }
     });
 }
@@ -85,6 +152,7 @@ function loadComplaints() {
 function actionRenderer(params) {
 
     let row = params.data;
+
     let html = "";
 
     // USER
@@ -123,13 +191,13 @@ function actionRenderer(params) {
             </button>
         `;
 
-        // Hide Update Status if complaint is resolved
         if (row.status !== "Resolved") {
 
             html += `
                 <button class="btn btn-success btn-sm"
                     onclick="updateStatus(${row.complaintId})">
-                    <i class="bi bi-arrow-repeat"></i> Update Status
+                    <i class="bi bi-arrow-repeat"></i>
+                    Update Status
                 </button>
             `;
         }
@@ -145,27 +213,29 @@ function actionRenderer(params) {
             </button>
         `;
 
-        // Hide Update Status if complaint is resolved
         if (row.status !== "Resolved") {
 
             html += `
                 <button class="btn btn-success btn-sm me-1"
                     onclick="updateStatus(${row.complaintId})">
-                    <i class="bi bi-arrow-repeat"></i> Update Status
+                    <i class="bi bi-arrow-repeat"></i>
+                    Update Status
                 </button>
             `;
         }
 
-        // Show Assign button only if complaint is not assigned and not resolved
         if (
-            (row.assignedTo == null || row.assignedTo === 0) &&
+            (row.assignedTo == null ||
+                row.assignedTo === 0)
+            &&
             row.status !== "Resolved"
         ) {
 
             html += `
                 <button class="btn btn-primary btn-sm"
                     onclick="assignComplaint(${row.complaintId})">
-                    <i class="bi bi-person-plus"></i> Assign Complaint
+                    <i class="bi bi-person-plus"></i>
+                    Assign Complaint
                 </button>
             `;
         }
@@ -173,52 +243,101 @@ function actionRenderer(params) {
 
     return html;
 }
+
 function viewDetails(id) {
-    window.location.href = `/Complaint/Details?id=${id}`;
+
+    window.location.href =
+        `/Complaint/Details?id=${id}`;
 }
+
 function editComplaint(id) {
-    window.location.href = `/Complaint/Edit?id=${id}`;
+
+    window.location.href =
+        `/Complaint/Edit?id=${id}`;
 }
+
 function updateStatus(id) {
-    window.location.href = `/Admin/Status/${id}`;
+
+    window.location.href =
+        `/Admin/Status/${id}`;
 }
+
 function assignComplaint(id) {
-    window.location.href = `/Admin/Assign/${id}`;
+
+    window.location.href =
+        `/Admin/Assign/${id}`;
 }
+
 function deleteComplaint(id) {
-    if (!confirm("Are you sure you want to delete this complaint?"))
+
+    if (
+        !confirm(
+            "Are you sure you want to delete this complaint?"
+        )
+    )
         return;
 
     $.ajax({
+
         url: "/Complaint/Delete",
+
         type: "POST",
+
         data: {
             id: id
         },
+
         success: function (response) {
+
             alert(response.message);
+
             if (response.success) {
+
                 loadComplaints();
             }
         },
+
         error: function () {
+
             alert("Delete failed.");
         }
     });
 }
+
+function exportCSV() {
+
+    gridApi.exportDataAsCsv({
+
+        fileName: "ComplaintReport.csv"
+    });
+}
+
 function formatDate(dateString) {
 
     if (!dateString)
         return "";
 
-    let date = new Date(dateString);
+    let date =
+        new Date(dateString);
 
-    let day = String(date.getDate()).padStart(2, '0');
-    let month = String(date.getMonth() + 1).padStart(2, '0');
-    let year = date.getFullYear();
+    let day =
+        String(date.getDate())
+            .padStart(2, '0');
 
-    let hours = String(date.getHours()).padStart(2, '0');
-    let minutes = String(date.getMinutes()).padStart(2, '0');
+    let month =
+        String(date.getMonth() + 1)
+            .padStart(2, '0');
+
+    let year =
+        date.getFullYear();
+
+    let hours =
+        String(date.getHours())
+            .padStart(2, '0');
+
+    let minutes =
+        String(date.getMinutes())
+            .padStart(2, '0');
 
     return `${day}-${month}-${year} ${hours}:${minutes}`;
 }

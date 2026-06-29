@@ -237,6 +237,33 @@ namespace ComplaintTicketSystem.Controllers
                 return RedirectToAction(nameof(SupportTeam));
             }
         }
+        // SUPPORT TEAM - POST
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ModifyEmployee(SupportEmployeeModel model)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return View("SupportTeam", model);
+
+                bool result = _userRepo.ModifyEmployee(model);
+
+                if (result)
+                {
+                    TempData["Success"] = "Employee Updated Successfully";
+                    return RedirectToAction(nameof(SupportTeam));
+                }
+
+                TempData["Error"] = "Employee not found.";
+                return View("SupportTeam", model);
+            }
+            catch
+            {
+                TempData["Error"] = "Something went wrong.";
+                return View("SupportTeam", model);
+            }
+        }
 
         // CATEGORY LIST
         [HttpGet]
@@ -379,34 +406,6 @@ namespace ComplaintTicketSystem.Controllers
             }
 
             return RedirectToAction(nameof(Category));
-        }
-
-        // SUPPORT TEAM - POST
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult ModifyEmployee(SupportEmployeeModel model)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                    return View("SupportTeam", model);
-
-                bool result = _userRepo.ModifyEmployee(model);
-
-                if (result)
-                {
-                    TempData["Success"] = "Employee Updated Successfully";
-                    return RedirectToAction(nameof(SupportTeam));
-                }
-
-                TempData["Error"] = "Employee not found.";
-                return View("SupportTeam", model);
-            }
-            catch
-            {
-                TempData["Error"] = "Something went wrong.";
-                return View("SupportTeam", model);
-            }
         }
     }
 }
