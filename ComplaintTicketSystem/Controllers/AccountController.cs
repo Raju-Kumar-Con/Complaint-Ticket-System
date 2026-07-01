@@ -1,5 +1,6 @@
 ﻿using ComplaintTicketSystem.Models;
 using ComplaintTicketSystem.Repositories;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ComplaintTicketSystem.Controllers
@@ -34,31 +35,33 @@ namespace ComplaintTicketSystem.Controllers
         {
             try
             {
+                model.Normalize();
                 if (!ModelState.IsValid)
                 {
                     return View(model);
                 }
-
-                if (model.Password != model.ConfirmPassword)
+                if (_userRepo.IsEmailExists(model.Email!))
                 {
-                    ViewBag.Error = "Password and Confirm Password do not match";
+                    ModelState.AddModelError("Email", "Email already exists");
                     return View(model);
                 }
-
+                if (model.Password != model.ConfirmPassword)
+                {
+                    ModelState.AddModelError("ConfirmPassword","Password and Confirm Password do not match");
+                    return View(model);
+                }
                 bool result = _userRepo.Register(model);
-
                 if (result)
                 {
                     TempData["Success"] = "Registration Successful. Please Login.";
                     return RedirectToAction("Login");
                 }
-
-                ViewBag.Error = "Registration Failed";
+                ModelState.AddModelError("", "Registration Failed");
                 return View(model);
             }
             catch (Exception)
             {
-                ViewBag.Error = "Something went wrong during registration.";
+                ModelState.AddModelError("", "Something went wrong during registration.");
                 return View(model);
             }
         }
@@ -79,39 +82,38 @@ namespace ComplaintTicketSystem.Controllers
         [HttpPost]
         public IActionResult Login(LoginModel model)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
-                {
-                    return View(model);
-                }
-
-                var user = _userRepo.Login(model);
-
-                if (user != null)
-                {
-                    // SESSION SET
-                    HttpContext.Session.SetInt32("UserId", user.UserId);
-                    HttpContext.Session.SetString("UserName", user.UserName ?? "");
-                    HttpContext.Session.SetString("Role", user.Role ?? "");
-
-                    // SESSION TEST (DEBUG)
-                    var testUser = HttpContext.Session.GetString("UserName");
-
-                    System.Diagnostics.Debug.WriteLine("Session User = " + testUser);
-                    Console.WriteLine("Session User = " + testUser);
-
-                    return RedirectToAction("Dashboard", "Complaint");
-                }
-
-                ViewBag.Error = "Invalid Email or Password";
                 return View(model);
             }
-            catch (Exception)
+
+            var user = _userRepo.GetUserByEmail(model.Email!);
+
+            if (user == null)
             {
-                ViewBag.Error = "Unable to login. Please try again.";
+                ModelState.AddModelError("Email", "Email does not exist");
                 return View(model);
             }
+
+            var passwordHasher = new PasswordHasher<UserModel>();
+
+            var result = passwordHasher.VerifyHashedPassword(
+                user,
+                user.Password!,
+                model.Password!
+            );
+
+            if (result == PasswordVerificationResult.Failed)
+            {
+                ModelState.AddModelError("Password", "Incorrect password");
+                return View(model);
+            }
+
+            HttpContext.Session.SetInt32("UserId", user.UserId);
+            HttpContext.Session.SetString("UserName", user.UserName ?? "");
+            HttpContext.Session.SetString("Role", user.Role ?? "");
+
+            return RedirectToAction("Dashboard", "Complaint");
         }
 
         // ACCESS DENIED
