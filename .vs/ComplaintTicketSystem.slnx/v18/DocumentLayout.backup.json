@@ -1,12 +1,54 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\Cogniscient\\Visual Studio\\Complaint-Ticket-System\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{104EF198-A2EF-5E10-B747-7D74B1C63B00}|ComplaintTicketSystem\\ComplaintTicketSystem.csproj|d:\\cogniscient\\visual studio\\complaint-ticket-system\\complaintticketsystem\\repository\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{104EF198-A2EF-5E10-B747-7D74B1C63B00}|ComplaintTicketSystem\\ComplaintTicketSystem.csproj|solutionrelative:complaintticketsystem\\repository\\userrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{104EF198-A2EF-5E10-B747-7D74B1C63B00}|ComplaintTicketSystem\\ComplaintTicketSystem.csproj|d:\\cogniscient\\visual studio\\complaint-ticket-system\\complaintticketsystem\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{104EF198-A2EF-5E10-B747-7D74B1C63B00}|ComplaintTicketSystem\\ComplaintTicketSystem.csproj|solutionrelative:complaintticketsystem\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UserRepository.cs",
+              "DocumentMoniker": "D:\\Cogniscient\\Visual Studio\\Complaint-Ticket-System\\ComplaintTicketSystem\\Repository\\UserRepository.cs",
+              "RelativeDocumentMoniker": "ComplaintTicketSystem\\Repository\\UserRepository.cs",
+              "ToolTip": "D:\\Cogniscient\\Visual Studio\\Complaint-Ticket-System\\ComplaintTicketSystem\\Repository\\UserRepository.cs",
+              "RelativeToolTip": "ComplaintTicketSystem\\Repository\\UserRepository.cs",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAcwG0AAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-01T09:43:46.072Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "D:\\Cogniscient\\Visual Studio\\Complaint-Ticket-System\\ComplaintTicketSystem\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "ComplaintTicketSystem\\Controllers\\AccountController.cs",
+              "ToolTip": "D:\\Cogniscient\\Visual Studio\\Complaint-Ticket-System\\ComplaintTicketSystem\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "ComplaintTicketSystem\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAGsAAAAAAAAAAAAYwIEAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-07-01T09:23:58.291Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }

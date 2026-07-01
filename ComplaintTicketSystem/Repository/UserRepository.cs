@@ -92,23 +92,23 @@ namespace ComplaintTicketSystem.Repositories
         public bool AddSupportEmployee(SupportEmployeeModel model)
         {
             Hashtable ht = new Hashtable();
-
+            var user = new UserModel();
+            string hashedPassword = _passwordHasher.HashPassword(user, model.Password!);
             ht.Add("@UserName", model.UserName);
             ht.Add("@Email", model.Email);
-            ht.Add("@Password", model.Password);
+            ht.Add("@Password", hashedPassword);
             ht.Add("@Role", model.Role);
-
             return _db.ExecuteQuery("USP_RegisterUser", ht) > 0;
         }
 
         public bool ModifyEmployee(SupportEmployeeModel model)
         {
             Hashtable ht = new Hashtable();
-
+            var user = new UserModel();
+            string hashedPassword =_passwordHasher.HashPassword(user, model.Password!);
             ht.Add("@Email", model.Email);
-            ht.Add("@Password", model.Password);
+            ht.Add("@Password", hashedPassword);
             ht.Add("@Role", model.Role);
-
             return _db.ExecuteQuery("USP_ModifyEmployee", ht) > 0;
         }
     }

@@ -228,21 +228,40 @@ namespace ComplaintTicketSystem.Controllers
 
                 if (complaint == null)
                 {
-                    return Json(new { success = false, message = "Complaint not found" });
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Complaint not found"
+                    });
                 }
 
                 if (complaint.Status != "Open")
                 {
-                    return Json(new { success = false, message = "Only Open complaints can be deleted" });
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Only Open complaints can be deleted"
+                    });
                 }
 
-                _complaintRepo.DeleteComplaint(id);
+                int deletedBy =
+                    HttpContext.Session.GetInt32("UserId") ?? 0;
 
-                return Json(new { success = true, message = "Deleted successfully" });
+                _complaintRepo.DeleteComplaint(id, deletedBy);
+
+                return Json(new
+                {
+                    success = true,
+                    message = "Complaint deleted successfully"
+                });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "Server error: " + ex.Message });
+                return Json(new
+                {
+                    success = false,
+                    message = ex.Message
+                });
             }
         }
 

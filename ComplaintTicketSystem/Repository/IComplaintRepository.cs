@@ -14,8 +14,7 @@ namespace ComplaintTicketSystem.Repositories
 
         void UpdateComplaint(ComplaintModel model);
 
-        void DeleteComplaint(int complaintId);
-
+        void DeleteComplaint(int complaintId, int deletedBy);
         void AssignComplaint(int complaintId, int assignedTo);
 
         void UpdateStatus(int complaintId, string status);

@@ -155,11 +155,12 @@ namespace ComplaintTicketSystem.Repositories
         }
 
         // ---------------- DELETE ----------------
-        public void DeleteComplaint(int complaintId)
+        public void DeleteComplaint(int complaintId, int deletedBy)
         {
             Hashtable ht = new Hashtable();
 
             ht.Add("@ComplaintId", complaintId);
+            ht.Add("@DeletedBy", deletedBy);
 
             _db.ExecuteQuery("USP_DeleteComplaint", ht);
         }
