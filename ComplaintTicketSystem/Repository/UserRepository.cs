@@ -33,14 +33,9 @@ namespace ComplaintTicketSystem.Repositories
         public UserModel? Login(LoginModel model)
         {
             UserModel? user = null;
-
             Hashtable ht = new Hashtable();
-
             ht.Add("@Email", model.Email);
-
-            using SqlDataReader dr =
-                _db.GetData("USP_GetUserByEmail", ht);
-
+            using SqlDataReader dr = _db.GetData("USP_GetUserByEmail", ht);
             if (dr.Read())
             {
                 user = new UserModel
@@ -65,6 +60,36 @@ namespace ComplaintTicketSystem.Repositories
             }
 
             return null;
+        }
+        public UserModel? GetUserByEmail(string email)
+        {
+            Hashtable ht = new Hashtable();
+            ht.Add("@Email", email);
+
+            using SqlDataReader dr = _db.GetData("USP_GetUserByEmail", ht);
+
+            if (dr.Read())
+            {
+                return new UserModel
+                {
+                    UserId = Convert.ToInt32(dr["UserId"]),
+                    UserName = dr["UserName"].ToString(),
+                    Email = dr["Email"].ToString(),
+                    Password = dr["Password"].ToString(),
+                    Role = dr["Role"].ToString()
+                };
+            }
+
+            return null;
+        }
+        public bool IsEmailExists(string email)
+        {
+            Hashtable ht = new Hashtable();
+            ht.Add("@Email", email);
+
+            using SqlDataReader dr = _db.GetData("USP_GetUserByEmail", ht);
+
+            return dr.Read();
         }
 
         public List<UserModel> GetUsersForAssignment()

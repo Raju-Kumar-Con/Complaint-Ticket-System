@@ -7,7 +7,8 @@ namespace ComplaintTicketSystem.Repositories
         bool Register(RegisterModel model);
 
         UserModel? Login(LoginModel model);
-
+        UserModel? GetUserByEmail(string email);
+        bool IsEmailExists(string email);
         List<UserModel> GetUsersForAssignment();
         bool AddSupportEmployee(SupportEmployeeModel model);
         bool ModifyEmployee(SupportEmployeeModel model);
