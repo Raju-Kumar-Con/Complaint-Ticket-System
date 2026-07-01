@@ -215,8 +215,12 @@ namespace ComplaintTicketSystem.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
+                if (!ModelState.IsValid) { 
+                    model.Normalize();
                     return View(model);
+                }
+                   
+
 
                 bool result = _userRepo.AddSupportEmployee(model);
 

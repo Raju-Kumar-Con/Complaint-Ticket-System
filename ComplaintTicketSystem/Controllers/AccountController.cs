@@ -34,6 +34,8 @@ namespace ComplaintTicketSystem.Controllers
         {
             try
             {
+                model.Normalize();
+
                 if (!ModelState.IsValid)
                 {
                     return View(model);
