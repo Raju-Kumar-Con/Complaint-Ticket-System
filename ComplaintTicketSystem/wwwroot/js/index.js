@@ -74,17 +74,63 @@ function loadComplaints() {
         url: "/Complaint/GetComplaints",
         type: "GET",
         success: function (response) {
-            console.log(response);
+
             userRole = response.role;
-            let data = response.data;
-            gridApi.setGridOption("rowData",data);
-            let savedFilter =localStorage.getItem("complaintFilter");
+            gridApi.setGridOption("rowData", response.data);
+
+            // Existing filters from localStorage
+            let filterModel = {};
+
+            let savedFilter = localStorage.getItem("complaintFilter");
+
             if (savedFilter) {
-                gridApi.setFilterModel(JSON.parse(savedFilter));
+                filterModel = JSON.parse(savedFilter);
+            }
+
+            // Filters coming from chart click
+            const params = new URLSearchParams(window.location.search);
+
+            const status = params.get("status");
+            const userName = params.get("userName");
+            const category = params.get("category");
+
+            if (status) {
+                filterModel.status = {
+                    filterType: "text",
+                    type: "equals",
+                    filter: status
+                };
+            }
+
+            if (userName) {
+                filterModel.userName = {
+                    filterType: "text",
+                    type: "equals",
+                    filter: userName
+                };
+            }
+
+            if (category) {
+                filterModel.categoryName = {
+                    filterType: "text",
+                    type: "equals",
+                    filter: category
+                };
+            }
+
+            if (Object.keys(filterModel).length > 0) {
+
+                gridApi.setFilterModel(filterModel);
+
+                // Save merged filters
+                localStorage.setItem(
+                    "complaintFilter",
+                    JSON.stringify(filterModel)
+                );
             }
         },
         error: function (err) {
-            console.log("Error loading complaints",err);
+            console.log("Error loading complaints", err);
         }
     });
 }
