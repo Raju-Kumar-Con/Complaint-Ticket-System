@@ -235,13 +235,14 @@ function assignComplaint(id) {
     window.location.href =`/Admin/Assign/${id}`;
 }
 function deleteComplaint(id) {
-    if ( !confirm("Are you sure you want to delete this complaint?"))
+    if (!confirm("Are you sure you want to delete this complaint?"))
         return;
     $.ajax({
         url: "/Complaint/Delete",
         type: "POST",
         data: {
-            id: id
+            id: id,
+            __RequestVerificationToken:$('input[name="__RequestVerificationToken"]').val()
         },
         success: function (response) {
             alert(response.message);
@@ -249,7 +250,11 @@ function deleteComplaint(id) {
                 loadComplaints();
             }
         },
-        error: function () {
+        error: function (xhr, status, error) {
+            console.log("Status:", xhr.status);
+            console.log("Response:", xhr.responseText);
+            console.log("Error:", error);
+
             alert("Delete failed.");
         }
     });
