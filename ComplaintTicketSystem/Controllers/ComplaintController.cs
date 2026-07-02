@@ -3,6 +3,7 @@ using ComplaintTicketSystem.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ComplaintTicketSystem.Filters;
+using ComplaintTicketSystem.Services;
 
 namespace ComplaintTicketSystem.Controllers
 {
@@ -14,17 +15,20 @@ namespace ComplaintTicketSystem.Controllers
         private readonly ICategoryRepository _categoryRepo;
         private readonly IUserRepository _userRepo;
         private readonly ErrorRepository _errorRepo;
+        private readonly IEmailService _emailService;
 
         public ComplaintController(
             IComplaintRepository complaintRepo,
             ICategoryRepository categoryRepo,
             IUserRepository userRepo,
-            ErrorRepository errorRepo)
+            ErrorRepository errorRepo,
+            IEmailService emailService)
         {
             _complaintRepo = complaintRepo;
             _categoryRepo = categoryRepo;
             _userRepo = userRepo;
             _errorRepo = errorRepo;
+            _emailService = emailService;
         }
 
         // DASHBOARD
@@ -118,7 +122,7 @@ namespace ComplaintTicketSystem.Controllers
         // CREATE - POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Raise(ComplaintModel model)
+        public async Task<IActionResult> Raise(ComplaintModel model)
         {
             try
             {
@@ -130,23 +134,142 @@ namespace ComplaintTicketSystem.Controllers
 
                     _complaintRepo.InsertComplaint(model);
 
+                    // Get user details
+                    var user = _userRepo.GetUserById(model.UserId);
+
+                    if (user != null && !string.IsNullOrEmpty(user.Email))
+                    {
+                        string body = $@"
+                            <!DOCTYPE html>
+                            <html>
+                            <head>
+                            <meta charset='utf-8'>
+                            </head>
+                            <body style='background-color:#f8f9fa;padding:20px;font-family:Arial,sans-serif;'>
+
+                            <div style='max-width:700px;margin:auto;background:white;
+                            border-radius:10px;box-shadow:0 2px 10px rgba(0,0,0,.1);
+                            overflow:hidden;'>
+
+                                <div style='background:#0d6efd;color:white;
+                                text-align:center;padding:20px;'>
+                                    <h2>Complaint Registered Successfully</h2>
+                                </div>
+
+                                <div style='padding:25px;'>
+
+                                    <p class='mb-3'>
+                                        Hello <strong>{user.UserName}</strong>,
+                                    </p>
+
+                                    <p>
+                                        Your complaint has been registered successfully.
+                                        Our support team will review it shortly.
+                                    </p>
+
+                                    <table style='width:100%;
+                                    border-collapse:collapse;
+                                    margin-top:20px;'>
+
+                                        <tr>
+                                            <td style='padding:10px;background:#f8f9fa;
+                                            border:1px solid #dee2e6;'>
+                                                <strong>Subject</strong>
+                                            </td>
+
+                                            <td style='padding:10px;
+                                            border:1px solid #dee2e6;'>
+                                                {model.Subject}
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style='padding:10px;background:#f8f9fa;
+                                            border:1px solid #dee2e6;'>
+                                                <strong>Description</strong>
+                                            </td>
+
+                                            <td style='padding:10px;
+                                            border:1px solid #dee2e6;'>
+                                                {model.Description}
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style='padding:10px;background:#f8f9fa;
+                                            border:1px solid #dee2e6;'>
+                                                <strong>Status</strong>
+                                            </td>
+
+                                            <td style='padding:10px;
+                                            border:1px solid #dee2e6;
+                                            color:#198754;font-weight:bold;'>
+                                                Open
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td style='padding:10px;background:#f8f9fa;
+                                            border:1px solid #dee2e6;'>
+                                                <strong>Created Date</strong>
+                                            </td>
+
+                                            <td style='padding:10px;
+                                            border:1px solid #dee2e6;'>
+                                                {DateTime.Now:dd-MMM-yyyy hh:mm tt}
+                                            </td>
+                                        </tr>
+
+                                    </table>
+
+                                    <div style='margin-top:20px;
+                                    padding:15px;
+                                    background:#e7f1ff;
+                                    border-left:5px solid #0d6efd;'>
+
+                                        Your complaint has been recorded and will be reviewed by our support team.
+
+                                    </div>
+
+                                    <p style='margin-top:20px;'>
+                                        Regards,<br>
+                                        <strong>Complaint Ticket System Team</strong>
+                                    </p>
+
+                                </div>
+
+                                <div style='background:#f8f9fa;
+                                text-align:center;
+                                padding:12px;
+                                color:#6c757d;
+                                font-size:12px;'>
+
+                                    This is an automated email. Please do not reply.
+
+                                </div>
+
+                            </div>
+
+                            </body>
+                            </html>";
+
+                        await _emailService.SendEmailAsync(user.Email,"Complaint Registered Successfully",body);
+                    }
+
                     TempData["Success"] = "Complaint created successfully.";
 
                     return RedirectToAction("Index");
                 }
-
                 LoadCategories();
                 return View(model);
             }
             catch (Exception ex)
             {
                 _errorRepo.LogError(ex.Message);
-
                 TempData["Error"] = "Unable to create complaint.";
                 return View(model);
             }
         }
-
         // EDIT - GET
         [HttpGet]
         public IActionResult Edit(int id)

@@ -136,5 +136,30 @@ namespace ComplaintTicketSystem.Repositories
             ht.Add("@Role", model.Role);
             return _db.ExecuteQuery("USP_ModifyEmployee", ht) > 0;
         }
+
+
+        public UserModel? GetUserById(int userId)
+        {
+            Hashtable ht = new Hashtable();
+            ht.Add("@UserId", userId);
+
+            using SqlDataReader dr = _db.GetData("USP_GetUserById", ht);
+
+            if (dr.Read())
+            {
+                return new UserModel
+                {
+                    UserId = Convert.ToInt32(dr["UserId"]),
+                    UserName = dr["UserName"].ToString(),
+                    Email = dr["Email"].ToString(),
+                    Role = dr["Role"].ToString()
+                };
+            }
+
+            return null;
+        }
+
+
+
     }
 }

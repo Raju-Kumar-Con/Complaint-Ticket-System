@@ -13,5 +13,7 @@ namespace ComplaintTicketSystem.Repositories
         bool AddSupportEmployee(SupportEmployeeModel model);
         bool ModifyEmployee(SupportEmployeeModel model);
 
+
+        UserModel? GetUserById(int userId);
     }
 }
