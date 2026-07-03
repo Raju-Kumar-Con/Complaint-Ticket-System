@@ -14,6 +14,19 @@
         background-color: #2244cc22;
     }
 </style>
+@if (TempData["Success"] != null)
+{
+    <script>
+        alert('@TempData["Success"]');
+    </script>
+}
+
+@if (TempData["Error"] != null)
+{
+    <script>
+        alert('@TempData["Error"]');
+    </script>
+}
 
 <div class="d-flex justify-content-between align-items-center mb-4">
 

@@ -4,6 +4,13 @@
     ViewData["Title"] = "Edit Category";
 }
 
+@if (ViewBag.Error != null)
+{
+    <script>
+        alert('@ViewBag.Error');
+    </script>
+}
+
 <h2>Edit Category</h2>
 
 <form asp-action="EditCategory" method="post">
@@ -36,7 +43,7 @@
         Update
     </button>
 
-    <a asp-action="AddCategory"
+    <a asp-action="Category"
        class="btn btn-secondary">
         Cancel
     </a>

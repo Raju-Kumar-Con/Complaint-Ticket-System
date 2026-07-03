@@ -96,9 +96,9 @@ namespace ComplaintTicketSystem.Repositories
 
             ht.Add("@CategoryName", model.CategoryName);
 
-            int result = _db.ExecuteQuery("USP_InsertCategory", ht);
+            object? result = _db.ExecuteScalar("USP_InsertCategory", ht);
 
-            return result > 0;
+            return Convert.ToInt32(result) == 1;
         }
 
         // Update Category
@@ -110,9 +110,9 @@ namespace ComplaintTicketSystem.Repositories
             ht.Add("@CategoryName", model.CategoryName);
             ht.Add("@IsActive", model.IsActive);
 
-            int result = _db.ExecuteQuery("USP_UpdateCategory", ht);
+            object? result = _db.ExecuteScalar("USP_UpdateCategory", ht);
 
-            return result > 0;
+            return Convert.ToInt32(result) == 1;
         }
 
         // Delete Category (Soft Delete)

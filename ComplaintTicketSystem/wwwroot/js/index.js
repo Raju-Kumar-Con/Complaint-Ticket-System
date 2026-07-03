@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
         {
             headerName: "Actions",
             field: "actions",
-            pinned: "right",
+            
             sortable: false,
             filter: false,
             cellRenderer: actionRenderer

@@ -323,7 +323,7 @@ namespace ComplaintTicketSystem.Controllers
                     return RedirectToAction(nameof(Category));
                 }
 
-                TempData["Error"] = "Unable to add category.";
+                TempData["Error"] = "Unable to add category  It's already Exists";
                 return View(model);
             }
             catch
@@ -362,7 +362,6 @@ namespace ComplaintTicketSystem.Controllers
         // =========================
         // EDIT CATEGORY - POST
         // =========================
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult EditCategory(ComplaintCategoryModel model)
@@ -375,15 +374,17 @@ namespace ComplaintTicketSystem.Controllers
                 bool result = _categoryRepo.UpdateCategory(model);
 
                 if (result)
+                {
                     TempData["Success"] = "Category Updated Successfully.";
-                else
-                    TempData["Error"] = "Unable to update category.";
+                    return RedirectToAction(nameof(Category));
+                }
 
-                return RedirectToAction(nameof(Category));
+                ViewBag.Error = "Category already exists.";
+                return View(model);
             }
             catch
             {
-                TempData["Error"] = "Something went wrong.";
+                ViewBag.Error = "Something went wrong.";
                 return View(model);
             }
         }
