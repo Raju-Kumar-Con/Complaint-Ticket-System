@@ -390,7 +390,7 @@ namespace ComplaintTicketSystem.Controllers
         }
 
         // =========================
-        // DELETE CATEGORY
+        // CHANGE CATEGORY STATUS
         // =========================
 
         [HttpGet]
@@ -401,9 +401,9 @@ namespace ComplaintTicketSystem.Controllers
                 bool result = _categoryRepo.DeleteCategory(id);
 
                 if (result)
-                    TempData["Success"] = "Category Deleted Successfully.";
+                    TempData["Success"] = "Category Changed Successfully.";
                 else
-                    TempData["Error"] = "Unable to delete category.";
+                    TempData["Error"] = "Unable to Change category.";
             }
             catch
             {

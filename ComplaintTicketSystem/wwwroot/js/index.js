@@ -137,90 +137,92 @@ function loadComplaints() {
 function actionRenderer(params) {
     let row = params.data;
     let html = "";
-    // USER
-    if (userRole === "User") {
 
-        html += `
-            <button class="btn btn-info btn-sm me-1"
-                onclick="viewDetails(${row.complaintId})">
-                <i class="bi bi-eye"></i> Details
-            </button>
-        `;
+    switch (userRole) {
 
-        if (row.status === "Open") {
-
+        case "User":
             html += `
-                <button class="btn btn-warning btn-sm me-1"
-                    onclick="editComplaint(${row.complaintId})">
-                    <i class="bi bi-pencil-square"></i> Edit
-                </button>
-
-                <button class="btn btn-danger btn-sm"
-                    onclick="deleteComplaint(${row.complaintId})">
-                    <i class="bi bi-trash"></i> Delete
+                <button class="btn btn-info btn-sm me-1"
+                    onclick="viewDetails(${row.complaintId})">
+                    <i class="bi bi-eye"></i> Details
                 </button>
             `;
-        }
-    }
 
-    // SUPPORT
-    else if (userRole === "Support") {
+            if (row.status === "Open") {
+                html += `
+                    <button class="btn btn-warning btn-sm me-1"
+                        onclick="editComplaint(${row.complaintId})">
+                        <i class="bi bi-pencil-square"></i> Edit
+                    </button>
 
-        html += `
-            <button class="btn btn-info btn-sm me-1"
-                onclick="viewDetails(${row.complaintId})">
-                <i class="bi bi-eye"></i> Details
-            </button>
-        `;
+                    <button class="btn btn-danger btn-sm"
+                        onclick="deleteComplaint(${row.complaintId})">
+                        <i class="bi bi-trash"></i> Delete
+                    </button>
+                `;
+            }
+            break;
 
-        if (row.status !== "Resolved") {
-
+        case "Support":
             html += `
-                <button class="btn btn-success btn-sm"
-                    onclick="updateStatus(${row.complaintId})">
-                    <i class="bi bi-arrow-repeat"></i>
-                    Update Status
+                <button class="btn btn-info btn-sm me-1"
+                    onclick="viewDetails(${row.complaintId})">
+                    <i class="bi bi-eye"></i> Details
                 </button>
             `;
-        }
-    }
 
-    // ADMIN
-    else if (userRole === "Admin") {
+            if (row.status !== "Resolved") {
+                html += `
+                    <button class="btn btn-success btn-sm"
+                        onclick="updateStatus(${row.complaintId})">
+                        <i class="bi bi-arrow-repeat"></i>
+                        Update Status
+                    </button>
+                `;
+            }
+            break;
 
-        html += `
-            <button class="btn btn-info btn-sm me-1"
-                onclick="viewDetails(${row.complaintId})">
-                <i class="bi bi-eye"></i> Details
-            </button>
-        `;
-
-        if (row.status !== "Resolved") {
-
+        case "Admin":
             html += `
-                <button class="btn btn-success btn-sm me-1"
-                    onclick="updateStatus(${row.complaintId})">
-                    <i class="bi bi-arrow-repeat"></i>
-                    Update Status
+                <button class="btn btn-info btn-sm me-1"
+                    onclick="viewDetails(${row.complaintId})">
+                    <i class="bi bi-eye"></i> Details
                 </button>
             `;
-        }
 
-        if ((row.assignedTo == null || row.assignedTo === 0) && row.status !== "Resolved") {
+            if (row.status !== "Resolved") {
+                html += `
+                    <button class="btn btn-success btn-sm me-1"
+                        onclick="updateStatus(${row.complaintId})">
+                        <i class="bi bi-arrow-repeat"></i>
+                        Update Status
+                    </button>
+                `;
+            }
 
+            if ((row.assignedTo == null || row.assignedTo === 0) && row.status !== "Resolved") {
+                html += `
+                    <button class="btn btn-primary btn-sm"
+                        onclick="assignComplaint(${row.complaintId})">
+                        <i class="bi bi-person-plus"></i>
+                        Assign Complaint
+                    </button>
+                `;
+            }
+            break;
+
+        default:
             html += `
-                <button class="btn btn-primary btn-sm"
-                    onclick="assignComplaint(${row.complaintId})">
-                    <i class="bi bi-person-plus"></i>
-                    Assign Complaint
+                <button class="btn btn-info btn-sm"
+                    onclick="viewDetails(${row.complaintId})">
+                    <i class="bi bi-eye"></i> Details
                 </button>
             `;
-        }
+            break;
     }
 
     return html;
 }
-
 function viewDetails(id) {
     window.location.href =`/Complaint/Details?id=${id}`;
 }
@@ -237,12 +239,13 @@ function assignComplaint(id) {
 function deleteComplaint(id) {
     if (!confirm("Are you sure you want to delete this complaint?"))
         return;
+
     $.ajax({
-        url: "/Complaint/Delete",
-        type: "POST",
-        data: {
-            id: id,
-            __RequestVerificationToken:$('input[name="__RequestVerificationToken"]').val()
+        url: "/Complaint/Delete?id=" + id,
+        type: "DELETE",
+        headers: {
+            "RequestVerificationToken":
+                $('input[name="__RequestVerificationToken"]').val()
         },
         success: function (response) {
             alert(response.message);
@@ -250,11 +253,9 @@ function deleteComplaint(id) {
                 loadComplaints();
             }
         },
-        error: function (xhr, status, error) {
+        error: function (xhr) {
             console.log("Status:", xhr.status);
             console.log("Response:", xhr.responseText);
-            console.log("Error:", error);
-
             alert("Delete failed.");
         }
     });

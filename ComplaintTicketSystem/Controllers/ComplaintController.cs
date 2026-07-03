@@ -341,8 +341,8 @@ namespace ComplaintTicketSystem.Controllers
             }
         }
 
-        // DELETE - POST
-        [HttpPost]
+        // DELETE - DELETE Method
+        [HttpDelete]
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
@@ -368,8 +368,7 @@ namespace ComplaintTicketSystem.Controllers
                     });
                 }
 
-                int deletedBy =
-                    HttpContext.Session.GetInt32("UserId") ?? 0;
+                int deletedBy = HttpContext.Session.GetInt32("UserId") ?? 0;
 
                 _complaintRepo.DeleteComplaint(id, deletedBy);
 

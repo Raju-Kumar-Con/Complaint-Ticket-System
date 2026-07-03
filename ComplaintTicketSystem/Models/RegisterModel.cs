@@ -32,6 +32,8 @@ namespace ComplaintTicketSystem.Models
         public string ConfirmPassword { get; set; } = string.Empty;
 
         public string Role { get; set; } = "User";
+        public IFormFile? ProfileImage { get; set; }
+
 
         public void Normalize()
         {

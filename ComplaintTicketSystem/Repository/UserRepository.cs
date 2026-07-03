@@ -16,16 +16,20 @@ namespace ComplaintTicketSystem.Repositories
             _passwordHasher = new PasswordHasher<UserModel>();
         }
 
-        public bool Register(RegisterModel model)
+        public bool Register(RegisterModel model, string? profileImage)
         {
             Hashtable ht = new Hashtable();
+
             var user = new UserModel();
-            string hashedPassword = _passwordHasher.HashPassword(user, model.Password);
+
+            string hashedPassword =
+                _passwordHasher.HashPassword(user, model.Password);
 
             ht.Add("@UserName", model.Name);
             ht.Add("@Email", model.Email);
             ht.Add("@Password", hashedPassword);
             ht.Add("@Role", model.Role);
+            ht.Add("@ProfileImage", profileImage);
 
             return _db.ExecuteQuery("USP_RegisterUser", ht) > 0;
         }
