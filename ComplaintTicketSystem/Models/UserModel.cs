@@ -20,5 +20,8 @@ namespace ComplaintTicketSystem.Models
 
         public bool IsActive { get; set; }
         public string? ProfileImage { get; set; }
+        public DateTime? DOB { get; set; }
+       
+
     }
 }

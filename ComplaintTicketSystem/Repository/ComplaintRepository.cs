@@ -166,14 +166,14 @@ namespace ComplaintTicketSystem.Repositories
         }
 
         // ---------------- ASSIGN ----------------
-        public void AssignComplaint(int complaintId, int assignedTo)
+        public bool AssignComplaint(int complaintId, int assignedTo)
         {
             Hashtable ht = new Hashtable();
 
             ht.Add("@ComplaintId", complaintId);
             ht.Add("@AssignedTo", assignedTo);
 
-            _db.ExecuteQuery("USP_AssignComplaint", ht);
+            return _db.ExecuteQuery("USP_AssignComplaint", ht) > 0;
         }
 
         // ---------------- STATUS UPDATE ----------------

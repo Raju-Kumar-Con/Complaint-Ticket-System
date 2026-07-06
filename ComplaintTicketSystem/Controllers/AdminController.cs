@@ -81,9 +81,15 @@ namespace ComplaintTicketSystem.Controllers
                     return View(model);
                 }
 
-                _repo.AssignComplaint(model.ComplaintId, model.AssignedTo);
-
-                TempData["Success"] = "Complaint Assigned Successfully.";
+                bool result = _repo.AssignComplaint(model.ComplaintId, model.AssignedTo);
+                if (result)
+                {
+                    TempData["Success"] = "Complaint Assigned Successfully.";
+                }
+                else
+                {
+                    TempData["Error"] = "Unable to assign complaint.";
+                }
 
                 return RedirectToAction("Index", "Complaint");
             }

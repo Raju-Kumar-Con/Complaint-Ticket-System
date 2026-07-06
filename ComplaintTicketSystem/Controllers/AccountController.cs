@@ -44,18 +44,14 @@ namespace ComplaintTicketSystem.Controllers
 
                 if (model.ProfileImage != null)
                 {
-                    string uploadFolder = Path.Combine(
-                        Directory.GetCurrentDirectory(),
-                        "wwwroot/uploads/profile"
-                    );
+                    string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot/uploads/profile");
 
                     if (!Directory.Exists(uploadFolder))
                     {
                         Directory.CreateDirectory(uploadFolder);
                     }
 
-                    fileName = Guid.NewGuid().ToString() +
-                               Path.GetExtension(model.ProfileImage.FileName);
+                    fileName = Guid.NewGuid().ToString() + Path.GetExtension(model.ProfileImage.FileName);
 
                     string filePath = Path.Combine(uploadFolder, fileName);
 
@@ -114,11 +110,7 @@ namespace ComplaintTicketSystem.Controllers
 
             var passwordHasher = new PasswordHasher<UserModel>();
 
-            var result = passwordHasher.VerifyHashedPassword(
-                user,
-                user.Password!,
-                model.Password!
-            );
+            var result = passwordHasher.VerifyHashedPassword(user,user.Password!,model.Password!);
 
             if (result == PasswordVerificationResult.Failed)
             {
@@ -129,6 +121,7 @@ namespace ComplaintTicketSystem.Controllers
             HttpContext.Session.SetInt32("UserId", user.UserId);
             HttpContext.Session.SetString("UserName", user.UserName ?? "");
             HttpContext.Session.SetString("Role", user.Role ?? "");
+            HttpContext.Session.SetString("ProfileImage",user.ProfileImage ?? "");
 
             return RedirectToAction("Dashboard", "Complaint");
         }

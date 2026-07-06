@@ -44,6 +44,7 @@ app.UseRouting();
 
 app.UseSession();
 
+app.UseStaticFiles();
 // Disable Browser Cache
 app.Use(async (context, next) =>
 {
