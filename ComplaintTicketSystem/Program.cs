@@ -1,5 +1,6 @@
 using ComplaintTicketSystem.Data;
 using ComplaintTicketSystem.Repositories;
+using ComplaintTicketSystem.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,6 +24,7 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IComplaintRepository, ComplaintRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ErrorRepository>();
+builder.Services.AddScoped<IEmailService, EmailService>();
 
 var app = builder.Build();
 
@@ -42,6 +44,7 @@ app.UseRouting();
 
 app.UseSession();
 
+app.UseStaticFiles();
 // Disable Browser Cache
 app.Use(async (context, next) =>
 {

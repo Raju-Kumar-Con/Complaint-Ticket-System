@@ -130,13 +130,13 @@
 
 <body>
 
-    <div class="register-wrapper">
+    <form asp-action="Register" method="post" enctype="multipart/form-data">
 
-        <div class="register-card">
+        <div class="register-wrapper">
 
-            <h3 class="text-center mb-4 title">Create Account</h3>
+            <div class="register-card">
 
-            <form asp-action="Register" method="post">
+                <h3 class="text-center mb-4 title">Create Account</h3>
 
                 <div asp-validation-summary="ModelOnly" class="text-danger mb-2"></div>
 
@@ -164,20 +164,31 @@
                     <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                 </div>
 
+                <div class="mb-3 field">
+                    <label>Profile Image</label>
+                    <input asp-for="ProfileImage" type="file" class="form-control" accept="image/*" />
+                    <span asp-validation-for="ProfileImage" class="text-danger"></span>
+                </div>
+                <div class="mb-3 field">
+                    <label>Date of Birth</label>
+                    <input asp-for="DOB" type="date" class="form-control" />
+                    <span asp-validation-for="DOB" class="text-danger"></span>
+                </div>
+
                 <button type="submit" class="btn btn-register w-100 field">
                     Create Account
                 </button>
 
-            </form>
+                <div class="text-center mt-3 link-text field">
+                    Already have an account?
+                    <a asp-action="Login">Login</a>
+                </div>
 
-            <div class="text-center mt-3 link-text field">
-                Already have an account?
-                <a asp-action="Login">Login</a>
             </div>
 
         </div>
 
-    </div>
+    </form>
 
     <partial name="_ValidationScriptsPartial" />
 

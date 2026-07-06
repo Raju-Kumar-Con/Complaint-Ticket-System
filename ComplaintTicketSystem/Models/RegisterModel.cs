@@ -2,7 +2,7 @@
 
 namespace ComplaintTicketSystem.Models
 {
-    public class RegisterModel
+    public class RegisterModel : IValidatableObject
     {
         [Required(ErrorMessage = "Name is required")]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Name must be 3-50 characters")]
@@ -33,6 +33,44 @@ namespace ComplaintTicketSystem.Models
 
         public string Role { get; set; } = "User";
 
+        [Required(ErrorMessage ="Image Must be added")]
+        public IFormFile? ProfileImage { get; set; }
+
+        [Required(ErrorMessage = "Date of Birth is required")]
+        [DataType(DataType.Date)]
+        public DateTime? DOB { get; set; }
+
+        public int Age
+        {
+            get
+            {
+                if (!DOB.HasValue)
+                    return 0;
+
+                int age = DateTime.Today.Year - DOB.Value.Year;
+
+                if (DOB.Value.Date > DateTime.Today.AddYears(-age))
+                    age--;
+
+                return age;
+            }
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (DOB.HasValue)
+            {
+                int age = DateTime.Today.Year - DOB.Value.Year;
+
+                if (DOB.Value.Date > DateTime.Today.AddYears(-age))
+                    age--;
+
+                if (age < 18)
+                {
+                    yield return new ValidationResult("User must be at least 18 years old.", new[] { nameof(DOB) });
+                }
+            }
+        }
         public void Normalize()
         {
             Email = Email.Trim().ToLower();

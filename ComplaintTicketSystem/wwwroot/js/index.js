@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
         {
             headerName: "Actions",
             field: "actions",
-            pinned: "right",
+            
             sortable: false,
             filter: false,
             cellRenderer: actionRenderer
@@ -74,107 +74,156 @@ function loadComplaints() {
         url: "/Complaint/GetComplaints",
         type: "GET",
         success: function (response) {
-            console.log(response);
+
             userRole = response.role;
-            let data = response.data;
-            gridApi.setGridOption("rowData",data);
-            let savedFilter =localStorage.getItem("complaintFilter");
+            gridApi.setGridOption("rowData", response.data);
+
+            // Existing filters from localStorage
+            let filterModel = {};
+
+            let savedFilter = localStorage.getItem("complaintFilter");
+
             if (savedFilter) {
-                gridApi.setFilterModel(JSON.parse(savedFilter));
+                filterModel = JSON.parse(savedFilter);
+            }
+
+            // Filters coming from chart click
+            const params = new URLSearchParams(window.location.search);
+
+            const status = params.get("status");
+            const userName = params.get("userName");
+            const category = params.get("category");
+
+            if (status) {
+                filterModel.status = {
+                    filterType: "text",
+                    type: "equals",
+                    filter: status
+                };
+            }
+
+            if (userName) {
+                filterModel.userName = {
+                    filterType: "text",
+                    type: "equals",
+                    filter: userName
+                };
+            }
+
+            if (category) {
+                filterModel.categoryName = {
+                    filterType: "text",
+                    type: "equals",
+                    filter: category
+                };
+            }
+
+            if (Object.keys(filterModel).length > 0) {
+
+                gridApi.setFilterModel(filterModel);
+
+                // Save merged filters
+                localStorage.setItem(
+                    "complaintFilter",
+                    JSON.stringify(filterModel)
+                );
             }
         },
         error: function (err) {
-            console.log("Error loading complaints",err);
+            console.log("Error loading complaints", err);
         }
     });
 }
 function actionRenderer(params) {
     let row = params.data;
     let html = "";
-    // USER
-    if (userRole === "User") {
 
-        html += `
-            <button class="btn btn-info btn-sm me-1"
-                onclick="viewDetails(${row.complaintId})">
-                <i class="bi bi-eye"></i> Details
-            </button>
-        `;
 
-        if (row.status === "Open") {
+    switch (userRole) {
 
+        case "User":
             html += `
-                <button class="btn btn-warning btn-sm me-1"
-                    onclick="editComplaint(${row.complaintId})">
-                    <i class="bi bi-pencil-square"></i> Edit
-                </button>
-
-                <button class="btn btn-danger btn-sm"
-                    onclick="deleteComplaint(${row.complaintId})">
-                    <i class="bi bi-trash"></i> Delete
+                <button class="btn btn-info btn-sm me-1"
+                    onclick="viewDetails(${row.complaintId})">
+                    <i class="bi bi-eye"></i> Details
                 </button>
             `;
-        }
-    }
 
-    // SUPPORT
-    else if (userRole === "Support") {
+            if (row.status === "Open") {
+                html += `
+                    <button class="btn btn-warning btn-sm me-1"
+                        onclick="editComplaint(${row.complaintId})">
+                        <i class="bi bi-pencil-square"></i> Edit
+                    </button>
 
-        html += `
-            <button class="btn btn-info btn-sm me-1"
-                onclick="viewDetails(${row.complaintId})">
-                <i class="bi bi-eye"></i> Details
-            </button>
-        `;
+                    <button class="btn btn-danger btn-sm"
+                        onclick="deleteComplaint(${row.complaintId})">
+                        <i class="bi bi-trash"></i> Delete
+                    </button>
+                `;
+            }
+            break;
 
-        if (row.status !== "Resolved") {
-
+        case "Support":
             html += `
-                <button class="btn btn-success btn-sm"
-                    onclick="updateStatus(${row.complaintId})">
-                    <i class="bi bi-arrow-repeat"></i>
-                    Update Status
+                <button class="btn btn-info btn-sm me-1"
+                    onclick="viewDetails(${row.complaintId})">
+                    <i class="bi bi-eye"></i> Details
                 </button>
             `;
-        }
-    }
 
-    // ADMIN
-    else if (userRole === "Admin") {
+            if (row.status !== "Resolved") {
+                html += `
+                    <button class="btn btn-success btn-sm"
+                        onclick="updateStatus(${row.complaintId})">
+                        <i class="bi bi-arrow-repeat"></i>
+                        Update Status
+                    </button>
+                `;
+            }
+            break;
 
-        html += `
-            <button class="btn btn-info btn-sm me-1"
-                onclick="viewDetails(${row.complaintId})">
-                <i class="bi bi-eye"></i> Details
-            </button>
-        `;
-
-        if (row.status !== "Resolved") {
-
+        case "Admin":
             html += `
-                <button class="btn btn-success btn-sm me-1"
-                    onclick="updateStatus(${row.complaintId})">
-                    <i class="bi bi-arrow-repeat"></i>
-                    Update Status
+                <button class="btn btn-info btn-sm me-1"
+                    onclick="viewDetails(${row.complaintId})">
+                    <i class="bi bi-eye"></i> Details
                 </button>
             `;
-        }
 
-        if ((row.assignedTo == null || row.assignedTo === 0) && row.status !== "Resolved") {
+            if (row.status !== "Resolved") {
+                html += `
+                    <button class="btn btn-success btn-sm me-1"
+                        onclick="updateStatus(${row.complaintId})">
+                        <i class="bi bi-arrow-repeat"></i>
+                        Update Status
+                    </button>
+                `;
+            }
 
+            if ((row.assignedTo == null || row.assignedTo === 0) && row.status !== "Resolved") {
+                html += `
+                    <button class="btn btn-primary btn-sm"
+                        onclick="assignComplaint(${row.complaintId})">
+                        <i class="bi bi-person-plus"></i>
+                        Assign Complaint
+                    </button>
+                `;
+            }
+            break;
+
+        default:
             html += `
-                <button class="btn btn-primary btn-sm"
-                    onclick="assignComplaint(${row.complaintId})">
-                    <i class="bi bi-person-plus"></i>
-                    Assign Complaint
+                <button class="btn btn-info btn-sm"
+                    onclick="viewDetails(${row.complaintId})">
+                    <i class="bi bi-eye"></i> Details
                 </button>
             `;
-        }
+            break;
     }
 
     return html;
 }
-
 function viewDetails(id) {
     window.location.href =`/Complaint/Details?id=${id}`;
 }
@@ -189,13 +238,15 @@ function assignComplaint(id) {
     window.location.href =`/Admin/Assign/${id}`;
 }
 function deleteComplaint(id) {
-    if ( !confirm("Are you sure you want to delete this complaint?"))
+    if (!confirm("Are you sure you want to delete this complaint?"))
         return;
+
     $.ajax({
-        url: "/Complaint/Delete",
-        type: "POST",
-        data: {
-            id: id
+        url: "/Complaint/Delete?id=" + id,
+        type: "DELETE",
+        headers: {
+            "RequestVerificationToken":
+                $('input[name="__RequestVerificationToken"]').val()
         },
         success: function (response) {
             alert(response.message);
@@ -203,7 +254,9 @@ function deleteComplaint(id) {
                 loadComplaints();
             }
         },
-        error: function () {
+        error: function (xhr) {
+            console.log("Status:", xhr.status);
+            console.log("Response:", xhr.responseText);
             alert("Delete failed.");
         }
     });

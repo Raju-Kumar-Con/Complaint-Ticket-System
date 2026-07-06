@@ -3,7 +3,19 @@
 @{
     ViewData["Title"] = "Add Category";
 }
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
 
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
 <div class="card shadow">
 
     <div class="card-header bg-primary text-white">
@@ -15,7 +27,7 @@
 
     <div class="card-body">
 
-        <form asp-action="Category" method="post">
+        <form asp-action="AddCategory" method="post">
 
             @Html.AntiForgeryToken()
 

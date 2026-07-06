@@ -2,6 +2,7 @@
 using ComplaintTicketSystem.Models;
 using Microsoft.Data.SqlClient;
 using System.Collections;
+using System.Data;
 
 namespace ComplaintTicketSystem.Repositories
 {
@@ -52,15 +53,15 @@ namespace ComplaintTicketSystem.Repositories
 
             Hashtable ht = new Hashtable();
 
-            using SqlDataReader dr = _db.GetData("USP_GetAllCategories", ht);
+            DataTable dt = _db.GetDataTable("USP_GetAllCategories", ht);
 
-            while (dr.Read())
+            foreach (DataRow row in dt.Rows)
             {
                 list.Add(new ComplaintCategoryModel
                 {
-                    CategoryId = SafeInt(dr["CategoryId"]),
-                    CategoryName = SafeString(dr["CategoryName"]),
-                    IsActive = Convert.ToBoolean(dr["IsActive"])
+                    CategoryId = SafeInt(row["CategoryId"]),
+                    CategoryName = SafeString(row["CategoryName"]),
+                    IsActive = Convert.ToBoolean(row["IsActive"])
                 });
             }
 
@@ -96,9 +97,9 @@ namespace ComplaintTicketSystem.Repositories
 
             ht.Add("@CategoryName", model.CategoryName);
 
-            int result = _db.ExecuteQuery("USP_InsertCategory", ht);
+            object? result = _db.ExecuteScalar("USP_InsertCategory", ht);
 
-            return result > 0;
+            return Convert.ToInt32(result) == 1;
         }
 
         // Update Category
@@ -110,9 +111,9 @@ namespace ComplaintTicketSystem.Repositories
             ht.Add("@CategoryName", model.CategoryName);
             ht.Add("@IsActive", model.IsActive);
 
-            int result = _db.ExecuteQuery("USP_UpdateCategory", ht);
+            object? result = _db.ExecuteScalar("USP_UpdateCategory", ht);
 
-            return result > 0;
+            return Convert.ToInt32(result) == 1;
         }
 
         // Delete Category (Soft Delete)

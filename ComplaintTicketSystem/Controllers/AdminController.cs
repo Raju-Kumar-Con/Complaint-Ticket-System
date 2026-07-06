@@ -81,9 +81,15 @@ namespace ComplaintTicketSystem.Controllers
                     return View(model);
                 }
 
-                _repo.AssignComplaint(model.ComplaintId, model.AssignedTo);
-
-                TempData["Success"] = "Complaint Assigned Successfully.";
+                bool result = _repo.AssignComplaint(model.ComplaintId, model.AssignedTo);
+                if (result)
+                {
+                    TempData["Success"] = "Complaint Assigned Successfully.";
+                }
+                else
+                {
+                    TempData["Error"] = "Unable to assign complaint.";
+                }
 
                 return RedirectToAction("Index", "Complaint");
             }
@@ -323,7 +329,7 @@ namespace ComplaintTicketSystem.Controllers
                     return RedirectToAction(nameof(Category));
                 }
 
-                TempData["Error"] = "Unable to add category.";
+                TempData["Error"] = "Unable to add category  It's already Exists";
                 return View(model);
             }
             catch
@@ -362,7 +368,6 @@ namespace ComplaintTicketSystem.Controllers
         // =========================
         // EDIT CATEGORY - POST
         // =========================
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult EditCategory(ComplaintCategoryModel model)
@@ -375,21 +380,23 @@ namespace ComplaintTicketSystem.Controllers
                 bool result = _categoryRepo.UpdateCategory(model);
 
                 if (result)
+                {
                     TempData["Success"] = "Category Updated Successfully.";
-                else
-                    TempData["Error"] = "Unable to update category.";
+                    return RedirectToAction(nameof(Category));
+                }
 
-                return RedirectToAction(nameof(Category));
+                ViewBag.Error = "Category already exists.";
+                return View(model);
             }
             catch
             {
-                TempData["Error"] = "Something went wrong.";
+                ViewBag.Error = "Something went wrong.";
                 return View(model);
             }
         }
 
         // =========================
-        // DELETE CATEGORY
+        // CHANGE CATEGORY STATUS
         // =========================
 
         [HttpGet]
@@ -400,9 +407,9 @@ namespace ComplaintTicketSystem.Controllers
                 bool result = _categoryRepo.DeleteCategory(id);
 
                 if (result)
-                    TempData["Success"] = "Category Deleted Successfully.";
+                    TempData["Success"] = "Category Changed Successfully.";
                 else
-                    TempData["Error"] = "Unable to delete category.";
+                    TempData["Error"] = "Unable to Change category.";
             }
             catch
             {

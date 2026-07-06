@@ -6,13 +6,15 @@ namespace ComplaintTicketSystem.Models
     {
         public int EmployeeId { get; set; }
 
-        [Required(ErrorMessage = "Username is required")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "Username must be 3-50 characters")]
+        [Required(ErrorMessage = "Name is required")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "Name must be 3-50 characters")]
+        [RegularExpression(@"^[A-Za-z\s]+$", ErrorMessage = "Name can contain only letters and spaces")]
         public string? UserName { get; set; }
-
         [Required(ErrorMessage = "Email is required")]
         [EmailAddress(ErrorMessage = "Invalid email format")]
         [StringLength(100, ErrorMessage = "Email cannot exceed 100 characters")]
+        [RegularExpression( @"^[a-z0-9]+([._%+-]?[a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*\.[a-z]{2,}$",
+                    ErrorMessage = "Email must be in lowercase and valid format (e.g. raju@gmail.com)")]
         public string? Email { get; set; }
 
         [Required(ErrorMessage = "Password is required")]

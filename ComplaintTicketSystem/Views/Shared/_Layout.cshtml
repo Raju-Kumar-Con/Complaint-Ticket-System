@@ -4,11 +4,11 @@
 @{
     var userName = HttpContextAccessor.HttpContext?.Session.GetString("UserName");
     var role = HttpContextAccessor.HttpContext?.Session.GetString("Role");
+    var profileImage = HttpContextAccessor.HttpContext?.Session.GetString("ProfileImage");
 
     var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
     var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
 }
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -146,11 +146,20 @@
                            class="d-flex align-items-center text-decoration-none"
                            data-bs-toggle="dropdown">
 
-                        <div class="profile-circle">
-                            @(string.IsNullOrEmpty(userName)
-                                ? "G"
-                                : userName.Substring(0, 1).ToUpper())
-                        </div>
+                        @if (!string.IsNullOrEmpty(profileImage))
+                        {
+                            <img src="~/uploads/profile/@profileImage"
+                                 class="profile-img"
+                                 alt="Profile" />
+                        }
+                        else
+                        {
+                            <div class="profile-circle">
+                                @(string.IsNullOrEmpty(userName)
+                                    ? "G"
+                                    : userName.Substring(0, 1).ToUpper())
+                            </div>
+                        }
 
                         <div class="ms-2">
                             <div class="fw-bold">

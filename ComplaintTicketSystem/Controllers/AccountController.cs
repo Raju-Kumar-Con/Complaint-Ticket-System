@@ -36,30 +36,43 @@ namespace ComplaintTicketSystem.Controllers
             try
             {
                 model.Normalize();
+
                 if (!ModelState.IsValid)
-                {
                     return View(model);
-                }
-                if (_userRepo.IsEmailExists(model.Email!))
+
+                string? fileName = null;
+
+                if (model.ProfileImage != null)
                 {
-                    ModelState.AddModelError("Email", "Email already exists");
-                    return View(model);
+                    string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot/uploads/profile");
+
+                    if (!Directory.Exists(uploadFolder))
+                    {
+                        Directory.CreateDirectory(uploadFolder);
+                    }
+
+                    fileName = Guid.NewGuid().ToString() + Path.GetExtension(model.ProfileImage.FileName);
+
+                    string filePath = Path.Combine(uploadFolder, fileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        model.ProfileImage.CopyTo(stream);
+                    }
                 }
-                if (model.Password != model.ConfirmPassword)
-                {
-                    ModelState.AddModelError("ConfirmPassword","Password and Confirm Password do not match");
-                    return View(model);
-                }
-                bool result = _userRepo.Register(model);
+
+                bool result = _userRepo.Register(model, fileName);
+
                 if (result)
                 {
                     TempData["Success"] = "Registration Successful. Please Login.";
                     return RedirectToAction("Login");
                 }
+
                 ModelState.AddModelError("", "Registration Failed");
                 return View(model);
             }
-            catch (Exception)
+            catch
             {
                 ModelState.AddModelError("", "Something went wrong during registration.");
                 return View(model);
@@ -97,11 +110,7 @@ namespace ComplaintTicketSystem.Controllers
 
             var passwordHasher = new PasswordHasher<UserModel>();
 
-            var result = passwordHasher.VerifyHashedPassword(
-                user,
-                user.Password!,
-                model.Password!
-            );
+            var result = passwordHasher.VerifyHashedPassword(user,user.Password!,model.Password!);
 
             if (result == PasswordVerificationResult.Failed)
             {
@@ -112,6 +121,7 @@ namespace ComplaintTicketSystem.Controllers
             HttpContext.Session.SetInt32("UserId", user.UserId);
             HttpContext.Session.SetString("UserName", user.UserName ?? "");
             HttpContext.Session.SetString("Role", user.Role ?? "");
+            HttpContext.Session.SetString("ProfileImage",user.ProfileImage ?? "");
 
             return RedirectToAction("Dashboard", "Complaint");
         }

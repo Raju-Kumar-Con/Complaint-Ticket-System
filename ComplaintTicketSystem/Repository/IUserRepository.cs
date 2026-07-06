@@ -4,7 +4,7 @@ namespace ComplaintTicketSystem.Repositories
 {
     public interface IUserRepository
     {
-        bool Register(RegisterModel model);
+        bool Register(RegisterModel model, string? profileImage);
 
         UserModel? Login(LoginModel model);
         UserModel? GetUserByEmail(string email);
@@ -13,5 +13,7 @@ namespace ComplaintTicketSystem.Repositories
         bool AddSupportEmployee(SupportEmployeeModel model);
         bool ModifyEmployee(SupportEmployeeModel model);
 
+
+        UserModel? GetUserById(int userId);
     }
 }
