@@ -19,6 +19,7 @@
 - Dashboard
 - Reports
 - AJAX Search
+- Email Sending Time of Complaint Creation
 
 ## Setup
 
