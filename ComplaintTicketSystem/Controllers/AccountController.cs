@@ -31,11 +31,13 @@ namespace ComplaintTicketSystem.Controllers
 
         // REGISTER - POST
         [HttpPost]
-        public IActionResult Register(RegisterModel model)
+        public IActionResult Register(RegisterModel model,string[] SelectedHobbies)
         {
             try
             {
                 model.Normalize();
+
+                model.Hobbies = string.Join(",", SelectedHobbies);
 
                 if (!ModelState.IsValid)
                     return View(model);
@@ -44,37 +46,37 @@ namespace ComplaintTicketSystem.Controllers
 
                 if (model.ProfileImage != null)
                 {
+                    var extension = Path.GetExtension(model.ProfileImage.FileName).ToLower();
+                    string[] allowed ={".jpg",".jpeg",".png"};
+                    if (!allowed.Contains(extension))
+                    {
+                        ModelState.AddModelError("ProfileImage", "Only JPG, JPEG and PNG files allowed.");
+                        return View(model);
+                    }
                     string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(),"wwwroot/uploads/profile");
-
                     if (!Directory.Exists(uploadFolder))
                     {
                         Directory.CreateDirectory(uploadFolder);
                     }
-
-                    fileName = Guid.NewGuid().ToString() + Path.GetExtension(model.ProfileImage.FileName);
-
+                    fileName = Guid.NewGuid().ToString() + extension;
                     string filePath = Path.Combine(uploadFolder, fileName);
-
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
                         model.ProfileImage.CopyTo(stream);
                     }
                 }
-
                 bool result = _userRepo.Register(model, fileName);
-
                 if (result)
                 {
-                    TempData["Success"] = "Registration Successful. Please Login.";
+                    TempData["Success"] ="Registration Successful. Please Login.";
                     return RedirectToAction("Login");
                 }
-
                 ModelState.AddModelError("", "Registration Failed");
                 return View(model);
             }
             catch
             {
-                ModelState.AddModelError("", "Something went wrong during registration.");
+                ModelState.AddModelError("","Something went wrong during registration.");
                 return View(model);
             }
         }

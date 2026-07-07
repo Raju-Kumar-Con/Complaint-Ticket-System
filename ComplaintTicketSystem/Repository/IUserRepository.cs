@@ -1,5 +1,5 @@
 ﻿using ComplaintTicketSystem.Models;
-
+using System.Data;
 namespace ComplaintTicketSystem.Repositories
 {
     public interface IUserRepository
@@ -12,8 +12,12 @@ namespace ComplaintTicketSystem.Repositories
         List<UserModel> GetUsersForAssignment();
         bool AddSupportEmployee(SupportEmployeeModel model);
         bool ModifyEmployee(SupportEmployeeModel model);
-
-
         UserModel? GetUserById(int userId);
+        DataTable GetAllUsers();
+
+        bool UpdateUser(UserModel model);
+
+        bool ToggleUserStatus(int userId);
+
     }
 }

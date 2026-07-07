@@ -103,6 +103,14 @@
                     <span class="menu-text">Category</span>
 
                 </a>
+                <a asp-controller="Admin"
+                   asp-action="Users"
+                   class="@(currentAction == "Users" ? "active" : "")">
+
+                    <i class="bi bi-people-fill"></i>
+                    <span class="menu-text">Users</span>
+
+                </a>
             }
 
             <hr class="text-secondary" />

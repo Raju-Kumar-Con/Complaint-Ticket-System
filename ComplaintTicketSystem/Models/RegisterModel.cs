@@ -40,6 +40,22 @@ namespace ComplaintTicketSystem.Models
         [DataType(DataType.Date)]
         public DateTime? DOB { get; set; }
 
+        [Required(ErrorMessage = "Mobile Number is required")]
+        [RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Enter valid 10 digit mobile number")]
+        public string MobileNo { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Gender is required")]
+        public string Gender { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Marital Status is required")]
+        public string MaritalStatus { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Address is required")]
+        [StringLength(500)]
+        public string Address { get; set; } = string.Empty;
+
+        public string Hobbies { get; set; } = string.Empty;
+
         public int Age
         {
             get
@@ -71,6 +87,7 @@ namespace ComplaintTicketSystem.Models
                 }
             }
         }
+        public int UserId { get; set; }
         public void Normalize()
         {
             Email = Email.Trim().ToLower();

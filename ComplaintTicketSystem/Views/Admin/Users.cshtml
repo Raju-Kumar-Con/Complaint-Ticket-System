@@ -1,0 +1,204 @@
+﻿@model System.Data.DataTable
+
+@{
+    ViewData["Title"] = "User Management";
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+<style>
+    #tblUsers {
+        width: 100% !important;
+    }
+
+        #tblUsers th,
+        #tblUsers td {
+            vertical-align: middle;
+        }
+
+        #tblUsers thead th {
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        #tblUsers td:last-child {
+            white-space: nowrap;
+        }
+</style>
+<link rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css" />
+
+<div class="card shadow">
+
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+
+        <h5 class="mb-0">
+            User Management
+        </h5>
+
+        <a asp-action="AddUser"
+           class="btn btn-success btn-sm">
+            <i class="bi bi-plus-circle"></i>
+            Add User
+        </a>
+
+    </div>
+
+    <div class="card-body " style="height:calc(100vh - 250px);" >
+
+        <table id="tblUsers" class="table table-bordered table-striped nowrap w-100">
+
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Mobile</th>
+                    <th width="100">DOB</th>
+                    <th>Gender</th>
+                    <th>Marital Status</th>
+                    <th>Hobbies</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th width="220">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (System.Data.DataRow row in Model.Rows)
+                {
+                    <tr>
+
+                        <td>
+                            @if (!string.IsNullOrEmpty(row["ProfileImage"]?.ToString()))
+                            {
+                                <img src="~/uploads/profile/@row["ProfileImage"]"
+                                     width="50"
+                                     height="50"
+                                     class="rounded-circle border" />
+                            }
+                            else
+                            {
+                                <span>No Image</span>
+                            }
+                        </td>
+
+                        <td>@row["UserName"]</td>
+
+                        <td>@row["Email"]</td>
+
+                        <td>@row["MobileNo"]</td>
+
+                        <td>
+                            @(row["DOB"] == DBNull.Value
+                                ? ""
+                                : Convert.ToDateTime(row["DOB"]).ToString("dd-MMM-yyyy"))
+                        </td>
+
+                        <td>@row["Gender"]</td>
+
+                        <td>@row["MaritalStatus"]</td>
+
+                        <td>@row["Hobbies"]</td>
+
+                        <td>@row["Role"]</td>
+
+                        <td>
+                            @if (Convert.ToBoolean(row["IsActive"]))
+                            {
+                                <span class="badge bg-success">
+                                    Active
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-danger">
+                                    Inactive
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+
+                            @if (Convert.ToBoolean(row["IsActive"]))
+                            {
+                                <a asp-action="EditUser"
+                                   asp-route-id="@row["UserId"]"
+                                   class="btn btn-warning btn-sm">
+
+                                    <i class="bi bi-pencil-square"></i>
+                                    Edit
+
+                                </a>
+                            }
+
+                            @if (Convert.ToBoolean(row["IsActive"]))
+                            {
+                                <a asp-action="ToggleUserStatus"
+                                   asp-route-id="@row["UserId"]"
+                                   class="btn btn-danger btn-sm"
+                                   onclick="return confirm('Deactivate this user?')">
+
+                                    <i class="bi bi-person-x"></i>
+                                    Inactivate
+
+                                </a>
+                            }
+                            else
+                            {
+                                <a asp-action="ToggleUserStatus"
+                                   asp-route-id="@row["UserId"]"
+                                   class="btn btn-success btn-sm"
+                                   onclick="return confirm('Activate this user?')">
+
+                                    <i class="bi bi-person-check"></i>
+                                    Activate
+
+                                </a>
+                            }
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+@section Scripts
+{
+    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+        $('#tblUsers').DataTable({
+        pageLength: 10,
+        scrollX: true,
+        scrollY: 'calc(100vh - 450px)',
+        scrollCollapse: true,
+        responsive: true,
+        autoWidth: false,
+        fixedHeader: true
+        });
+
+        });
+    </script>
+}
