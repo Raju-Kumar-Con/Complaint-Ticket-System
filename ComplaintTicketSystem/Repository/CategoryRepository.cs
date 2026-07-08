@@ -116,16 +116,14 @@ namespace ComplaintTicketSystem.Repositories
             return Convert.ToInt32(result) == 1;
         }
 
-        // Delete Category (Soft Delete)
-        public bool DeleteCategory(int id)
+        // ToggleCategoryStatus (Soft Delete)
+        public bool ToggleCategoryStatus(int id)
         {
-            Hashtable ht = new Hashtable();
+            Hashtable ht = new();
 
             ht.Add("@CategoryId", id);
 
-            int result = _db.ExecuteQuery("USP_DeleteCategory", ht);
-
-            return result > 0;
+            return _db.ExecuteQuery("USP_ToggleCategoryStatus", ht) > 0;
         }
     }
 }

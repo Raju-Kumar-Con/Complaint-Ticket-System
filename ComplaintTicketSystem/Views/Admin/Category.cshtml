@@ -38,7 +38,9 @@
     </a>
 
 </div>
-
+<form id="antiForgeryForm">
+    @Html.AntiForgeryToken()
+</form>
 <div id="myGrid"
      class="ag-theme-alpine"
      style="height:calc(100vh - 270px);width:100%;">

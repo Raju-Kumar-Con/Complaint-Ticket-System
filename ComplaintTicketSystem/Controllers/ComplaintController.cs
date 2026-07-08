@@ -17,12 +17,7 @@ namespace ComplaintTicketSystem.Controllers
         private readonly ErrorRepository _errorRepo;
         private readonly IEmailService _emailService;
 
-        public ComplaintController(
-            IComplaintRepository complaintRepo,
-            ICategoryRepository categoryRepo,
-            IUserRepository userRepo,
-            ErrorRepository errorRepo,
-            IEmailService emailService)
+        public ComplaintController(IComplaintRepository complaintRepo,ICategoryRepository categoryRepo,IUserRepository userRepo,ErrorRepository errorRepo,IEmailService emailService)
         {
             _complaintRepo = complaintRepo;
             _categoryRepo = categoryRepo;
@@ -38,16 +33,12 @@ namespace ComplaintTicketSystem.Controllers
             {
                 var userId = HttpContext.Session.GetInt32("UserId");
                 var role = HttpContext.Session.GetString("Role") ?? "";
-
                 if (userId == null || string.IsNullOrEmpty(role))
                 {
                     return RedirectToAction("Login", "Account");
                 }
-
                 DashboardModel model =_complaintRepo.GetDashboardData(userId.Value, role);
-
                 model.Complaints =_complaintRepo.GetComplaints(userId.Value, role);
-
                 ViewBag.Role = role;
 
                 return View(model);
@@ -64,7 +55,6 @@ namespace ComplaintTicketSystem.Controllers
         {
             int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
             string role = HttpContext.Session.GetString("Role") ?? "";
-
             var data = _complaintRepo.GetComplaintChartData(userId, role, filterType);
 
             return Json(data);
@@ -89,7 +79,6 @@ namespace ComplaintTicketSystem.Controllers
             {
                 int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
                 string role = HttpContext.Session.GetString("Role") ?? "";
-
                 var complaints = _complaintRepo.GetComplaints(userId, role);
 
                 return Json(new { success = true, role = role, data = complaints });
@@ -108,7 +97,6 @@ namespace ComplaintTicketSystem.Controllers
             try
             {
                 LoadCategories();
-
                 return View(new ComplaintModel
                 {
                     CreatedDate = DateTime.Now
@@ -409,7 +397,6 @@ namespace ComplaintTicketSystem.Controllers
         {
             int userId = HttpContext.Session.GetInt32("UserId") ?? 0;
             string role = HttpContext.Session.GetString("Role") ?? "";
-
             var data = _complaintRepo.GetComplaints(userId, role);
 
             return Json(data);
@@ -418,10 +405,7 @@ namespace ComplaintTicketSystem.Controllers
         // LOAD DROPDOWN
         private void LoadCategories()
         {
-            ViewBag.CategoryList = new SelectList(
-                _categoryRepo.GetCategories(),
-                "CategoryId",
-                "CategoryName");
+            ViewBag.CategoryList = new SelectList( _categoryRepo.GetCategories(),"CategoryId", "CategoryName");
         }
     }
 }

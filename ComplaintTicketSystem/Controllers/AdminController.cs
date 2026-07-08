@@ -13,10 +13,7 @@ namespace ComplaintTicketSystem.Controllers
         private readonly IUserRepository _userRepo;
         private readonly ICategoryRepository _categoryRepo;
 
-        public AdminController(
-            IComplaintRepository repo,
-            IUserRepository userRepo,
-            ICategoryRepository categoryRepo)
+        public AdminController(IComplaintRepository repo,IUserRepository userRepo,ICategoryRepository categoryRepo)
         {
             _repo = repo;
             _userRepo = userRepo;
@@ -73,7 +70,6 @@ namespace ComplaintTicketSystem.Controllers
                     ViewBag.Users = _userRepo.GetUsersForAssignment();
                     return View(model);
                 }
-
                 bool result = _repo.AssignComplaint(model.ComplaintId, model.AssignedTo);
                 if (result)
                 {
@@ -83,13 +79,11 @@ namespace ComplaintTicketSystem.Controllers
                 {
                     TempData["Error"] = "Unable to assign complaint.";
                 }
-
                 return RedirectToAction("Index", "Complaint");
             }
             catch (Exception)
             {
                 ViewBag.Users = _userRepo.GetUsersForAssignment();
-
                 TempData["Error"] = "Unable to assign complaint.";
 
                 return View(model);
@@ -128,9 +122,7 @@ namespace ComplaintTicketSystem.Controllers
                 {
                     return View(model);
                 }
-
                 _repo.UpdateStatus(model.ComplaintId, model.Status);
-
                 TempData["Success"] = "Complaint Status Updated Successfully.";
 
                 return RedirectToAction("Index", "Complaint");
@@ -168,11 +160,7 @@ namespace ComplaintTicketSystem.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new
-                {
-                    success = false,
-                    message = ex.Message
-                });
+                return Json(new{ success = false,message = ex.Message});
             }
         }
         // SUPPORT TEAM - GET
@@ -200,11 +188,7 @@ namespace ComplaintTicketSystem.Controllers
                     model.Normalize();
                     return View(model);
                 }
-                   
-
-
                 bool result = _userRepo.AddSupportEmployee(model);
-
                 if (result)
                 {
                     TempData["Success"] = "Support Employee Added Successfully";
@@ -213,7 +197,6 @@ namespace ComplaintTicketSystem.Controllers
                 {
                     TempData["Error"] = "Employee already exists. Click Modify Employee.";
                 }
-
                 return RedirectToAction(nameof(SupportTeam));
             }
             catch
@@ -233,13 +216,11 @@ namespace ComplaintTicketSystem.Controllers
                     return View("SupportTeam", model);
 
                 bool result = _userRepo.ModifyEmployee(model);
-
                 if (result)
                 {
                     TempData["Success"] = "Employee Updated Successfully";
                     return RedirectToAction(nameof(SupportTeam));
                 }
-
                 TempData["Error"] = "Employee not found.";
                 return View("SupportTeam", model);
             }
@@ -289,15 +270,12 @@ namespace ComplaintTicketSystem.Controllers
                 {
                     return View(model);
                 }
-
                 bool result = _categoryRepo.InsertCategory(model);
-
                 if (result)
                 {
                     TempData["Success"] = "Category Added Successfully.";
                     return RedirectToAction(nameof(Category));
                 }
-
                 TempData["Error"] = "Unable to add category  It's already Exists";
                 return View(model);
             }
@@ -314,13 +292,11 @@ namespace ComplaintTicketSystem.Controllers
             try
             {
                 var category = _categoryRepo.GetCategoryById(id);
-
                 if (category == null)
                 {
                     TempData["Error"] = "Category not found.";
                     return RedirectToAction(nameof(Category));
                 }
-
                 return View(category);
             }
             catch
@@ -359,17 +335,18 @@ namespace ComplaintTicketSystem.Controllers
         }
 
         // CHANGE CATEGORY STATUS
-        [HttpGet]
-        public IActionResult DeleteCategory(int id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ToggleCategoryStatus(int id)
         {
             try
             {
-                bool result = _categoryRepo.DeleteCategory(id);
+                bool result = _categoryRepo.ToggleCategoryStatus(id);
 
                 if (result)
-                    TempData["Success"] = "Category Changed Successfully.";
+                    TempData["Success"] = "Category status updated successfully.";
                 else
-                    TempData["Error"] = "Unable to Change category.";
+                    TempData["Error"] = "Unable to update category status.";
             }
             catch
             {
@@ -392,7 +369,6 @@ namespace ComplaintTicketSystem.Controllers
             try
             {
                 DataTable users = _userRepo.GetAllUsers();
-
                 return View(users);
             }
             catch
@@ -418,7 +394,6 @@ namespace ComplaintTicketSystem.Controllers
                     TempData["Error"] = "Inactive user cannot be edited.";
                     return RedirectToAction(nameof(Users));
                 }
-
                 return View(user);
             }
             catch
@@ -457,7 +432,6 @@ namespace ComplaintTicketSystem.Controllers
                 if (model.DOB.HasValue)
                 {
                     int age = DateTime.Today.Year - model.DOB.Value.Year;
-
                     if (model.DOB.Value.Date > DateTime.Today.AddYears(-age))
                     {
                         age--;

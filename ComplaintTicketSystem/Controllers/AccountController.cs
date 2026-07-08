@@ -8,7 +8,6 @@ namespace ComplaintTicketSystem.Controllers
     public class AccountController : Controller
     {
         private readonly IUserRepository _userRepo;
-
         public AccountController(IUserRepository userRepo)
         {
             _userRepo = userRepo;
@@ -31,6 +30,7 @@ namespace ComplaintTicketSystem.Controllers
 
         // REGISTER - POST
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Register(RegisterModel model,string[] SelectedHobbies)
         {
             try
@@ -41,9 +41,7 @@ namespace ComplaintTicketSystem.Controllers
 
                 if (!ModelState.IsValid)
                     return View(model);
-
                 string? fileName = null;
-
                 if (model.ProfileImage != null)
                 {
                     var extension = Path.GetExtension(model.ProfileImage.FileName).ToLower();
@@ -101,25 +99,19 @@ namespace ComplaintTicketSystem.Controllers
             {
                 return View(model);
             }
-
             var user = _userRepo.GetUserByEmail(model.Email!);
-
             if (user == null)
             {
                 ModelState.AddModelError("Email", "Email does not exist");
                 return View(model);
             }
-
             var passwordHasher = new PasswordHasher<UserModel>();
-
             var result = passwordHasher.VerifyHashedPassword(user,user.Password!,model.Password!);
-
             if (result == PasswordVerificationResult.Failed)
             {
                 ModelState.AddModelError("Password", "Incorrect password");
                 return View(model);
             }
-
             HttpContext.Session.SetInt32("UserId", user.UserId);
             HttpContext.Session.SetString("UserName", user.UserName ?? "");
             HttpContext.Session.SetString("Role", user.Role ?? "");

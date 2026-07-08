@@ -15,8 +15,7 @@ namespace ComplaintTicketSystem.Data
 
         public SqlConnection GetConnection()
         {
-            return new SqlConnection(
-                _configuration.GetConnectionString("DefaultConnection")
+            return new SqlConnection(_configuration.GetConnectionString("DefaultConnection")
                 ?? throw new InvalidOperationException("Connection string not found."));
         }
 
@@ -24,9 +23,7 @@ namespace ComplaintTicketSystem.Data
         public SqlDataReader GetData(string spName, Hashtable ht)
         {
             SqlConnection con = GetConnection();
-
             SqlCommand cmd = new SqlCommand(spName, con);
-
             cmd.CommandType = CommandType.StoredProcedure;
 
             foreach (DictionaryEntry item in ht)
@@ -45,9 +42,7 @@ namespace ComplaintTicketSystem.Data
         public int ExecuteQuery(string spName, Hashtable ht)
         {
             using SqlConnection con = GetConnection();
-
             using SqlCommand cmd = new SqlCommand(spName, con);
-
             cmd.CommandType = CommandType.StoredProcedure;
 
             foreach (DictionaryEntry item in ht)

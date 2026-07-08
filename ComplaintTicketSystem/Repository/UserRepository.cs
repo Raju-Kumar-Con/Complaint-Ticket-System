@@ -132,8 +132,7 @@ namespace ComplaintTicketSystem.Repositories
 
             Hashtable ht = new Hashtable();
 
-            using SqlDataReader dr =
-                _db.GetData("USP_GetUsersForAssignment", ht);
+            using SqlDataReader dr = _db.GetData("USP_GetUsersForAssignment", ht);
 
             while (dr.Read())
             {
@@ -154,8 +153,7 @@ namespace ComplaintTicketSystem.Repositories
             Hashtable ht = new Hashtable();
 
             var user = new UserModel();
-            string hashedPassword =
-                _passwordHasher.HashPassword(user, model.Password!);
+            string hashedPassword = _passwordHasher.HashPassword(user, model.Password!);
 
             ht.Add("@UserName", model.UserName);
             ht.Add("@Email", model.Email);
@@ -187,8 +185,7 @@ namespace ComplaintTicketSystem.Repositories
             Hashtable ht = new();
             ht.Add("@UserId", userId);
 
-            using SqlDataReader dr =
-                _db.GetData("USP_GetUserById", ht);
+            using SqlDataReader dr =_db.GetData("USP_GetUserById", ht);
 
             if (dr.Read())
             {

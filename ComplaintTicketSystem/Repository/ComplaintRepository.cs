@@ -220,8 +220,7 @@ namespace ComplaintTicketSystem.Repositories
 
             Hashtable ht = new Hashtable();
 
-            using SqlDataReader dr =
-                _db.GetData("USP_GetComplaintReport", ht);
+            using SqlDataReader dr = _db.GetData("USP_GetComplaintReport", ht);
 
             while (dr.Read())
             {
