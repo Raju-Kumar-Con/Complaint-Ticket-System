@@ -48,11 +48,8 @@ app.UseStaticFiles();
 // Disable Browser Cache
 app.Use(async (context, next) =>
 {
-    context.Response.Headers["Cache-Control"] =
-        "no-cache, no-store, must-revalidate";
-
+    context.Response.Headers["Cache-Control"] ="no-cache, no-store, must-revalidate";
     context.Response.Headers["Pragma"] = "no-cache";
-
     context.Response.Headers["Expires"] = "0";
 
     await next();
@@ -61,8 +58,6 @@ app.Use(async (context, next) =>
 app.UseAuthorization();
 
 // Routing
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Account}/{action=Login}/{id?}");
+app.MapControllerRoute(name: "default",pattern: "{controller=Account}/{action=Login}/{id?}");
 
 app.Run();

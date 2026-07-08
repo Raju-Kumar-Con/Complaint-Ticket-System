@@ -1,8 +1,9 @@
 ﻿using ComplaintTicketSystem.Data;
 using ComplaintTicketSystem.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using System.Collections;
-using Microsoft.AspNetCore.Identity;
+using System.Data;
 
 namespace ComplaintTicketSystem.Repositories
 {
@@ -24,8 +25,7 @@ namespace ComplaintTicketSystem.Repositories
 
             var user = new UserModel();
 
-            string hashedPassword =
-                _passwordHasher.HashPassword(user, model.Password);
+            string hashedPassword =_passwordHasher.HashPassword(user, model.Password);
 
             ht.Add("@UserName", model.Name);
             ht.Add("@Email", model.Email);
@@ -33,6 +33,11 @@ namespace ComplaintTicketSystem.Repositories
             ht.Add("@Role", model.Role);
             ht.Add("@ProfileImage", profileImage);
             ht.Add("@DOB", model.DOB);
+            ht.Add("@MobileNo", model.MobileNo);
+            ht.Add("@Gender", model.Gender);
+            ht.Add("@MaritalStatus", model.MaritalStatus);
+            ht.Add("@Address", model.Address);
+            ht.Add("@Hobbies", model.Hobbies);
 
             return _db.ExecuteQuery("USP_RegisterUser", ht) > 0;
         }
@@ -54,7 +59,12 @@ namespace ComplaintTicketSystem.Repositories
                     Email = dr["Email"].ToString(),
                     Password = dr["Password"].ToString(),
                     Role = dr["Role"].ToString(),
-                    ProfileImage = dr["ProfileImage"]?.ToString()
+                    ProfileImage = dr["ProfileImage"]?.ToString(),
+                    MobileNo = dr["MobileNo"]?.ToString(),
+                    Gender = dr["Gender"]?.ToString(),
+                    MaritalStatus = dr["MaritalStatus"]?.ToString(),
+                    Address = dr["Address"]?.ToString(),
+                    Hobbies = dr["Hobbies"]?.ToString()
                 };
 
                 var result = _passwordHasher.VerifyHashedPassword(
@@ -92,7 +102,12 @@ namespace ComplaintTicketSystem.Repositories
                     ProfileImage = dr["ProfileImage"]?.ToString(),
                     DOB = dr["DOB"] == DBNull.Value
                         ? null
-                        : Convert.ToDateTime(dr["DOB"])
+                        : Convert.ToDateTime(dr["DOB"]),
+                        MobileNo = dr["MobileNo"]?.ToString(),
+                    Gender = dr["Gender"]?.ToString(),
+                    MaritalStatus = dr["MaritalStatus"]?.ToString(),
+                    Address = dr["Address"]?.ToString(),
+                    Hobbies = dr["Hobbies"]?.ToString()
                 };
             }
 
@@ -117,8 +132,7 @@ namespace ComplaintTicketSystem.Repositories
 
             Hashtable ht = new Hashtable();
 
-            using SqlDataReader dr =
-                _db.GetData("USP_GetUsersForAssignment", ht);
+            using SqlDataReader dr = _db.GetData("USP_GetUsersForAssignment", ht);
 
             while (dr.Read())
             {
@@ -139,8 +153,7 @@ namespace ComplaintTicketSystem.Repositories
             Hashtable ht = new Hashtable();
 
             var user = new UserModel();
-            string hashedPassword =
-                _passwordHasher.HashPassword(user, model.Password!);
+            string hashedPassword = _passwordHasher.HashPassword(user, model.Password!);
 
             ht.Add("@UserName", model.UserName);
             ht.Add("@Email", model.Email);
@@ -169,27 +182,64 @@ namespace ComplaintTicketSystem.Repositories
         // GET USER BY ID
         public UserModel? GetUserById(int userId)
         {
-            Hashtable ht = new Hashtable();
+            Hashtable ht = new();
             ht.Add("@UserId", userId);
 
-            using SqlDataReader dr = _db.GetData("USP_GetUserById", ht);
+            using SqlDataReader dr =_db.GetData("USP_GetUserById", ht);
 
             if (dr.Read())
             {
                 return new UserModel
                 {
                     UserId = Convert.ToInt32(dr["UserId"]),
-                    UserName = dr["UserName"].ToString(),
-                    Email = dr["Email"].ToString(),
-                    Role = dr["Role"].ToString(),
+                    UserName = dr["UserName"]?.ToString(),
+                    Email = dr["Email"]?.ToString(),
+                    Role = dr["Role"]?.ToString(),
                     ProfileImage = dr["ProfileImage"]?.ToString(),
                     DOB = dr["DOB"] == DBNull.Value
                         ? null
-                        : Convert.ToDateTime(dr["DOB"])
+                        : Convert.ToDateTime(dr["DOB"]),
+                    MobileNo = dr["MobileNo"]?.ToString(),
+                    Gender = dr["Gender"]?.ToString(),
+                    MaritalStatus = dr["MaritalStatus"]?.ToString(),
+                    Address = dr["Address"]?.ToString(),
+                    Hobbies = dr["Hobbies"]?.ToString(),
+                    IsActive = Convert.ToBoolean(dr["IsActive"])
                 };
             }
 
             return null;
+        }
+        public DataTable GetAllUsers()
+        {
+            Hashtable ht = new Hashtable();
+
+            return _db.GetDataTable( "USP_GetAllUsers",ht);
+        }
+        public bool UpdateUser(UserModel model)
+        {
+            Hashtable ht = new();
+
+            ht.Add("@UserId", model.UserId);
+            ht.Add("@UserName", model.UserName);
+            ht.Add("@MobileNo", model.MobileNo);
+            ht.Add("@Gender", model.Gender);
+            ht.Add("@MaritalStatus", model.MaritalStatus);
+            ht.Add("@Address", model.Address);
+            ht.Add("@Hobbies", model.Hobbies);
+            ht.Add("@DOB", model.DOB ?? (object)DBNull.Value);
+            ht.Add("@ProfileImage",string.IsNullOrEmpty(model.ProfileImage)
+                ? DBNull.Value : model.ProfileImage);
+
+            return _db.ExecuteQuery("USP_UpdateUser", ht) > 0;
+        }
+        public bool ToggleUserStatus(int userId)
+        {
+            Hashtable ht = new();
+
+            ht.Add("@UserId", userId);
+
+            return _db.ExecuteQuery("USP_ToggleUserStatus", ht) > 0;
         }
     }
 }

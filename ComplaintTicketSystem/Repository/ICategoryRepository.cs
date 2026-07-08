@@ -12,5 +12,5 @@ public interface ICategoryRepository
 
     bool UpdateCategory(ComplaintCategoryModel model);
 
-    bool DeleteCategory(int id);
+    bool ToggleCategoryStatus(int id);
 }

@@ -33,12 +33,32 @@ namespace ComplaintTicketSystem.Models
 
         public string Role { get; set; } = "User";
 
-        [Required(ErrorMessage ="Image Must be added")]
+        [Required(ErrorMessage = "Image must be added")]
         public IFormFile? ProfileImage { get; set; }
 
         [Required(ErrorMessage = "Date of Birth is required")]
         [DataType(DataType.Date)]
         public DateTime? DOB { get; set; }
+
+        [Required(ErrorMessage = "Mobile Number is required")]
+        [RegularExpression(@"^[0-9]{10}$", ErrorMessage = "Enter valid 10 digit mobile number")]
+        public string MobileNo { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Gender is required")]
+        public string Gender { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Marital Status is required")]
+        public string MaritalStatus { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Address is required")]
+        [StringLength(250, MinimumLength = 10, ErrorMessage = "Address must be between 10 and 250 characters")]
+        [RegularExpression(
+            @"^[A-Za-z0-9\s,./#():-]+$",
+            ErrorMessage = "Address contains invalid characters"
+        )]
+        public string Address { get; set; } = string.Empty;
+
+        public string Hobbies { get; set; } = string.Empty;
 
         public int Age
         {
@@ -58,6 +78,7 @@ namespace ComplaintTicketSystem.Models
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            // Age Validation
             if (DOB.HasValue)
             {
                 int age = DateTime.Today.Year - DOB.Value.Year;
@@ -67,13 +88,37 @@ namespace ComplaintTicketSystem.Models
 
                 if (age < 18)
                 {
-                    yield return new ValidationResult("User must be at least 18 years old.", new[] { nameof(DOB) });
+                    yield return new ValidationResult(
+                        "User must be at least 18 years old.",
+                        new[] { nameof(DOB) });
                 }
             }
+
+            // Address should not contain only spaces
+            if (string.IsNullOrWhiteSpace(Address))
+            {
+                yield return new ValidationResult(
+                    "Address cannot be empty or contain only spaces.",
+                    new[] { nameof(Address) });
+            }
+
+            // Name should not contain only spaces
+            if (string.IsNullOrWhiteSpace(Name))
+            {
+                yield return new ValidationResult(
+                    "Name cannot be empty or contain only spaces.",
+                    new[] { nameof(Name) });
+            }
         }
+
+        public int UserId { get; set; }
+
         public void Normalize()
         {
+            Name = Name.Trim();
             Email = Email.Trim().ToLower();
+            Address = Address.Trim();
+            MobileNo = MobileNo.Trim();
         }
     }
 }

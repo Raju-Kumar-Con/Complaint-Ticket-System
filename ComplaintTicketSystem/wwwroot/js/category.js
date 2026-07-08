@@ -40,17 +40,17 @@
                     : "btn-success";
 
                 return `
-        <a href="/Admin/EditCategory/${params.value}"
-           class="btn btn-warning btn-sm me-2">
-            <i class="bi bi-pencil-square"></i> Edit
-        </a>
+                    <a href="/Admin/EditCategory/${params.value}"
+                       class="btn btn-warning btn-sm me-2">
+                        <i class="bi bi-pencil-square"></i> Edit
+                    </a>
 
-        <a href="/Admin/DeleteCategory/${params.value}"
-           class="btn ${buttonClass} btn-sm"
-           onclick="return confirm('Are you sure?')">
-            ${buttonText}
-        </a>
-    `;
+                    <button type="button"
+                            class="btn ${buttonClass} btn-sm toggle-category"
+                            data-id="${params.value}">
+                        ${buttonText}
+                    </button>
+                `;
             }
         }
     ];
@@ -67,14 +67,15 @@
             flex: 1,
             floatingFilter: true,
             resizable: true
-        },
+        }
     };
 
     const gridDiv = document.querySelector("#myGrid");
 
-    // AG Grid v36
     const gridApi = agGrid.createGrid(gridDiv, gridOptions);
+
     loadCategories();
+
     function loadCategories() {
 
         $.ajax({
@@ -87,15 +88,13 @@
 
             success: function (response) {
 
-                console.log("Data Received:", response);
+                console.log(response);
 
                 gridApi.setGridOption("rowData", response);
-           
-},
 
-            error: function (xhr, status, error) {
+            },
 
-                console.error(error);
+            error: function () {
 
                 alert("Unable to load category data.");
 
@@ -104,5 +103,43 @@
         });
 
     }
+
+    // Toggle Active/Inactive
+    $(document).on("click", ".toggle-category", function () {
+
+        if (!confirm("Are you sure?")) {
+            return;
+        }
+
+        const id = $(this).data("id");
+
+        const token = $('input[name="__RequestVerificationToken"]').val();
+
+        $.ajax({
+
+            url: "/Admin/ToggleCategoryStatus",
+
+            type: "POST",
+
+            data: {
+                id: id,
+                __RequestVerificationToken: token
+            },
+
+            success: function () {
+
+                loadCategories();
+
+            },
+
+            error: function () {
+
+                alert("Unable to update category status.");
+
+            }
+
+        });
+
+    });
 
 });

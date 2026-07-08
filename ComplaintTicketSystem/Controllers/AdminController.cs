@@ -2,6 +2,7 @@
 using ComplaintTicketSystem.Models;
 using ComplaintTicketSystem.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace ComplaintTicketSystem.Controllers
 {
@@ -12,20 +13,14 @@ namespace ComplaintTicketSystem.Controllers
         private readonly IUserRepository _userRepo;
         private readonly ICategoryRepository _categoryRepo;
 
-        public AdminController(
-            IComplaintRepository repo,
-            IUserRepository userRepo,
-            ICategoryRepository categoryRepo)
+        public AdminController(IComplaintRepository repo,IUserRepository userRepo,ICategoryRepository categoryRepo)
         {
             _repo = repo;
             _userRepo = userRepo;
             _categoryRepo = categoryRepo;
         }
 
-        // =========================
         // DASHBOARD
-        // =========================
-
         public IActionResult Dashboard()
         {
             try
@@ -39,9 +34,7 @@ namespace ComplaintTicketSystem.Controllers
             }
         }
 
-        // =========================
         // ASSIGN COMPLAINT - GET
-        // =========================
 
         [HttpGet]
         [Route("Admin/Assign/{id}")]
@@ -65,10 +58,7 @@ namespace ComplaintTicketSystem.Controllers
             }
         }
 
-        // =========================
         // ASSIGN COMPLAINT - POST
-        // =========================
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Assign(AssignComplaintModel model)
@@ -80,7 +70,6 @@ namespace ComplaintTicketSystem.Controllers
                     ViewBag.Users = _userRepo.GetUsersForAssignment();
                     return View(model);
                 }
-
                 bool result = _repo.AssignComplaint(model.ComplaintId, model.AssignedTo);
                 if (result)
                 {
@@ -90,23 +79,18 @@ namespace ComplaintTicketSystem.Controllers
                 {
                     TempData["Error"] = "Unable to assign complaint.";
                 }
-
                 return RedirectToAction("Index", "Complaint");
             }
             catch (Exception)
             {
                 ViewBag.Users = _userRepo.GetUsersForAssignment();
-
                 TempData["Error"] = "Unable to assign complaint.";
 
                 return View(model);
             }
         }
 
-        // =========================
         // UPDATE STATUS - GET
-        // =========================
-
         [HttpGet]
         [Route("Admin/Status/{id}")]
         public IActionResult Status(int id)
@@ -127,10 +111,7 @@ namespace ComplaintTicketSystem.Controllers
             }
         }
 
-        // =========================
         // UPDATE STATUS - POST
-        // =========================
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Status(ComplaintStatusModel model)
@@ -141,9 +122,7 @@ namespace ComplaintTicketSystem.Controllers
                 {
                     return View(model);
                 }
-
                 _repo.UpdateStatus(model.ComplaintId, model.Status);
-
                 TempData["Success"] = "Complaint Status Updated Successfully.";
 
                 return RedirectToAction("Index", "Complaint");
@@ -155,11 +134,7 @@ namespace ComplaintTicketSystem.Controllers
                 return View(model);
             }
         }
-
-        // =========================
         // REPORTS
-        // =========================
-
         [HttpGet("Admin/Reports")]
         public IActionResult Reports()
         {
@@ -185,18 +160,10 @@ namespace ComplaintTicketSystem.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new
-                {
-                    success = false,
-                    message = ex.Message
-                });
+                return Json(new{ success = false,message = ex.Message});
             }
         }
-
-        // =========================
         // SUPPORT TEAM - GET
-        // =========================
-
         [HttpGet]
         public IActionResult SupportTeam()
         {
@@ -210,11 +177,7 @@ namespace ComplaintTicketSystem.Controllers
                 return RedirectToAction("Dashboard");
             }
         }
-
-        // =========================
         // SUPPORT TEAM - POST
-        // =========================
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult SupportTeam(SupportEmployeeModel model)
@@ -225,11 +188,7 @@ namespace ComplaintTicketSystem.Controllers
                     model.Normalize();
                     return View(model);
                 }
-                   
-
-
                 bool result = _userRepo.AddSupportEmployee(model);
-
                 if (result)
                 {
                     TempData["Success"] = "Support Employee Added Successfully";
@@ -238,7 +197,6 @@ namespace ComplaintTicketSystem.Controllers
                 {
                     TempData["Error"] = "Employee already exists. Click Modify Employee.";
                 }
-
                 return RedirectToAction(nameof(SupportTeam));
             }
             catch
@@ -258,13 +216,11 @@ namespace ComplaintTicketSystem.Controllers
                     return View("SupportTeam", model);
 
                 bool result = _userRepo.ModifyEmployee(model);
-
                 if (result)
                 {
                     TempData["Success"] = "Employee Updated Successfully";
                     return RedirectToAction(nameof(SupportTeam));
                 }
-
                 TempData["Error"] = "Employee not found.";
                 return View("SupportTeam", model);
             }
@@ -296,19 +252,13 @@ namespace ComplaintTicketSystem.Controllers
                 return Json(new List<ComplaintCategoryModel>());
             }
         }
-        // =========================
         // ADD CATEGORY - GET
-        // =========================
-
         [HttpGet]
         public IActionResult AddCategory()
         {
             return View(new ComplaintCategoryModel());
         }
-
-        // =========================
         // ADD CATEGORY - POST
-        // =========================
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -320,15 +270,12 @@ namespace ComplaintTicketSystem.Controllers
                 {
                     return View(model);
                 }
-
                 bool result = _categoryRepo.InsertCategory(model);
-
                 if (result)
                 {
                     TempData["Success"] = "Category Added Successfully.";
                     return RedirectToAction(nameof(Category));
                 }
-
                 TempData["Error"] = "Unable to add category  It's already Exists";
                 return View(model);
             }
@@ -338,24 +285,18 @@ namespace ComplaintTicketSystem.Controllers
                 return View(model);
             }
         }
-
-        // =========================
         // EDIT CATEGORY - GET
-        // =========================
-
         [HttpGet]
         public IActionResult EditCategory(int id)
         {
             try
             {
                 var category = _categoryRepo.GetCategoryById(id);
-
                 if (category == null)
                 {
                     TempData["Error"] = "Category not found.";
                     return RedirectToAction(nameof(Category));
                 }
-
                 return View(category);
             }
             catch
@@ -365,9 +306,7 @@ namespace ComplaintTicketSystem.Controllers
             }
         }
 
-        // =========================
         // EDIT CATEGORY - POST
-        // =========================
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult EditCategory(ComplaintCategoryModel model)
@@ -395,21 +334,19 @@ namespace ComplaintTicketSystem.Controllers
             }
         }
 
-        // =========================
         // CHANGE CATEGORY STATUS
-        // =========================
-
-        [HttpGet]
-        public IActionResult DeleteCategory(int id)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ToggleCategoryStatus(int id)
         {
             try
             {
-                bool result = _categoryRepo.DeleteCategory(id);
+                bool result = _categoryRepo.ToggleCategoryStatus(id);
 
                 if (result)
-                    TempData["Success"] = "Category Changed Successfully.";
+                    TempData["Success"] = "Category status updated successfully.";
                 else
-                    TempData["Error"] = "Unable to Change category.";
+                    TempData["Error"] = "Unable to update category status.";
             }
             catch
             {
@@ -418,5 +355,166 @@ namespace ComplaintTicketSystem.Controllers
 
             return RedirectToAction(nameof(Category));
         }
+
+        //--------------------------------------------USER SECTION--------------------------------------
+        [HttpGet]
+        public IActionResult AddUser()
+        {
+            return RedirectToAction("Register", "Account");
+        }
+
+        [HttpGet]
+        public IActionResult Users()
+        {
+            try
+            {
+                DataTable users = _userRepo.GetAllUsers();
+                return View(users);
+            }
+            catch
+            {
+                TempData["Error"] = "Unable to load users.";
+                return RedirectToAction(nameof(Dashboard));
+            }
+        }
+        [HttpGet]
+        public IActionResult EditUser(int id)
+        {
+            try
+            {
+                var user = _userRepo.GetUserById(id);
+                if (user == null)
+                {
+                    TempData["Error"] = "User not found.";
+                    return RedirectToAction(nameof(Users));
+                }
+
+                if (!user.IsActive)
+                {
+                    TempData["Error"] = "Inactive user cannot be edited.";
+                    return RedirectToAction(nameof(Users));
+                }
+                return View(user);
+            }
+            catch
+            {
+                TempData["Error"] = "Unable to load user.";
+                return RedirectToAction(nameof(Users));
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditUser(UserModel model,string[]? SelectedHobbies)
+        {
+            try
+            {
+                var existingUser = _userRepo.GetUserById(model.UserId);
+                if (existingUser == null)
+                {
+                    TempData["Error"] = "User not found.";
+                    return RedirectToAction(nameof(Users));
+                }
+                if (!existingUser.IsActive)
+                {
+                    TempData["Error"] = "Inactive user cannot be updated.";
+                    return RedirectToAction(nameof(Users));
+                }
+                if (SelectedHobbies != null && SelectedHobbies.Length > 0)
+                {
+                    model.Hobbies = string.Join(",", SelectedHobbies);
+                }
+                else
+                {
+                    ModelState.AddModelError("Hobbies","Please select at least one hobby.");
+                }
+                model.ProfileImage = existingUser.ProfileImage;
+                if (model.DOB.HasValue)
+                {
+                    int age = DateTime.Today.Year - model.DOB.Value.Year;
+                    if (model.DOB.Value.Date > DateTime.Today.AddYears(-age))
+                    {
+                        age--;
+                    }
+
+                    if (age < 18)
+                    {
+                        ModelState.AddModelError( "DOB", "User must be at least 18 years old.");
+                    }
+                }
+                if (!ModelState.IsValid)
+                {
+                    return View(model);
+                }
+                if (model.ImageFile != null && model.ImageFile.Length > 0)
+                {
+                    string extension =Path.GetExtension(model.ImageFile.FileName).ToLower();
+                    string[] allowedExtensions ={".jpg", ".jpeg",".png"};
+                    if (!allowedExtensions.Contains(extension))
+                    {
+                        ModelState.AddModelError("ImageFile","Only JPG, JPEG and PNG files allowed.");
+                        return View(model);
+                    }
+                    if (model.ImageFile.Length > 2 * 1024 * 1024)
+                    {
+                        ModelState.AddModelError("ImageFile","Image size cannot exceed 2 MB.");
+                        return View(model);
+                    }
+                    string uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/uploads/profile");
+                    if (!Directory.Exists(uploadFolder))
+                    {
+                        Directory.CreateDirectory(uploadFolder);
+                    }
+                    string newFileName =Guid.NewGuid().ToString() + extension;
+                    string filePath =Path.Combine(uploadFolder, newFileName);
+                    using (FileStream stream =new FileStream(filePath, FileMode.Create))
+                    {
+                        model.ImageFile.CopyTo(stream);
+                    }
+                    if (!string.IsNullOrEmpty(existingUser.ProfileImage))
+                    {
+                        string oldImagePath =Path.Combine(uploadFolder,existingUser.ProfileImage);
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
+                    }
+                    model.ProfileImage = newFileName;
+                }
+                bool result = _userRepo.UpdateUser(model);
+                if (result)
+                {
+                    TempData["Success"] ="User updated successfully.";
+                    return RedirectToAction(nameof(Users));
+                }
+                TempData["Error"] ="Unable to update user.";
+                return View(model);
+            }
+            catch (Exception)
+            {
+                TempData["Error"] ="Something went wrong.";
+                return View(model);
+            }
+        }
+        [HttpGet]
+        public IActionResult ToggleUserStatus(int id)
+        {
+            try
+            {
+                bool result = _userRepo.ToggleUserStatus(id);
+
+                if (result)
+                    TempData["Success"] = "User status updated successfully.";
+                else
+                    TempData["Error"] = "Unable to update user status.";
+            }
+            catch
+            {
+                TempData["Error"] = "Something went wrong.";
+            }
+
+            return RedirectToAction(nameof(Users));
+        }
+
     }
 }
