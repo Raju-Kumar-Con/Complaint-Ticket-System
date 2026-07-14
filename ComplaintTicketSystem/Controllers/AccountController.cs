@@ -15,10 +15,11 @@ namespace ComplaintTicketSystem.Controllers
 
         // REGISTER - GET
         [HttpGet]
-        public IActionResult Register()
+        public IActionResult Register(bool isAdmin = false)
         {
             try
             {
+                ViewBag.IsAdmin = isAdmin;
                 return View();
             }
             catch (Exception)
@@ -31,13 +32,22 @@ namespace ComplaintTicketSystem.Controllers
         // REGISTER - POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Register(RegisterModel model,string[] SelectedHobbies)
+        public IActionResult Register(RegisterModel model,string[] SelectedHobbies,bool? isAdmin)
         {
             try
             {
                 model.Normalize();
+                if (_userRepo.IsEmailExists(model.Email))
+                {
+                    ModelState.AddModelError("Email", "Email already exists.");
+                    return View(model);
+                }
+                model.Hobbies = string.Join(",", SelectedHobbies ?? Array.Empty<string>());
 
-                model.Hobbies = string.Join(",", SelectedHobbies);
+                if (SelectedHobbies == null || SelectedHobbies.Length == 0)
+                {
+                    ModelState.AddModelError("Hobbies", "Please select at least one hobby.");
+                }
 
                 if (!ModelState.IsValid)
                     return View(model);
@@ -66,7 +76,11 @@ namespace ComplaintTicketSystem.Controllers
                 bool result = _userRepo.Register(model, fileName);
                 if (result)
                 {
-                    TempData["Success"] ="Registration Successful. Please Login.";
+                    if (isAdmin == true)
+                    {
+                        return RedirectToAction("Users", "Admin");
+                    }
+
                     return RedirectToAction("Login");
                 }
                 ModelState.AddModelError("", "Registration Failed");

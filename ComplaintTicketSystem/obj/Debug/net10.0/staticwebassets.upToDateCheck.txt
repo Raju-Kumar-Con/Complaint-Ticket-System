@@ -2,6 +2,7 @@ wwwroot\css\auth.css
 wwwroot\css\site.css
 wwwroot\favicon.ico
 wwwroot\image\image.jpg
+wwwroot\js\category.js
 wwwroot\js\dashboard.js
 wwwroot\js\index.js
 wwwroot\js\site.js
@@ -65,21 +66,21 @@ wwwroot\lib\jquery\dist\jquery.slim.js
 wwwroot\lib\jquery\dist\jquery.slim.min.js
 wwwroot\lib\jquery\dist\jquery.slim.min.map
 wwwroot\lib\jquery\LICENSE.txt
+wwwroot\uploads\profile\04995562-f787-4522-827f-b1f17ac1c8c0.jpg
 wwwroot\uploads\profile\107ef897-c707-419a-9f35-2b0a875cba37.png
 wwwroot\uploads\profile\1438701d-446d-41ec-9520-34936381d9f3.webp
+wwwroot\uploads\profile\184bac1f-099e-4bed-9d34-e817687312c6.png
+wwwroot\uploads\profile\35aefe46-d181-4b27-8e48-13aaafae3bb2.png
 wwwroot\uploads\profile\458e217a-0201-444a-8470-6384206dfe4d.jpeg
+wwwroot\uploads\profile\61fcd026-06cc-46ad-996a-41075ac65b5e.png
+wwwroot\uploads\profile\748d3504-15e0-4812-bb2a-8717fb0b872f.jpg
+wwwroot\uploads\profile\9784d407-e4bb-4f25-95fc-ddbdc62e1b78.png
 wwwroot\uploads\profile\9f6dcaf1-2033-4aed-9534-850c53a2d3ab.png
 wwwroot\uploads\profile\a6941346-61ba-4b69-acc6-e3af72b09b7b.jpg
+wwwroot\uploads\profile\aea4fff1-1f9a-479b-8b6e-02703246cd52.jpg
 wwwroot\uploads\profile\c31f378b-2a73-4f2e-b16e-90b874ced002.jpg
-wwwroot\js\category.js
-D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\css\auth.css
-D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\css\site.css
-D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\favicon.ico
-D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\js\dashboard.js
-D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\js\index.js
-D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\js\site.js
-D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
+D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\css\site.css
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
@@ -137,4 +138,10 @@ D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwro
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\jquery\dist\jquery.slim.min.js
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\jquery\dist\jquery.slim.min.map
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\jquery\LICENSE.txt
+D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\js\site.js
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\js\category.js
+D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\js\dashboard.js
+D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
+D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\css\auth.css
+D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\favicon.ico
+D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\js\index.js

@@ -25,7 +25,7 @@ namespace ComplaintTicketSystem.Repositories
 
             var user = new UserModel();
 
-            string hashedPassword =_passwordHasher.HashPassword(user, model.Password);
+            string hashedPassword = _passwordHasher.HashPassword(user, model.Password);
 
             ht.Add("@UserName", model.Name);
             ht.Add("@Email", model.Email);
@@ -39,7 +39,12 @@ namespace ComplaintTicketSystem.Repositories
             ht.Add("@Address", model.Address);
             ht.Add("@Hobbies", model.Hobbies);
 
-            return _db.ExecuteQuery("USP_RegisterUser", ht) > 0;
+            object? result = _db.ExecuteScalar("USP_RegisterUser", ht);
+
+            if (result == null)
+                return false;
+
+            return Convert.ToInt32(result) == 1;
         }
 
         // LOGIN (uses DB + password check)

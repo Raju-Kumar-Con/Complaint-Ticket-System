@@ -360,7 +360,7 @@ namespace ComplaintTicketSystem.Controllers
         [HttpGet]
         public IActionResult AddUser()
         {
-            return RedirectToAction("Register", "Account");
+            return RedirectToAction("Register","Account",new { isAdmin = true });
         }
 
         [HttpGet]
