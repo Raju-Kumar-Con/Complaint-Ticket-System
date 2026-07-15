@@ -37,18 +37,7 @@ namespace ComplaintTicketSystem.Controllers
             try
             {
                 model.Normalize();
-                if (_userRepo.IsEmailExists(model.Email))
-                {
-                    ModelState.AddModelError("Email", "Email already exists.");
-                    return View(model);
-                }
                 model.Hobbies = string.Join(",", SelectedHobbies ?? Array.Empty<string>());
-
-                if (SelectedHobbies == null || SelectedHobbies.Length == 0)
-                {
-                    ModelState.AddModelError("Hobbies", "Please select at least one hobby.");
-                }
-
                 if (!ModelState.IsValid)
                     return View(model);
                 string? fileName = null;
@@ -73,17 +62,31 @@ namespace ComplaintTicketSystem.Controllers
                         model.ProfileImage.CopyTo(stream);
                     }
                 }
-                bool result = _userRepo.Register(model, fileName);
-                if (result)
-                {
-                    if (isAdmin == true)
-                    {
-                        return RedirectToAction("Users", "Admin");
-                    }
+                int result = _userRepo.Register(model, fileName);
 
-                    return RedirectToAction("Login");
+                switch (result)
+                {
+                    case 1:
+                        if (isAdmin == true)
+                        {
+                            return RedirectToAction("Users", "Admin");
+                        }
+
+                        return RedirectToAction("Login");
+
+                    case 0:
+                        ModelState.AddModelError("Email", "Email already exists.");
+                        break;
+
+                    case -2:
+                        ModelState.AddModelError("DOB", "User must be at least 18 years old.");
+                        break;
+
+                    default:
+                        ModelState.AddModelError("", "Registration failed.");
+                        break;
                 }
-                ModelState.AddModelError("", "Registration Failed");
+
                 return View(model);
             }
             catch

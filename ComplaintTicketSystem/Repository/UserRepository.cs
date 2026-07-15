@@ -19,7 +19,7 @@ namespace ComplaintTicketSystem.Repositories
         }
 
         // REGISTER
-        public bool Register(RegisterModel model, string? profileImage)
+        public int Register(RegisterModel model, string? profileImage)
         {
             Hashtable ht = new Hashtable();
 
@@ -42,9 +42,9 @@ namespace ComplaintTicketSystem.Repositories
             object? result = _db.ExecuteScalar("USP_RegisterUser", ht);
 
             if (result == null)
-                return false;
+                return -1;
 
-            return Convert.ToInt32(result) == 1;
+            return Convert.ToInt32(result);
         }
 
         // LOGIN (uses DB + password check)

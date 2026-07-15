@@ -198,10 +198,7 @@
                 {
                     <div class="page-header">
 
-                        <h3>Create User</h3>
-
-                       
-
+                        <h3>Create User</h3>    
                     </div>
                 }
                 else
@@ -215,132 +212,145 @@
                      class="alert alert-danger">
                 </div>
 
-                <div class="row">
+                    <div class="row">
 
-                    <!-- Name -->
+                        <!-- Name -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" placeholder="Full Name" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
 
-                    <div class="col-md-6 mb-3">
+                        <!-- Email -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" placeholder="Email Address" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
 
-                        <label asp-for="Name" class="form-label"></label>
+                        <!-- Password -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Password" class="form-label"></label>
+                            <input asp-for="Password" type="password" class="form-control" placeholder="Password" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
 
-                        <input asp-for="Name"
-                               class="form-control"
-                               placeholder="Enter Full Name" />
+                        <!-- Confirm Password -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="ConfirmPassword" class="form-label"></label>
+                            <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm Password" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>
 
-                        <span asp-validation-for="Name"
-                              class="text-danger"></span>
+                        <!-- Profile Image -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="ProfileImage" class="form-label"></label>
+                            <input asp-for="ProfileImage"
+                                   type="file"
+                                   class="form-control"
+                                   accept=".jpg,.jpeg,.png" />
+                            <span asp-validation-for="ProfileImage" class="text-danger"></span>
+                        </div>
 
-                    </div>
+                        <!-- DOB -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="DOB" class="form-label"></label>
+                            <input asp-for="DOB" type="date" class="form-control" />
+                            <span asp-validation-for="DOB" class="text-danger"></span>
+                        </div>
 
-                    <!-- Email -->
+                        <!-- Mobile -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="MobileNo" class="form-label"></label>
+                            <input asp-for="MobileNo"
+                                   class="form-control"
+                                   maxlength="10"
+                                   placeholder="Mobile Number" />
+                            <span asp-validation-for="MobileNo" class="text-danger"></span>
+                        </div>
 
-                    <div class="col-md-6 mb-3">
+                        <!-- Gender -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Gender</label>
 
-                        <label asp-for="Email"
-                               class="form-label"></label>
+                            <div class="mt-2">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input"
+                                           asp-for="Gender"
+                                           type="radio"
+                                           value="Male" />
+                                    <label class="form-check-label">Male</label>
+                                </div>
 
-                        <input asp-for="Email"
-                               class="form-control"
-                               placeholder="Enter Email" />
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input"
+                                           asp-for="Gender"
+                                           type="radio"
+                                           value="Female" />
+                                    <label class="form-check-label">Female</label>
+                                </div>
+                            </div>
 
-                        <span asp-validation-for="Email"
-                              class="text-danger"></span>
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
 
-                    </div>
+                        <!-- Marital Status -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="MaritalStatus" class="form-label"></label>
 
-                    <!-- Password -->
+                            <select asp-for="MaritalStatus" class="form-select">
+                                <option value="">-- Select Status --</option>
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                            </select>
 
-                    <div class="col-md-6 mb-3">
+                            <span asp-validation-for="MaritalStatus" class="text-danger"></span>
+                        </div>
 
-                        <label asp-for="Password"
-                               class="form-label"></label>
+                        <!-- Hobbies -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Hobbies</label>
 
-                        <input asp-for="Password"
-                               type="password"
-                               class="form-control"
-                               placeholder="Enter Password" />
+                            <div class="mt-2">
 
-                        <span asp-validation-for="Password"
-                              class="text-danger"></span>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           name="SelectedHobbies"
+                                           value="Reading" />
+                                    <label class="form-check-label">Reading</label>
+                                </div>
 
-                    </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           name="SelectedHobbies"
+                                           value="Sports" />
+                                    <label class="form-check-label">Sports</label>
+                                </div>
 
-                    <!-- Confirm Password -->
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           name="SelectedHobbies"
+                                           value="Music" />
+                                    <label class="form-check-label">Music</label>
+                                </div>
 
-                    <div class="col-md-6 mb-3">
+                            </div>
 
-                        <label asp-for="ConfirmPassword"
-                               class="form-label"></label>
+                            <span asp-validation-for="Hobbies" class="text-danger"></span>
+                        </div>
 
-                        <input asp-for="ConfirmPassword"
-                               type="password"
-                               class="form-control"
-                               placeholder="Confirm Password" />
-
-                        <span asp-validation-for="ConfirmPassword"
-                              class="text-danger"></span>
-
-                    </div>
-
-                    <!-- Profile Image -->
-
-                    <div class="col-md-6 mb-3">
-
-                        <label asp-for="ProfileImage"
-                               class="form-label">
-                        </label>
-
-                        <input asp-for="ProfileImage"
-                               type="file"
-                               class="form-control"
-                               accept=".jpg,.jpeg,.png" />
-
-                        <span asp-validation-for="ProfileImage"
-                              class="text-danger"></span>
-
-                    </div>
-
-                    <!-- DOB -->
-
-                    <div class="col-md-6 mb-3">
-
-                        <label asp-for="DOB"
-                               class="form-label">
-                        </label>
-
-                        <input asp-for="DOB"
-                               type="date"
-                               class="form-control" />
-
-                        <span asp-validation-for="DOB"
-                              class="text-danger"></span>
-
-                    </div>
-
-                    <!-- Mobile -->
-
-                    <div class="col-md-6 mb-3">
-
-                        <label asp-for="MobileNo"
-                               class="form-label">
-                        </label>
-
-                        <input asp-for="MobileNo"
-                               class="form-control"
-                               maxlength="10"
-                               placeholder="Enter Mobile Number" />
-
-                        <span asp-validation-for="MobileNo"
-                              class="text-danger"></span>
-
-                    </div>
                         <!-- Address -->
                         <div class="col-12 mb-3">
-                            <label asp-for="Address" class="form-label fw-semibold"></label>
+                            <label asp-for="Address" class="form-label"></label>
+
                             <textarea asp-for="Address"
                                       class="form-control"
                                       rows="3"
-                                      placeholder="Enter your address"></textarea>
+                                      placeholder="Enter Address"></textarea>
+
                             <span asp-validation-for="Address" class="text-danger"></span>
                         </div>
 
@@ -380,8 +390,7 @@
                         {
                             <div class="col-12 text-center mt-3">
                                 Already have an account?
-                                <a asp-action="Login"
-                                   asp-controller="Account">
+                                <a asp-action="Login" asp-controller="Account">
                                     Login
                                 </a>
                             </div>

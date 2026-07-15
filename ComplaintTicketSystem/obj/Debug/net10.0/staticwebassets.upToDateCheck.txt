@@ -72,6 +72,7 @@ wwwroot\uploads\profile\1438701d-446d-41ec-9520-34936381d9f3.webp
 wwwroot\uploads\profile\184bac1f-099e-4bed-9d34-e817687312c6.png
 wwwroot\uploads\profile\35aefe46-d181-4b27-8e48-13aaafae3bb2.png
 wwwroot\uploads\profile\458e217a-0201-444a-8470-6384206dfe4d.jpeg
+wwwroot\uploads\profile\5ee69bd7-7b37-4fb7-bd83-2337c84b6253.jpg
 wwwroot\uploads\profile\61fcd026-06cc-46ad-996a-41075ac65b5e.png
 wwwroot\uploads\profile\748d3504-15e0-4812-bb2a-8717fb0b872f.jpg
 wwwroot\uploads\profile\9784d407-e4bb-4f25-95fc-ddbdc62e1b78.png
