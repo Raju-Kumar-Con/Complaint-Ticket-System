@@ -55,7 +55,7 @@
 
     </div>
 
-    <div class="card-body " style="height:calc(100vh - 250px);" >
+    <div class="card-body " style="height:calc(100vh - 255px);" >
 
         <table id="tblUsers" class="table table-bordered table-striped nowrap w-100">
 
@@ -66,6 +66,7 @@
                     <th>Email</th>
                     <th>Mobile</th>
                     <th width="100">DOB</th>
+                    <th>Age</th>
                     <th>Gender</th>
                     <th>Marital Status</th>
                     <th>Hobbies</th>
@@ -105,6 +106,23 @@
                             @(row["DOB"] == DBNull.Value
                                 ? ""
                                 : Convert.ToDateTime(row["DOB"]).ToString("dd-MMM-yyyy"))
+                        </td>
+                        <td>
+                            @{
+                                if (row["DOB"] != DBNull.Value)
+                                {
+                                    DateTime dob = Convert.ToDateTime(row["DOB"]);
+
+                                    int age = DateTime.Today.Year - dob.Year;
+
+                                    if (dob.Date > DateTime.Today.AddYears(-age))
+                                    {
+                                        age--;
+                                    }
+
+                                    @age
+                                }
+                            }
                         </td>
 
                         <td>@row["Gender"]</td>

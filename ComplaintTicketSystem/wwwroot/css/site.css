@@ -268,9 +268,14 @@ body {
 
 /*   CONTENT*/
 
+/*.content-wrapper {
+    flex: 1;
+    padding: 95px 25px 80px;
+}*/
 .content-wrapper {
     flex: 1;
     padding: 95px 25px 80px;
+    overflow-y: auto;
 }
 /*   CARDS*/
 .card,
