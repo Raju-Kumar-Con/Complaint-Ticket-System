@@ -1,90 +1,97 @@
-wwwroot\lib\jquery\LICENSE.txt
-wwwroot\lib\jquery\dist\jquery.slim.min.map
-wwwroot\lib\jquery\dist\jquery.slim.min.js
-wwwroot\lib\jquery\dist\jquery.slim.js
-wwwroot\lib\jquery\dist\jquery.min.map
-wwwroot\lib\jquery\dist\jquery.min.js
-wwwroot\lib\jquery\dist\jquery.js
-wwwroot\lib\jquery-validation\LICENSE.md
-wwwroot\lib\jquery-validation\dist\jquery.validate.min.js
-wwwroot\lib\jquery-validation\dist\jquery.validate.js
-wwwroot\lib\jquery-validation\dist\additional-methods.min.js
-wwwroot\lib\jquery-validation\dist\additional-methods.js
-wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
-wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.min.js
-wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.js
-wwwroot\lib\bootstrap\LICENSE
-wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
-wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
-wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
-wwwroot\lib\bootstrap\dist\js\bootstrap.js
-wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
-wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js
-wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map
-wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
-wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
-wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
-wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
-wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
-wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
-wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css
-wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
-wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
-wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
-wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
-wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
-wwwroot\lib\bootstrap\dist\css\bootstrap.css
-wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
-wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
-wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
-wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css
-wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map
-wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css
-wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map
-wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css
-wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map
-wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css
-wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
-wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css
-wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map
-wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css
-wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map
-wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css
-wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map
-wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css
-wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map
-wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
-wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map
-wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
-wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
-wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
-wwwroot\js\site.js
-wwwroot\uploads\profile\c31f378b-2a73-4f2e-b16e-90b874ced002.jpg
-wwwroot\js\dashboard.js
-wwwroot\image\image.jpg
-wwwroot\favicon.ico
-wwwroot\css\site.css
 wwwroot\css\auth.css
+wwwroot\css\site.css
+wwwroot\favicon.ico
+wwwroot\image\image.jpg
+wwwroot\js\dashboard.js
 wwwroot\js\index.js
-wwwroot\uploads\profile\458e217a-0201-444a-8470-6384206dfe4d.jpeg
-wwwroot\uploads\profile\1438701d-446d-41ec-9520-34936381d9f3.webp
-wwwroot\js\category.js
-wwwroot\uploads\profile\107ef897-c707-419a-9f35-2b0a875cba37.png
-wwwroot\uploads\profile\9f6dcaf1-2033-4aed-9534-850c53a2d3ab.png
-wwwroot\uploads\profile\a6941346-61ba-4b69-acc6-e3af72b09b7b.jpg
-wwwroot\uploads\profile\9784d407-e4bb-4f25-95fc-ddbdc62e1b78.png
-wwwroot\uploads\profile\184bac1f-099e-4bed-9d34-e817687312c6.png
+wwwroot\js\site.js
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-reboot.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap-utilities.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.css.map
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.rtl.min.css.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.bundle.min.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.esm.min.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.js.map
+wwwroot\lib\bootstrap\dist\js\bootstrap.min.js
+wwwroot\lib\bootstrap\dist\js\bootstrap.min.js.map
+wwwroot\lib\bootstrap\LICENSE
+wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.js
+wwwroot\lib\jquery-validation-unobtrusive\dist\jquery.validate.unobtrusive.min.js
+wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
+wwwroot\lib\jquery-validation\dist\additional-methods.js
+wwwroot\lib\jquery-validation\dist\additional-methods.min.js
+wwwroot\lib\jquery-validation\dist\jquery.validate.js
+wwwroot\lib\jquery-validation\dist\jquery.validate.min.js
+wwwroot\lib\jquery-validation\LICENSE.md
+wwwroot\lib\jquery\dist\jquery.js
+wwwroot\lib\jquery\dist\jquery.min.js
+wwwroot\lib\jquery\dist\jquery.min.map
+wwwroot\lib\jquery\dist\jquery.slim.js
+wwwroot\lib\jquery\dist\jquery.slim.min.js
+wwwroot\lib\jquery\dist\jquery.slim.min.map
+wwwroot\lib\jquery\LICENSE.txt
 wwwroot\uploads\profile\04995562-f787-4522-827f-b1f17ac1c8c0.jpg
-wwwroot\uploads\profile\748d3504-15e0-4812-bb2a-8717fb0b872f.jpg
-wwwroot\uploads\profile\61fcd026-06cc-46ad-996a-41075ac65b5e.png
-wwwroot\uploads\profile\aea4fff1-1f9a-479b-8b6e-02703246cd52.jpg
+wwwroot\uploads\profile\107ef897-c707-419a-9f35-2b0a875cba37.png
+wwwroot\uploads\profile\1438701d-446d-41ec-9520-34936381d9f3.webp
+wwwroot\uploads\profile\184bac1f-099e-4bed-9d34-e817687312c6.png
+wwwroot\uploads\profile\2018ac0e-929c-481c-9caa-0c4860f0e078.jpg
 wwwroot\uploads\profile\35aefe46-d181-4b27-8e48-13aaafae3bb2.png
-wwwroot\uploads\profile\5ee69bd7-7b37-4fb7-bd83-2337c84b6253.jpg
+wwwroot\uploads\profile\458e217a-0201-444a-8470-6384206dfe4d.jpeg
 wwwroot\uploads\profile\4c796f21-b76a-4a43-9afd-1102b67f7e75.png
+wwwroot\uploads\profile\5ee69bd7-7b37-4fb7-bd83-2337c84b6253.jpg
+wwwroot\uploads\profile\61fcd026-06cc-46ad-996a-41075ac65b5e.png
+wwwroot\uploads\profile\748d3504-15e0-4812-bb2a-8717fb0b872f.jpg
+wwwroot\uploads\profile\9784d407-e4bb-4f25-95fc-ddbdc62e1b78.png
+wwwroot\uploads\profile\9f6dcaf1-2033-4aed-9534-850c53a2d3ab.png
 wwwroot\uploads\profile\9fa9b0c7-16f6-4971-8539-40469e68fc0f.png
+wwwroot\uploads\profile\a6941346-61ba-4b69-acc6-e3af72b09b7b.jpg
+wwwroot\uploads\profile\aea4fff1-1f9a-479b-8b6e-02703246cd52.jpg
+wwwroot\uploads\profile\c31f378b-2a73-4f2e-b16e-90b874ced002.jpg
 wwwroot\uploads\profile\c4d913f4-040b-407e-ba63-535d04296753.png
-D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
+wwwroot\js\category.js
+D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\css\auth.css
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\css\site.css
+D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\favicon.ico
+D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\js\dashboard.js
+D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\js\index.js
+D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\js\site.js
+D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
+D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css.map
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.rtl.css
@@ -142,10 +149,4 @@ D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwro
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\jquery\dist\jquery.slim.min.js
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\jquery\dist\jquery.slim.min.map
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\jquery\LICENSE.txt
-D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\js\site.js
 D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\js\category.js
-D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\js\dashboard.js
-D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css
-D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\css\auth.css
-D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\favicon.ico
-D:\Cogniscient\Visual Studio\Complaint-Ticket-System\ComplaintTicketSystem\wwwroot\js\index.js

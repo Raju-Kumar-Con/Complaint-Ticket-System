@@ -47,7 +47,8 @@
 
                     <button type="button"
                             class="btn ${buttonClass} btn-sm toggle-category"
-                            data-id="${params.value}">
+                            data-id="${params.value}"
+                            style="width:110px;">
                         ${buttonText}
                     </button>
                 `;

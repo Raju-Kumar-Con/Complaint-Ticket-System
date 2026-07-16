@@ -1,12 +1,38 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "D:\\Cogniscient\\Visual Studio\\Complaint-Ticket-System\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{104EF198-A2EF-5E10-B747-7D74B1C63B00}|ComplaintTicketSystem\\ComplaintTicketSystem.csproj|d:\\cogniscient\\visual studio\\complaint-ticket-system\\complaintticketsystem\\wwwroot\\js\\category.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{104EF198-A2EF-5E10-B747-7D74B1C63B00}|ComplaintTicketSystem\\ComplaintTicketSystem.csproj|solutionrelative:complaintticketsystem\\wwwroot\\js\\category.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "category.js",
+              "DocumentMoniker": "D:\\Cogniscient\\Visual Studio\\Complaint-Ticket-System\\ComplaintTicketSystem\\wwwroot\\js\\category.js",
+              "RelativeDocumentMoniker": "ComplaintTicketSystem\\wwwroot\\js\\category.js",
+              "ToolTip": "D:\\Cogniscient\\Visual Studio\\Complaint-Ticket-System\\ComplaintTicketSystem\\wwwroot\\js\\category.js",
+              "RelativeToolTip": "ComplaintTicketSystem\\wwwroot\\js\\category.js",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABwAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2026-07-15T11:50:40.3Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }
