@@ -1,6 +1,7 @@
 ﻿@model ComplaintTicketSystem.Models.RegisterModel
+
 @{
-    Layout = null;
+    Layout = ViewBag.IsAdmin == true ? "_Layout" : null;
 }
 
 <!DOCTYPE html>
@@ -8,244 +9,406 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Register</title>
+    <title>Create Account</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
 
     <style>
-            body {
-                margin: 0;
-                height: 100vh;
-                font-family: 'Segoe UI', sans-serif;
-                background: linear-gradient(135deg, #232526, #414345);
-                overflow: hidden;
+
+        /* ===========================
+              COMMON
+        ============================ */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        .register-card {
+            animation: fadeIn .5s ease-in-out;
+        }
+
+        @@keyframes fadeIn {
+
+            from {
+                opacity: 0;
+                transform: translateY(20px);
             }
 
-            .register-wrapper {
-                height: 100vh;
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 10px;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            box-shadow: 0 0 8px rgba(13,110,253,.25);
+        }
+
+        .btn-register {
+            background: #198754;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            padding: 10px;
+        }
+
+        .btn-register:hover {
+            background: #157347;
+            color: white;
+        }
+
+        .section-title {
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+
+        /* ===========================
+              NORMAL USER
+        ============================ */
+
+            body.user-page {
+                margin: 0;
+                min-height: 100vh;
+                background: linear-gradient(135deg,#0d6efd,#4facfe);
+            }
+
+            .user-page .register-wrapper {
+                min-height: 100vh;
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                padding: 20px;
             }
 
-            .register-card {
-                width: 850px;
-                max-height: 90vh;
-                overflow-y: auto;
+            .user-page .container {
+                display: flex;
+                justify-content: center;
+            }
+
+            .user-page .register-card {
+                width: 100%;
+                max-width: 1000px;
                 background: #fff;
-                border-radius: 15px;
-                padding: 30px;
-                box-shadow: 0 15px 40px rgba(0,0,0,0.35);
-                opacity: 0;
-                transform: translateY(50px);
-                animation: fadeSlideIn 0.8s ease forwards;
+                border-radius: 20px;
+                padding: 35px;
+                box-shadow: 0 20px 50px rgba(0,0,0,.2);
             }
 
-            @@keyframes fadeSlideIn {
-                from {
-                    opacity: 0;
-                    transform: translateY(60px);
-                }
+        /* ===========================
+               ADMIN
+        ============================ */
 
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
+        body.admin-page {
+
+            background: #f5f6fa;
+        }
+
+        .admin-page .register-wrapper {
+
+            padding: 30px;
+        }
+
+        .admin-page .register-card {
+
+            background: #fff;
+
+            border-radius: 12px;
+
+            padding: 35px;
+
+            box-shadow: 0 2px 15px rgba(0,0,0,.08);
+        }
+
+        .page-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 25px;
+        }
+
+        .page-header h3 {
+
+            margin: 0;
+
+            font-weight: 700;
+        }
+
+        /* ===========================
+             MOBILE
+        ============================ */
+
+        @@media(max-width:768px){
+
+            .user-page .register-card,
+            .admin-page .register-card{
+
+                padding:20px;
             }
 
-            .title {
-                opacity: 0;
-                transform: translateX(-30px);
-                animation: slideLeft 0.8s ease forwards;
-                animation-delay: 0.2s;
+            .page-header{
+
+                flex-direction:column;
+
+                align-items:flex-start;
+
+                gap:15px;
             }
+        }
 
-            @@keyframes slideLeft {
-                to {
-                    opacity: 1;
-                    transform: translateX(0);
-                }
-            }
-
-            .form-control {
-                border-radius: 10px;
-                transition: all 0.3s ease;
-            }
-
-                .form-control:focus {
-                    box-shadow: 0 0 10px rgba(0,123,255,0.3);
-                    transform: scale(1.02);
-                }
-
-            .btn-register {
-                background: linear-gradient(135deg, #1d976c, #93f9b9);
-                border: none;
-                border-radius: 10px;
-                transition: all 0.3s ease;
-                color: #000;
-                font-weight: 600;
-            }
-
-                .btn-register:hover {
-                    transform: translateY(-2px);
-                    box-shadow: 0 10px 20px rgba(0,255,150,0.25);
-                }
-
-            .field {
-                opacity: 0;
-                transform: translateY(20px);
-                animation: fieldFade 0.6s ease forwards;
-            }
-
-                .field:nth-child(1) {
-                    animation-delay: 0.3s;
-                }
-
-                .field:nth-child(2) {
-                    animation-delay: 0.4s;
-                }
-
-                .field:nth-child(3) {
-                    animation-delay: 0.5s;
-                }
-
-                .field:nth-child(4) {
-                    animation-delay: 0.6s;
-                }
-
-                .field:nth-child(5) {
-                    animation-delay: 0.7s;
-                }
-
-            @@keyframes fieldFade {
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-
-            .link-text {
-                font-size: 14px;
-            }
     </style>
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+
 </head>
 
-<body>
+<body class="@(ViewBag.IsAdmin == true ? "admin-page" : "user-page")">
+    <form asp-action="Register"
+      asp-controller="Account"
+      method="post"
+      enctype="multipart/form-data">
 
-    <form asp-action="Register" asp-controller="Account" method="post"enctype="multipart/form-data">
-        @Html.AntiForgeryToken()
+    @Html.AntiForgeryToken()
 
+    <input type="hidden"
+           name="isAdmin"
+           value="@(ViewBag.IsAdmin != null ? ViewBag.IsAdmin.ToString().ToLower() : "false")" />
 
-        <div class="register-wrapper">
+    <div class="register-wrapper">
+
+        <div class="container">
 
             <div class="register-card">
 
-                <h3 class="text-center mb-4 title">Create Account</h3>
+                @if (ViewBag.IsAdmin == true)
+                {
+                    <div class="page-header">
 
-                <div asp-validation-summary="ModelOnly" class="text-danger mb-3">
-                    </div> <div class="row"> <div class="col-md-6 mb-3 field">
-                        <label>Name</label>
-                        <input asp-for="Name" class="form-control" placeholder="Full Name" /> 
-                        <span asp-validation-for="Name" class="text-danger"></span> 
+                        <h3>Create User</h3>    
                     </div>
-                    <div class="col-md-6 mb-3 field">
-                        <label>Email</label>
-                        <input asp-for="Email" class="form-control" placeholder="Email Address" />
-                        <span asp-validation-for="Email" class="text-danger"></span>
-                    </div> 
-                    <div class="col-md-6 mb-3 field">
-                        <label>Password</label>
-                        <input asp-for="Password" type="password" class="form-control" placeholder="Password" /> 
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                        </div> <div class="col-md-6 mb-3 field">
-                            <label>Confirm Password</label>
+                }
+                else
+                {
+                    <h3 class="text-center section-title">
+                        Create Account
+                    </h3>
+                }
+
+                <div asp-validation-summary="ModelOnly"
+                     class="alert alert-danger">
+                </div>
+
+                    <div class="row">
+
+                        <!-- Name -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Name" class="form-label"></label>
+                            <input asp-for="Name" class="form-control" placeholder="Full Name" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" placeholder="Email Address" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Password" class="form-label"></label>
+                            <input asp-for="Password" type="password" class="form-control" placeholder="Password" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+
+                        <!-- Confirm Password -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="ConfirmPassword" class="form-label"></label>
                             <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm Password" />
                             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                         </div>
-                         <div class="col-md-6 mb-3 field">
-                             <label>Profile Image</label>
-                             <input asp-for="ProfileImage" type="file" class="form-control" accept="image/*" />
-                             <span asp-validation-for="ProfileImage" class="text-danger"></span>
-                          </div> 
-                          <div class="col-md-6 mb-3 field">
-                                 <label>Date of Birth</label>
-                                 <input asp-for="DOB" type="date" class="form-control" /> 
-                                 <span asp-validation-for="DOB" class="text-danger"></span> 
-                          </div>
-                          <div class="col-md-6 mb-3 field">
-                              <label>Mobile Number</label>
-                              <input asp-for="MobileNo" type="number"class="form-control" placeholder="Mobile Number" /> 
-                              <span asp-validation-for="MobileNo" class="text-danger"></span>
-                          </div>
-             
+                        </div>
 
-                          <div class="col-md-6 mb-3 field"> 
-                              <label>Gender</label>
-                              <div class="mt-2"> <div class="form-check form-check-inline">
-                                  <input class="form-check-input" type="radio" asp-for="Gender" value="Male" /> 
-                                  <label class="form-check-label">Male</label>
-                              </div>
-                              <div class="form-check form-check-inline">
-                                  <input class="form-check-input" type="radio" asp-for="Gender" value="Female" /> 
-                                  <label class="form-check-label">Female</label> 
-                              </div>
-                              </div> <span asp-validation-for="Gender" class="text-danger"></span>
-                          </div>
-                          <div class="col-md-6 mb-3 field"> 
-                              <label>Marital Status</label>
-                              <select asp-for="MaritalStatus" class="form-control"> 
-                                  <option value="">-- Select Status --</option> 
-                                  <option value="Single">Single</option>
-                                  <option value="Married">Married</option>
-                              </select> 
-                              <span asp-validation-for="MaritalStatus" class="text-danger"></span>
-                          </div>
-                          <div class="col-md-6 mb-3 field"> 
-                              <label>Hobbies</label>
-                              <div class="mt-2">
-                                  <div class="form-check form-check-inline"> 
-                                      <input class="form-check-input" type="checkbox" name="SelectedHobbies" value="Reading" /> 
-                                      <label class="form-check-label">Reading</label> 
-                                  </div> 
-                                  <div class="form-check form-check-inline"> 
-                                      <input class="form-check-input" type="checkbox" name="SelectedHobbies" value="Sports" /> 
-                                      <label class="form-check-label">Sports</label>
-                                  </div> 
-                                  <div class="form-check form-check-inline"> 
-                                      <input class="form-check-input" type="checkbox" name="SelectedHobbies" value="Music" /> 
-                                      <label class="form-check-label">Music</label>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="col-12 mb-3 field"> 
-                              <label>Address</label>
-                              <textarea asp-for="Address" class="form-control" rows="3" placeholder="Enter Address"></textarea>
-                              <span asp-validation-for="Address" class="text-danger"></span>
-                          </div>
-                     </div> 
-                     <div class="row"> 
-                         <div class="col-6"> 
-                             <button type="submit" class="btn btn-register w-100"> Create Account </button>
-                         </div>
-                         <div class="col-6"> 
-                             <button type="reset" class="btn btn-secondary w-100"> Reset </button>
-                         </div>
-                      </div>
-                      <div class="text-center mt-3 link-text"> Already have an account? <a asp-action="Login">Login</a> 
-             </div>
+                        <!-- Profile Image -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="ProfileImage" class="form-label"></label>
+                            <input asp-for="ProfileImage"
+                                   type="file"
+                                   class="form-control"
+                                   accept=".jpg,.jpeg,.png" />
+                            <span asp-validation-for="ProfileImage" class="text-danger"></span>
+                        </div>
 
-            </div>
+                        <!-- DOB -->
+                        
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="DOB" class="form-label"></label>
+                            <input asp-for="DOB"
+                                   type="date"
+                                   class="form-control"
+                                   max="@DateTime.Today.ToString("yyyy-MM-dd")" />
+                            <span asp-validation-for="DOB" class="text-danger"></span>
+                        </div>
 
-        </div>
+                        <!-- Mobile -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="MobileNo" class="form-label"></label>
+                            <input asp-for="MobileNo"
+                                   class="form-control"
+                                   maxlength="10"
+                                   placeholder="Mobile Number" />
+                            <span asp-validation-for="MobileNo" class="text-danger"></span>
+                        </div>
 
+                        <!-- Gender -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Gender</label>
+
+                            <div class="mt-2">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input"
+                                           asp-for="Gender"
+                                           type="radio"
+                                           value="Male" />
+                                    <label class="form-check-label">Male</label>
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input"
+                                           asp-for="Gender"
+                                           type="radio"
+                                           value="Female" />
+                                    <label class="form-check-label">Female</label>
+                                </div>
+                            </div>
+
+                            <span asp-validation-for="Gender" class="text-danger"></span>
+                        </div>
+
+                        <!-- Marital Status -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="MaritalStatus" class="form-label"></label>
+
+                            <select asp-for="MaritalStatus" class="form-select">
+                                <option value="">-- Select Status --</option>
+                                <option value="Single">Single</option>
+                                <option value="Married">Married</option>
+                            </select>
+
+                            <span asp-validation-for="MaritalStatus" class="text-danger"></span>
+                        </div>
+
+                        <!-- Hobbies -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Hobbies</label>
+
+                            <div class="mt-2">
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           name="SelectedHobbies"
+                                           value="Reading" />
+                                    <label class="form-check-label">Reading</label>
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           name="SelectedHobbies"
+                                           value="Sports" />
+                                    <label class="form-check-label">Sports</label>
+                                </div>
+
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           name="SelectedHobbies"
+                                           value="Music" />
+                                    <label class="form-check-label">Music</label>
+                                </div>
+
+                            </div>
+
+                            <span asp-validation-for="Hobbies" class="text-danger"></span>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="col-12 mb-3">
+                            <label asp-for="Address" class="form-label"></label>
+
+                            <textarea asp-for="Address"
+                                      class="form-control"
+                                      rows="3"
+                                      placeholder="Enter Address"></textarea>
+
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="col-12 mt-4">
+                            <div class="d-flex justify-content-between">
+
+                                @if (ViewBag.IsAdmin == true)
+                                {
+                                    <a asp-controller="Admin"
+                                       asp-action="Users"
+                                       class="btn btn-outline-secondary">
+                                        ← Back
+                                    </a>
+                                }
+                                else
+                                {
+                                    <div></div>
+                                }
+
+                                <div>
+                                    <button type="reset"
+                                            class="btn btn-secondary">
+                                        Reset
+                                    </button>
+
+                                    <button type="submit"
+                                            class="btn btn-primary">
+                                        Create Account
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        @if (ViewBag.IsAdmin != true)
+                        {
+                            <div class="col-12 text-center mt-3">
+                                Already have an account?
+                                <a asp-action="Login" asp-controller="Account">
+                                    Login
+                                </a>
+                            </div>
+                        }
+
+                    </div>      <!-- row -->
+                </div>          <!-- register-card -->
+            </div>              <!-- container -->
+        </div>                  <!-- register-wrapper -->
     </form>
 
     <partial name="_ValidationScriptsPartial" />
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

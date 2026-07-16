@@ -15,10 +15,11 @@ namespace ComplaintTicketSystem.Controllers
 
         // REGISTER - GET
         [HttpGet]
-        public IActionResult Register()
+        public IActionResult Register(bool isAdmin = false)
         {
             try
             {
+                ViewBag.IsAdmin = isAdmin;
                 return View();
             }
             catch (Exception)
@@ -31,14 +32,12 @@ namespace ComplaintTicketSystem.Controllers
         // REGISTER - POST
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Register(RegisterModel model,string[] SelectedHobbies)
+        public IActionResult Register(RegisterModel model,string[] SelectedHobbies,bool? isAdmin)
         {
             try
             {
                 model.Normalize();
-
-                model.Hobbies = string.Join(",", SelectedHobbies);
-
+                model.Hobbies = string.Join(",", SelectedHobbies ?? Array.Empty<string>());
                 if (!ModelState.IsValid)
                     return View(model);
                 string? fileName = null;
@@ -63,13 +62,31 @@ namespace ComplaintTicketSystem.Controllers
                         model.ProfileImage.CopyTo(stream);
                     }
                 }
-                bool result = _userRepo.Register(model, fileName);
-                if (result)
+                int result = _userRepo.Register(model, fileName);
+
+                switch (result)
                 {
-                    TempData["Success"] ="Registration Successful. Please Login.";
-                    return RedirectToAction("Login");
+                    case 1:
+                        if (isAdmin == true)
+                        {
+                            return RedirectToAction("Users", "Admin");
+                        }
+
+                        return RedirectToAction("Login");
+
+                    case 0:
+                        ModelState.AddModelError("Email", "Email already exists.");
+                        break;
+
+                    case -2:
+                        ModelState.AddModelError("DOB", "User must be at least 18 years old.");
+                        break;
+
+                    default:
+                        ModelState.AddModelError("", "Registration failed.");
+                        break;
                 }
-                ModelState.AddModelError("", "Registration Failed");
+
                 return View(model);
             }
             catch
