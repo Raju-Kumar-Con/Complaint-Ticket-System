@@ -496,7 +496,8 @@ namespace ComplaintTicketSystem.Controllers
                 return View(model);
             }
         }
-        [HttpGet]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ToggleUserStatus(int id)
         {
             try

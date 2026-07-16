@@ -155,36 +155,41 @@
                                 <a asp-action="EditUser"
                                    asp-route-id="@row["UserId"]"
                                    class="btn btn-warning btn-sm">
-
                                     <i class="bi bi-pencil-square"></i>
                                     Edit
-
                                 </a>
-                            }
 
-                            @if (Convert.ToBoolean(row["IsActive"]))
-                            {
-                                <a asp-action="ToggleUserStatus"
-                                   asp-route-id="@row["UserId"]"
-                                   class="btn btn-danger btn-sm"
-                                   onclick="return confirm('Deactivate this user?')">
+                                <form asp-action="ToggleUserStatus"
+                                      method="post"
+                                      style="display:inline;"
+                                      onsubmit="return confirm('Deactivate this user?');">
 
-                                    <i class="bi bi-person-x"></i>
-                                    Inactivate
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@row["UserId"]" />
 
-                                </a>
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="bi bi-person-x"></i>
+                                        Inactivate
+                                    </button>
+
+                                </form>
                             }
                             else
                             {
-                                <a asp-action="ToggleUserStatus"
-                                   asp-route-id="@row["UserId"]"
-                                   class="btn btn-success btn-sm"
-                                   onclick="return confirm('Activate this user?')">
+                                <form asp-action="ToggleUserStatus"
+                                      method="post"
+                                      style="display:inline;"
+                                      onsubmit="return confirm('Activate this user?');">
 
-                                    <i class="bi bi-person-check"></i>
-                                    Activate
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@row["UserId"]" />
 
-                                </a>
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        <i class="bi bi-person-check"></i>
+                                        Activate
+                                    </button>
+
+                                </form>
                             }
 
                         </td>
